@@ -1,0 +1,138 @@
+/* SignUp.css */
+
+/* Container: split screen layout */
+.signup-container {
+    display: flex;
+    min-height: 100vh;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  /* Left side: full-background image with dark overlay for readability */
+  .signup-left {
+    flex: 1;
+    position: relative;
+    background: linear-gradient(
+        rgba(0, 0, 0, 0.5),
+        rgba(0, 0, 0, 0.5)
+      ),
+      url("/BeefChilliDry.jpg") center/cover no-repeat;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 3rem;
+    color: #fff;
+    text-align: center;
+  }
+  
+  .signup-left h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+  }
+  
+  .signup-left p {
+    font-size: 1.1rem;
+    max-width: 80%;
+    line-height: 1.5;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+  }
+  
+  /* Right side: light background with centered form */
+  .signup-right {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f7f7f7;
+    padding: 2rem;
+  }
+  
+  /* Card-style form container */
+  .signup-form {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 2rem;
+    width: 100%;
+    max-width: 450px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  }
+  
+  .signup-form h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    color: #333;
+    text-align: center;
+  }
+  
+  /* Error message styling */
+  .error-message {
+    background: #ffe6e6;
+    color: #d8000c;
+    padding: 0.5rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    text-align: center;
+    font-weight: 600;
+  }
+  
+  /* Form groups and labels */
+  .form-group {
+    margin-bottom: 1.25rem;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .form-group label {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #555;
+  }
+  
+  .form-group input {
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    transition: border-color 0.2s ease;
+  }
+  
+  .form-group input:focus {
+    outline: none;
+    border-color: #da291c;
+  }
+  
+  /* Create Account button with gradient */
+  .create-account-btn {
+    width: 100%;
+    background: linear-gradient(to right, #da291c, #b12016);
+    color: #fff;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    margin-top: 0.5rem;
+    transition: background 0.3s ease;
+  }
+  
+  .create-account-btn:hover {
+    background: linear-gradient(to right, #b12016, #930f0d);
+  }
+  
+  /* "Already have an account?" text */
+  .already-member {
+    margin-top: 1rem;
+    text-align: center;
+    font-size: 0.95rem;
+  }
+  
+  .already-member a {
+    color: #da291c;
+    text-decoration: none;
+    font-weight: 600;
+  }
+  
+  .already-member a:hover {
+    text-decoration: underline;
+  }
+  
