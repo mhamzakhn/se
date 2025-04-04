@@ -1,9 +1,10 @@
+// src/components/SignUp.jsx
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './SignUp.css';
 
-const SignUp = () => {
-  // State for all form fields
+
+const SignUp = ({ openLogin }) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName]   = useState("");
   const [email, setEmail]         = useState("");
@@ -13,27 +14,18 @@ const SignUp = () => {
   const [lumsId, setLumsId]       = useState("");
   const [error, setError]         = useState("");
 
-  // Handle form submission with validations
   const handleSubmit = (e) => {
     e.preventDefault();
-    
-    // Check if passwords match
     if (password !== confirmPassword) {
       setError("Passwords do not match");
       return;
     }
-    
-    // Check if phone number (if entered) is exactly 11 digits
     const phoneRegex = /^\d{11}$/;
     if (phoneNumber && !phoneRegex.test(phoneNumber)) {
       setError("Phone number must be exactly 11 digits");
       return;
     }
-    
-    // Clear errors if validations pass
     setError("");
-    
-    // Continue with submission logic (e.g., API call)
     console.log("Form submitted", {
       firstName,
       lastName,
@@ -46,20 +38,22 @@ const SignUp = () => {
 
   return (
     <div className="signup-container">
-      {/* Left side: Background image with text overlay */}
       <div className="signup-left">
-        <h1>ZAAN Rewards</h1>
-        <p>
+        <img src="/zaanlogo.png" alt="Zaan Logo" className="zaan-logo" />
+        <h1>Sign Up to earn Points and Redeem Discounts!</h1>
+        {/* <p>
           Sign up now to earn points on every order and redeem exclusive discounts.
           Experience mouthwatering flavors with every bite!
-        </p>
+        </p> */}
+        <img 
+          src="/chowmeinlogin2.png" 
+          alt="Chow Mein" 
+          className="chowmein-image" 
+        />
       </div>
-
-      {/* Right side: Card-style sign-up form */}
       <div className="signup-right">
         <form className="signup-form" onSubmit={handleSubmit}>
           <h2>Create Your Account</h2>
-          
           {error && <div className="error-message">{error}</div>}
           
           <div className="form-group">
@@ -73,7 +67,7 @@ const SignUp = () => {
               onChange={(e) => setFirstName(e.target.value)}
             />
           </div>
-
+          
           <div className="form-group">
             <label htmlFor="lastName">Last Name</label>
             <input 
@@ -85,7 +79,7 @@ const SignUp = () => {
               onChange={(e) => setLastName(e.target.value)}
             />
           </div>
-
+          
           <div className="form-group">
             <label htmlFor="email">Email</label>
             <input 
@@ -97,7 +91,7 @@ const SignUp = () => {
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
-
+          
           <div className="form-group">
             <label htmlFor="password">Password</label>
             <input 
@@ -109,7 +103,7 @@ const SignUp = () => {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-
+          
           <div className="form-group">
             <label htmlFor="confirmPassword">Confirm Password</label>
             <input 
@@ -121,7 +115,7 @@ const SignUp = () => {
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
           </div>
-
+          
           <div className="form-group">
             <label htmlFor="phoneNumber">Phone Number</label>
             <input 
@@ -132,7 +126,7 @@ const SignUp = () => {
               onChange={(e) => setPhoneNumber(e.target.value)}
             />
           </div>
-
+          
           <div className="form-group">
             <label htmlFor="lumsId">LUMS ID (Optional)</label>
             <input 
@@ -143,14 +137,22 @@ const SignUp = () => {
               onChange={(e) => setLumsId(e.target.value)}
             />
           </div>
-
+          
           <button type="submit" className="btn create-account-btn">
             Create Account
           </button>
-
+          
           <p className="already-member">
-            Already have an account? <Link to="/login">Sign in</Link>
+            Already have an account?{" "}
+            {openLogin ? (
+              <span className="login-link" onClick={openLogin}>
+                Sign in
+              </span>
+            ) : (
+              <Link to="/login">Sign in</Link>
+            )}
           </p>
+
         </form>
       </div>
     </div>

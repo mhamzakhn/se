@@ -4,12 +4,12 @@ import { Link } from 'react-router-dom';
 import { FaShoppingCart } from 'react-icons/fa';
 import './Navbar.css';
 
-const Navbar = () => {
+const Navbar = ({ openLogin, openSignup }) => {
   return (
     <nav className="navbar">
       {/* Left side: Logo or Brand */}
       <div className="nav-left">
-        <h2>ZAAN</h2>
+        <img src="/zaanlogo.png" alt="Zaan Logo" className="zaan-logo" />
       </div>
 
       {/* Center: Navigation Links */}
@@ -26,10 +26,10 @@ const Navbar = () => {
           <FaShoppingCart size={20} color="#fff" />
         </Link>
         <Link to="/login">
-          <button className="btn login-btn">Login</button>
+          <button className="btn login-btn" onClick={openLogin}>Login</button>
         </Link>
         <Link to="/signup">
-          <button className="btn signup-btn">Sign Up</button>
+          <button className="btn signup-btn" onClick={openSignup}>Sign Up</button>
         </Link>
       </div>
     </nav>
