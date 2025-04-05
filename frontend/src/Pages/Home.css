@@ -1,23 +1,23 @@
 html, body {
-    margin: 0;
-    padding: 0;
-    background-color: #000;
-  }
-  
-  .home {
-    background-color: #000;  
-    position: relative;
-    min-height: 100vh;      
-  }
-  
-  .home::before {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(ellipse at center, rgba(0,0,0,0) 40%, rgba(0,0,0,0.9) 100%);
-    pointer-events: none;
-    z-index: -1;
-  }
+  margin: 0;
+  padding: 0;
+  background-color: #042C5F;
+}
+
+.home {
+  background-color: #042C5F;  
+  position: relative;
+  min-height: 100vh;      
+}
+
+.home::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, #042C5F 19%, #040304 100%);
+  pointer-events: none;
+  z-index: -1;
+ }

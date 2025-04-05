@@ -25,12 +25,8 @@ const Navbar = ({ openLogin, openSignup }) => {
         <Link to="/cart" className="cart-icon">
           <FaShoppingCart size={20} color="#fff" />
         </Link>
-        <Link to="/login">
-          <button className="btn login-btn" onClick={openLogin}>Login</button>
-        </Link>
-        <Link to="/signup">
-          <button className="btn signup-btn" onClick={openSignup}>Sign Up</button>
-        </Link>
+        <button className="btn login-btn" onClick={openLogin}>Login</button>
+        <button className="btn signup-btn" onClick={openSignup}>Sign Up</button>
       </div>
     </nav>
   );

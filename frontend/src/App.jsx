@@ -8,18 +8,15 @@ import Home from './Pages/Home';
 import Modal from './components/Modal';
 
 function App() {
-
   const [showLogin, setShowLogin] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
 
   // Functions to open the modals
   const openLogin = () => {
-    // Optionally close login modal if open
     setShowSignup(false);
     setShowLogin(true);
   };
   const openSignup = () => {
-    // Optionally close login modal if open
     setShowLogin(false);
     setShowSignup(true);
   };
@@ -31,12 +28,6 @@ function App() {
 
       <Routes>
         <Route path="/" element={<Home />} />
-        {/* <Route path="/menu" element={<MenuPage />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/franchise" element={<FranchisePage />} />
-        <Route path="/contact" element={<ContactPage />} />
-        <Route path="/cart" element={<CartPage />} /> */}
       </Routes>
 
       {/* Login Modal */}
@@ -46,9 +37,8 @@ function App() {
 
       {/* Signup Modal */}
       <Modal isOpen={showSignup} onClose={() => setShowSignup(false)}>
-        <SignUp openLogin={openLogin} />
+        <SignUp openLogin={openLogin} closeModal={() => setShowSignup(false)} />
       </Modal>
-
     </Router>
   );
 }
