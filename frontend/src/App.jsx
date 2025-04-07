@@ -6,6 +6,7 @@ import SignUp from './components/SignUp';
 import LoginPage from './components/LoginPage';
 import Home from './Pages/Home';
 import Modal from './components/Modal';
+import MenuPage from './components/Menu';
 
 function App() {
   const [showLogin, setShowLogin] = useState(false);
@@ -28,6 +29,7 @@ function App() {
 
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/menu" element={<MenuPage />}/>
       </Routes>
 
       {/* Login Modal */}

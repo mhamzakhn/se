@@ -9,6 +9,7 @@
   position: relative;
   padding-left: 10%; 
   box-sizing: border-box;
+  font-family: Inter, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .hero-container::before {
@@ -34,12 +35,14 @@
   font-size: 4.5rem;  
   margin-bottom: 1.5rem;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  font-family: Inter, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .hero-content p {
   font-size: 1.5rem; 
   margin-bottom: 2.5rem;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  font-family: Inter, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .hero-buttons {
