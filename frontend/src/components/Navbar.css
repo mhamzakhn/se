@@ -73,6 +73,18 @@
   margin-right: 10px;
 }
 
+.cart-count-badge {
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 12px;
+  position: absolute;
+  top: -5px;
+  right: -5px;
+}
+
+
 /* Pill-shaped button styles with increased size */
 .btn {
   padding: 0.4rem 0.6rem; /* increased padding */

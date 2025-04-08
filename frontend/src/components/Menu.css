@@ -165,16 +165,16 @@ html {
 }
 
 .cart-icon {
-  /* Remove or override the background, border-radius, and extra padding */
   background-color: transparent;
   border-radius: 0;
   padding: 0;
-  color: #fff; /* Keep the icon color as is (white) */
+  color: #fff; /* Keep the icon color as white */
   text-decoration: none;
-  transition: color 0.3s ease; /* If you still want a hover color transition */
+  transition: color 0.3s ease;
+  cursor: pointer;  /* Add this line to indicate it's clickable */
 }
 
 .cart-icon:hover {
-  /* Optional: change icon color on hover, or remove this rule entirely */
   color: #aaa;
 }
+

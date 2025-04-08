@@ -1,19 +1,32 @@
+// src/components/Menu.jsx (MenuPage)
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { FaShoppingCart } from 'react-icons/fa';
+import { useCart } from '../context/CartContext';
 import './Menu.css';
 
 const categories = ['All', 'Starters', 'Soups', 'Chinese', 'Sandwiches', 'Burgers', 'Drinks'];
 
-const Menu = () => {
+const MenuPage = ({ openLogin }) => {
   const [menuData, setMenuData] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('All');
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
+  const { addItemToCart } = useCart();
 
   useEffect(() => {
     fetch('http://localhost:4000/api/v1/menu')
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Error fetching the menu");
+        }
+        return response.json();
+      })
       .then((data) => setMenuData(data))
-      .catch((err) => console.error("Error fetching menu:", err));
+      .catch((err) => {
+        console.error("Error fetching menu:", err);
+        setError("Error fetching menu.");
+      });
   }, []);
 
   const groupedItems = menuData.reduce((acc, item) => {
@@ -24,6 +37,16 @@ const Menu = () => {
 
   const handleCategoryChange = (cat) => {
     setSelectedCategory(cat);
+  };
+
+  // When the cart button for an item is clicked:
+  const handleAddToCart = (item) => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      openLogin();
+      return;
+    }
+    addItemToCart(item);
   };
 
   const renderMenuCard = (item) => (
@@ -42,17 +65,20 @@ const Menu = () => {
         </p>
       </div>
       <div className="menu-card-cart-icon">
-        <Link to="/cart" className="cart-icon">
+        <button className="cart-icon" onClick={() => handleAddToCart(item)}>
           <FaShoppingCart size={20} color="#fff" />
-        </Link>
+        </button>
       </div>
     </div>
   );
 
+  if (error) {
+    return <div>{error}</div>;
+  }
+
   return (
     <div className="menu-container">
       <h2 className="menu-title">Our Delicious Menu</h2>
-
       <div className="category-filter">
         {categories.map((cat) => (
           <button
@@ -64,7 +90,6 @@ const Menu = () => {
           </button>
         ))}
       </div>
-
       {selectedCategory === 'All' ? (
         categories
           .filter((cat) => cat !== 'All')
@@ -88,4 +113,4 @@ const Menu = () => {
   );
 };
 
-export default Menu;
+export default MenuPage;
