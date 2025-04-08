@@ -84,7 +84,6 @@
   right: -5px;
 }
 
-
 /* Pill-shaped button styles with increased size */
 .btn {
   padding: 0.4rem 0.6rem; /* increased padding */
@@ -150,4 +149,69 @@
   .nav-right {
     margin-top: 0.5rem;
   }
+}
+
+.user-indicator-container {
+  position: relative;
+  display: inline-block;
+}
+
+/* The clickable user icon */
+.user-indicator {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  margin-left: 1rem; /* optional spacing */
+}
+
+/* The dropdown itself */
+.profile-dropdown {
+  position: absolute;
+  top: 60px;  /* adjust based on your navbar height */
+  right: 0;
+  background-color: #fff;
+  padding: 1rem;
+  border-radius: 8px;
+  min-width: 220px;  /* makes it bigger/wider */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  z-index: 9999; /* ensure it appears above other elements */
+  text-align: center;
+  
+  /* The little arrow pointing up */
+  /* Adjust "left"/"right" to position it under the icon */
+}
+.profile-dropdown::after {
+  content: "";
+  position: absolute;
+  top: -10px; /* places the arrow above the box */
+  right: 12px; /* tweak to position arrow under the icon */
+  border-width: 0 10px 10px 10px;
+  border-style: solid;
+  border-color: transparent transparent #fff transparent;
+}
+
+/* Name text */
+.profile-dropdown p {
+  margin: 0;
+  margin-bottom: 0.75rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333;
+}
+
+/* Logout button styling */
+.profile-dropdown button {
+  background: linear-gradient(to right, #BF1B1B, #9d1717);
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.2s ease;
+}
+
+/* Button hover effect */
+.profile-dropdown button:hover {
+  background: linear-gradient(to right, #9d1717, #7c1313);
 }

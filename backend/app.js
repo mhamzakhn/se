@@ -7,6 +7,7 @@ import signupRouter from "./routes/Signup.js";
 import verifyOtpRouter from "./routes/verify_OTP.js";
 import loginRouter from "./routes/Login.js";
 import menuRoutes from "./routes/menu.js";
+import profileRoutes from './routes/profile.js';
 import cartRoutes from "./routes/Cart.js";   // Cart endpoints
 import orderRoutes from "./routes/Orders.js"; // Order endpoints
 
@@ -27,6 +28,7 @@ app.use('/api/v1/signup', signupRouter);
 app.use('/api/v1/verify-otp', verifyOtpRouter);
 app.use('/api/v1/login', loginRouter);
 app.use('/api/v1/menu', menuRoutes);
+app.use('/api/v1/profile', profileRoutes);
 app.use('/api/v1/cart', cartRoutes);
 app.use('/api/v1/orders', orderRoutes); // Mount the orders route
 
