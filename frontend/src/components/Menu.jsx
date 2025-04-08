@@ -50,8 +50,12 @@ const MenuPage = ({ openLogin }) => {
   };
 
   const renderMenuCard = (item) => {
-    const studentStatus = localStorage.getItem('studentStatus');
-    const priceToDisplay = studentStatus === 'student' ? item.discounted_price_for_LUMS_student : item.price;
+    const token = localStorage.getItem('token');
+    const studentStatus = localStorage.getItem('studentStatus') || 'non-student';
+
+    const priceToDisplay = token
+      ? (studentStatus === 'student' ? item.discounted_price_for_LUMS_student : item.price)
+      : item.price;
 
     return (
     <div className="menu-card" key={item.item_id || item.id}>
