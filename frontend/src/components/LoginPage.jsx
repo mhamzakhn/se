@@ -33,6 +33,8 @@ const LoginPage = ({ openSignup, closeModal }) => {
         console.log("Login successful:", data);
         // Store the token in localStorage
         localStorage.setItem('token', data.token);
+        localStorage.setItem('userRole', data.user.role);
+        localStorage.setItem('studentStatus', data.user.student_status);
         setLoginSuccess(true);
         // After a delay, close the modal (if closeModal is provided) and navigate to home
         setTimeout(() => {

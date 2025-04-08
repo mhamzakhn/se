@@ -75,10 +75,20 @@ const Navbar = ({ openLogin, openSignup }) => {
 
       {/* Center: Navigation Links */}
       <div className="nav-links">
-        <Link to="/">Home</Link>
-        <Link to="/menu">Menu</Link>
-        <Link to="/franchise">Franchise</Link>
-        <Link to="/contact">Contact</Link>
+      {userProfile?.role === 'admin' ? (
+        <>
+          <Link to="/">Home</Link>
+          <Link to="/admin/menu">Menu</Link>
+          <Link to="/admin/dashboard">Dashboard</Link>
+        </>
+      ) : (
+        <>
+          <Link to="/">Home</Link>
+          <Link to="/menu">Menu</Link>
+          <Link to="/franchise">Franchise</Link>
+          <Link to="/contact">Contact</Link>
+        </>
+      )}
       </div>
 
       {/* Right side: Cart icon and Login/Signup or User Icon */}

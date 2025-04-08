@@ -23,7 +23,7 @@ const MenuPage = ({ openLogin }) => {
         return response.json();
       })
       .then((data) => setMenuData(data))
-      .catch((err) => {
+      .catch((err) => { 
         console.error("Error fetching menu:", err);
         setError("Error fetching menu.");
       });
@@ -49,7 +49,11 @@ const MenuPage = ({ openLogin }) => {
     addItemToCart(item);
   };
 
-  const renderMenuCard = (item) => (
+  const renderMenuCard = (item) => {
+    const studentStatus = localStorage.getItem('studentStatus');
+    const priceToDisplay = studentStatus === 'student' ? item.discounted_price_for_LUMS_student : item.price;
+
+    return (
     <div className="menu-card" key={item.item_id || item.id}>
       <img
         src="/BeefChilliDry.jpeg"
@@ -59,10 +63,7 @@ const MenuPage = ({ openLogin }) => {
       <div className="menu-card-details">
         <h4>{item.name}</h4>
         <p className="menu-card-desc">This is a sample description.</p>
-        <p className="menu-card-price">PKR {item.price}</p>
-        <p className="menu-card-price">
-          Discounted Price: PKR {item.discounted_price_for_LUMS_student}
-        </p>
+        <p className="menu-card-price">PKR {priceToDisplay}</p>
       </div>
       <div className="menu-card-cart-icon">
         <button className="cart-icon" onClick={() => handleAddToCart(item)}>
@@ -71,6 +72,7 @@ const MenuPage = ({ openLogin }) => {
       </div>
     </div>
   );
+};
 
   if (error) {
     return <div>{error}</div>;

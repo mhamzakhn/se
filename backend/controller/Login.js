@@ -23,7 +23,7 @@ const login = async (req, res) => {
     
     // Sign a JWT with minimal user data; adjust the payload as necessary
     const token = jwt.sign(
-      { id: user._id, name: user.name, email: user.email },
+      { id: user._id, name: user.name, email: user.email, role: user.role, student_status: user.student_status },
       process.env.JWT_SECRET,
       { expiresIn: '1d' }
     );
@@ -32,7 +32,7 @@ const login = async (req, res) => {
     console.log("Generated JWT token:", token);
     
     // Send back the token in the response body
-    res.status(200).json({ message: "Login successful", token });
+    res.status(200).json({ message: "Login successful", token, user: {id: user._id, name: user.name, email: user.email, role: user.role, student_status: user.student_status} });
   } catch (error) {
     console.error("Login error:", error);
     res.status(500).json({ message: "Server error during login." });

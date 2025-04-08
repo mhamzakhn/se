@@ -24,3 +24,5 @@ dist-ssr
 *.sw?
 
 *.rdb
+backend/*.rdb
+backend/node_modules/
