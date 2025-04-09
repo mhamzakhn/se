@@ -1,7 +1,7 @@
 // src/components/LoginPage.jsx
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import './LoginPage.css';
+import '../styles/Login.css';
 
 const LoginPage = ({ openSignup, closeModal }) => {
   const [email, setEmail]       = useState('');

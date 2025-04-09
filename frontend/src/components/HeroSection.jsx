@@ -1,5 +1,5 @@
 import React from 'react';
-import './HeroSection.css';
+import '../styles/HeroSection.css';
 
 const HeroSection = () => {
   return (
@@ -8,8 +8,7 @@ const HeroSection = () => {
         <h1>Welcome!</h1>
         <p>We Made Delicious Food for You</p>
         <div className="hero-buttons">
-          <button className="hero-btn delivery-btn">Delivery</button>
-          <button className="hero-btn pickup-btn">Pickup</button>
+          <button className="hero-btn delivery-btn">Order Now</button>
         </div>
       </div>
     </div>

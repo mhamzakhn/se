@@ -3,31 +3,31 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import SignUp from './components/SignUp';
-import LoginPage from './components/LoginPage';
+import Login from './components/Login';
 import Home from './Pages/Home';
 import Modal from './components/Modal';
-import MenuPage from './components/Menu';
+import MenuPage from './pages/Menu';
 import { CartProvider } from './context/CartContext';
 
 function App() {
   const [showLogin, setShowLogin] = useState(false);
-  const [showSignup, setShowSignup] = useState(false);
+  const [showSignUp, setShowSignUp] = useState(false);
 
   // Functions to open the modals
   const openLogin = () => {
-    setShowSignup(false);
+    setShowSignUp(false);
     setShowLogin(true);
   };
-  const openSignup = () => {
+  const openSignUp = () => {
     setShowLogin(false);
-    setShowSignup(true);
+    setShowSignUp(true);
   };
 
   return (
     <CartProvider>
       <Router>
         {/* Pass the modal trigger functions to Navbar */}
-        <Navbar openLogin={openLogin} openSignup={openSignup} />
+        <Navbar openLogin={openLogin} openSignUp={openSignUp} />
 
         <Routes>
           <Route path="/" element={<Home />} />
@@ -37,12 +37,12 @@ function App() {
 
         {/* Login Modal */}
         <Modal isOpen={showLogin} onClose={() => setShowLogin(false)}>
-          <LoginPage openSignup={openSignup} closeModal={() => setShowLogin(false)} />
+          <Login openSignUp={openSignUp} closeModal={() => setShowLogin(false)} />
         </Modal>
 
-        {/* Signup Modal */}
-        <Modal isOpen={showSignup} onClose={() => setShowSignup(false)}>
-          <SignUp openLogin={openLogin} closeModal={() => setShowSignup(false)} />
+        {/* SignUp Modal */}
+        <Modal isOpen={showSignUp} onClose={() => setShowSignUp(false)}>
+          <SignUp openLogin={openLogin} closeModal={() => setShowSignUp(false)} />
         </Modal>
       </Router>
     </CartProvider>

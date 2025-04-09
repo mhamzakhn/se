@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { FaShoppingCart, FaUserCircle } from 'react-icons/fa';
 import { useCart } from '../context/CartContext'; // import your CartContext hook
-import './Navbar.css';
+import '../styles/Navbar.css';
 
 const Navbar = ({ openLogin, openSignup }) => {
   // Track logged-in state based on whether a token exists

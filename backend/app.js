@@ -3,13 +3,13 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import { dbConnection } from "./database/dbConnection.js";
-import signupRouter from "./routes/Signup.js";
-import verifyOtpRouter from "./routes/verify_OTP.js";
-import loginRouter from "./routes/Login.js";
+import signupRouter from "./routes/signup.js";
+import verifyOtpRouter from "./routes/verifyOTP.js";
+import loginRouter from "./routes/login.js";
 import menuRoutes from "./routes/menu.js";
 import profileRoutes from './routes/profile.js';
-import cartRoutes from "./routes/Cart.js";   // Cart endpoints
-import orderRoutes from "./routes/Orders.js"; // Order endpoints
+import cartRoutes from "./routes/cart.js";   // Cart endpoints
+import orderRoutes from "./routes/orders.js"; // Order endpoints
 
 dotenv.config({ path: "./config/config.env" });
 

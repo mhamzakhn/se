@@ -1,7 +1,7 @@
 // src/components/SignUp.jsx
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import './SignUp.css';
+import '../styles/SignUp.css'
 
 const SignUp = ({ openLogin, closeModal }) => {
   const navigate = useNavigate();
