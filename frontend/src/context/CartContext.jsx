@@ -5,6 +5,7 @@ const CartContext = createContext();
 
 export const useCart = () => useContext(CartContext);
 
+// CartProvider component to provide cart data and actions  
 export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState(null); // We'll store the entire cart object (e.g., { items: [...] })
 
@@ -54,7 +55,7 @@ export const CartProvider = ({ children }) => {
     }
   };
 
-  // Calculate total number of items in cart by summing each item's quantity
+  // Calculate total number of items in cart
   const getCartCount = () => {
     if (cart && cart.items) {
       return cart.items.reduce((total, item) => total + (item.quantity || 1), 0);

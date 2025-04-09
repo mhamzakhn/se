@@ -14,34 +14,34 @@ import useModal from './hooks/useModal';
 
 function App() {
   const {
-    showLogin,
-    showSignUp,
-    openLogin,
-    openSignUp,
-    closeLogin,
-    closeSignUp
+    showLoginModal,  // state to control whether the login modal is visible
+    showSignUpModal, // state to control whether the sign-up modal is visible
+    openLoginModal,  // function to show the login modal
+    openSignUpModal, // function to show the sign-up modal
+    closeLoginModal, // function to close the login modal
+    closeSignUpModal // function to close the sign-up modal
   } = useModal();
 
   return (
     <CartProvider>
       <Router>
-        {/* Pass the modal trigger functions to Navbar */}
-        <Navbar openLogin={openLogin} openSignUp={openSignUp} />
+        {/* Pass the modal trigger functions as props to Navbar for opening modals */}
+        <Navbar openLoginModal={openLoginModal} openSignUpModal={openSignUpModal} />
 
         <Routes>
           <Route path="/" element={<Home />} />
-          {/* Pass openLogin as a prop to MenuPage so it can trigger login modal if needed */}
-          <Route path="/menu" element={<MenuPage openLogin={openLogin} />} />
+          {/* Pass openLoginModal as a prop to MenuPage so it can trigger login modal if needed */}
+          <Route path="/menu" element={<MenuPage openLogin={openLoginModal} />} />
         </Routes>
 
         {/* Login Modal */}
-        <Modal isOpen={showLogin} onClose={closeLogin}>
-          <Login openSignUp={openSignUp} closeModal={closeLogin} />
+        <Modal isOpen={showLoginModal} onClose={closeLoginModal}>
+          <Login openSignupModal={openSignUpModal} closeModal={closeLoginModal} />
         </Modal>
 
         {/* SignUp Modal */}
-        <Modal isOpen={showSignUp} onClose={closeSignUp}>
-          <SignUp openLogin={openLogin} closeModal={closeSignUp} />
+        <Modal isOpen={showSignUpModal} onClose={closeSignUpModal}>
+          <SignUp openLoginModal={openLoginModal} closeModal={closeSignUpModal} />
         </Modal>
       </Router>
     </CartProvider>

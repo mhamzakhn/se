@@ -1,30 +1,30 @@
 import { useState } from 'react';
 
 const useModal = () => {
-  const [showLogin, setShowLogin] = useState(false);
-  const [showSignUp, setShowSignUp] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [showSignUpModal, setShowSignUpModal] = useState(false);
 
   // Functions to open the modals
-  const openLogin = () => {
-    setShowSignUp(false);
-    setShowLogin(true);
+  const openLoginModal = () => {
+    setShowSignUpModal(false);
+    setShowLoginModal(true);
   };
 
-  const openSignUp = () => {
-    setShowLogin(false);
-    setShowSignUp(true);
+  const openSignUpModal = () => {
+    setShowLoginModal(false);
+    setShowSignUpModal(true);
   };
 
-  const closeLogin = () => setShowLogin(false);
-  const closeSignUp = () => setShowSignUp(false);
+  const closeLoginModal = () => setShowLoginModal(false);
+  const closeSignUpModal = () => setShowSignUpModal(false);
 
   return {
-    showLogin,
-    showSignUp,
-    openLogin,
-    openSignUp,
-    closeLogin,
-    closeSignUp
+    showLoginModal,
+    showSignUpModal,
+    openLoginModal,
+    openSignUpModal,
+    closeLoginModal,
+    closeSignUpModal,
   };
 };
 

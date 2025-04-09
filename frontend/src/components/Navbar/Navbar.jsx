@@ -5,12 +5,12 @@ import { FaShoppingCart, FaUserCircle } from 'react-icons/fa';
 import { useCart } from '../../context/CartContext'; // import your CartContext hook
 import './Navbar.css';
 
-const Navbar = ({ openLogin, openSignUp }) => {
+const Navbar = ({ openLoginModal, openSignUpModal }) => {
   // Track logged-in state based on whether a token exists
   const [isLoggedIn, setIsLoggedIn] = useState(() => Boolean(localStorage.getItem('token')));
-  const [userProfile, setUserProfile] = useState(null);
-  const [showProfileDropdown, setShowProfileDropdown] = useState(false);
-  const dropdownRef = useRef(null);
+  const [userProfile, setUserProfile] = useState(null); // State to store user profile data
+  const [showProfileDropdown, setShowProfileDropdown] = useState(false);  // State to control dropdown visibility 
+  const dropdownRef = useRef(null); // Ref for the dropdown to detect clicks outside
 
   // Poll for token changes every second (for demo purposes)
   useEffect(() => {
@@ -28,7 +28,7 @@ const Navbar = ({ openLogin, openSignUp }) => {
       fetch('http://localhost:4000/api/v1/profile', {
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          'Authorization': `Bearer ${token}`  // Sending token as Authorization header
         }
       })
         .then(response => response.json())
@@ -39,7 +39,7 @@ const Navbar = ({ openLogin, openSignUp }) => {
     }
   }, [isLoggedIn]);
 
-  // Close the dropdown when clicking outside
+  // Close the profile dropdown if user clicks outside the dropdown
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -54,7 +54,7 @@ const Navbar = ({ openLogin, openSignUp }) => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [showProfileDropdown]);
 
-  // Logout handler: remove token and reset the state
+  // Logout handler: Remove token from localStorage and reset state
   const handleLogout = () => {
     localStorage.removeItem('token');
     setIsLoggedIn(false);
@@ -62,9 +62,9 @@ const Navbar = ({ openLogin, openSignUp }) => {
     setShowProfileDropdown(false);
   };
 
-  // Use the cart context to get the current cart count
+  // Use the cart context to get the current cart item count
   const { getCartCount } = useCart();
-  const cartCount = getCartCount();  // sum of quantities of all cart items
+  const cartCount = getCartCount();  // Get the total number of items in the cart
 
   return (
     <nav className="navbar">
@@ -99,9 +99,10 @@ const Navbar = ({ openLogin, openSignUp }) => {
             <span className="cart-count-badge">{cartCount}</span>
           )}
         </Link>
+        
+        {/* If the user is logged in, show the user icon and profile dropdown */}
         {isLoggedIn ? (
           <div className="user-indicator-container">
-            {/* User Icon (bigger icon for a better look) */}
             <div 
               className="user-indicator" 
               onClick={() => setShowProfileDropdown(!showProfileDropdown)}
@@ -117,8 +118,8 @@ const Navbar = ({ openLogin, openSignUp }) => {
           </div>
         ) : (
           <>
-            <button className="btn login-btn" onClick={openLogin}>Login</button>
-            <button className="btn signup-btn" onClick={openSignUp}>Sign Up</button>
+            <button className="btn login-btn" onClick={openLoginModal}>Login</button>
+            <button className="btn signup-btn" onClick={openSignUpModal}>Sign Up</button>
           </>
         )}
       </div>

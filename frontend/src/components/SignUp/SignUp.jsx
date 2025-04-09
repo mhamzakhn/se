@@ -4,9 +4,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import './SignUp.css';
 import { signupUser, verifyOtp } from '../../services/authService';
 
-const SignUp = ({ openLogin, closeModal }) => {
+const SignUp = ({ openLoginModal, closeModal }) => {
   const navigate = useNavigate();
 
+  // Form data state
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -17,38 +18,43 @@ const SignUp = ({ openLogin, closeModal }) => {
     lumsId: '',
   });
 
-  const [error, setError] = useState('');
-  const [otpSent, setOtpSent] = useState(false);
-  const [otpInput, setOtpInput] = useState('');
-  const [verificationMessage, setVerificationMessage] = useState('');
-  const [accountCreated, setAccountCreated] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(''); // State to store error message
+  const [otpSent, setOtpSent] = useState(false); // State to indicate OTP has been sent
+  const [otpInput, setOtpInput] = useState(''); // State to store OTP input from user
+  const [verificationMessage, setVerificationMessage] = useState(''); // State for OTP verification message
+  const [accountCreated, setAccountCreated] = useState(false); // State to indicate if account is created
 
+  // Handle form input changes
   const handleChange = (e) => {
     const { id, value } = e.target;
     setFormData((prev) => ({ ...prev, [id]: value }));
   };
 
+  // Validate form data before submission
   const validateForm = () => {
     if (formData.password !== formData.confirmPassword) return "Passwords do not match";
     if (formData.phoneNumber && !/^\d{11}$/.test(formData.phoneNumber)) return "Phone number must be exactly 11 digits";
     return null;
   };
 
+  // Handle signup form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     const validationError = validateForm();
-    if (validationError) return setError(validationError);
+    if (validationError) return setErrorMessage(validationError);
 
-    setError('');
+    setErrorMessage('');
+
     const { ok, data } = await signupUser(formData);
 
     if (!ok) {
-      setError(data.message || "Signup failed");
+      setErrorMessage(data.message || "Signup failed");
     } else {
       setOtpSent(true);
     }
   };
 
+  // Handle OTP verification
   const handleVerifyOtp = async (e) => {
     e.preventDefault();
     const { ok, data } = await verifyOtp(formData.email, otpInput);
@@ -77,7 +83,7 @@ const SignUp = ({ openLogin, closeModal }) => {
         {!otpSent ? (
           <form className="signup-form" onSubmit={handleSubmit}>
             <h2>Create Your Account</h2>
-            {error && <div className="error-message">{error}</div>}
+            {errorMessage && <div className="error-message">{errorMessage}</div>}
 
             {[
               { id: "firstName", label: "First Name", required: true },
@@ -105,8 +111,8 @@ const SignUp = ({ openLogin, closeModal }) => {
 
             <p className="already-member">
               Already have an account?{" "}
-              {openLogin ? (
-                <span className="login-link" onClick={openLogin}>Login</span>
+              {openLoginModal ? (
+                <span className="login-link" onClick={openLoginModal}>Login</span>
               ) : (
                 <Link to="/login">Sign in</Link>
               )}
