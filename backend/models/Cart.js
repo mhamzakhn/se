@@ -10,10 +10,10 @@ const CartItemSchema = new mongoose.Schema({
 
 const CartSchema = new mongoose.Schema({
   user: {
-    type: String,  // Change from ObjectId to String
-    ref: 'Profile',  // Reference remains the same
+    type: String,
+    ref: 'Profile', 
     required: true,
-    unique: true    // One cart per user
+    unique: true 
   },
   items: [CartItemSchema]
 }, {

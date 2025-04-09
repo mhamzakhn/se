@@ -9,7 +9,7 @@ const profileSchema = new mongoose.Schema({
   email: { 
     type: String, 
     required: true,
-    unique: true  // ensure uniqueness
+    unique: true 
   },
   name: { 
     type: String, 

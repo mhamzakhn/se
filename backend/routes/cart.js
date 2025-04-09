@@ -61,7 +61,11 @@ router.get('/', requireAuth, async (req, res) => {
   }
 });
 
-// Add the PUT endpoint here to update the quantity of a cart item
+/**
+ * PUT /api/v1/cart/item/:itemId
+ * Update the quantity of an item in the cart.
+ * Requires authentication.
+ */
 router.put('/item/:itemId', requireAuth, async (req, res) => {
   try {
     const userId = req.user.id;
@@ -69,7 +73,6 @@ router.put('/item/:itemId', requireAuth, async (req, res) => {
     const { itemId } = req.params;
 
     if (quantity < 1) {
-      // Optionally, remove the item if quantity is less than 1.
       await Cart.findOneAndUpdate(
         { user: userId },
         { $pull: { items: { item_id: itemId } } }
@@ -82,7 +85,6 @@ router.put('/item/:itemId', requireAuth, async (req, res) => {
       return res.status(404).json({ message: 'Cart not found' });
     }
 
-    // Find the item in the cart and update its quantity
     const itemIndex = cart.items.findIndex(
       (item) => item.item_id.toString() === itemId
     );

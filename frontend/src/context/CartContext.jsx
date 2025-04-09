@@ -22,7 +22,7 @@ export const CartProvider = ({ children }) => {
     }
   }, []);
 
-  // Function to add an item to the cart using the API
+
   const addItemToCart = async (item) => {
     const token = localStorage.getItem('token');
     if (!token) {
@@ -55,7 +55,7 @@ export const CartProvider = ({ children }) => {
     }
   };
 
-// Function to update the item quantity
+  
 const updateCartItem = async (itemId, newQuantity) => {
   const token = localStorage.getItem('token');
   if (!token) {

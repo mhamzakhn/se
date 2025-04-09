@@ -11,14 +11,12 @@ const Checkout = () => {
   const token = localStorage.getItem('token');
   const studentStatus = localStorage.getItem('studentStatus') || 'non-student';
 
-  // Helper function to decide which price to use
   const getItemPrice = (item) => {
     return token && studentStatus === 'student'
       ? item.discounted_price_for_LUMS_student
       : item.price;
   };
 
-  // Calculate cart total using the appropriate price for each item
   const getCartTotal = () => {
     return cartItems.reduce(
       (total, item) => total + getItemPrice(item) * item.quantity,
@@ -38,7 +36,6 @@ const Checkout = () => {
     }
   };
 
-  // New function to place an order
   const handlePlaceOrder = async () => {
     const token = localStorage.getItem('token');
     if (!token) {
@@ -52,15 +49,12 @@ const Checkout = () => {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         }
-        // No body is needed if your backend derives the order details from the cart.
       });
       const data = await response.json();
       if (!response.ok) {
         console.error("Error placing order:", data.message);
       } else {
         console.log("Order placed successfully:", data.order);
-        // Optionally, you might clear local state or display a success message.
-        // The server should have emptied the cart in the database.
       }
     } catch (error) {
       console.error("Failed to place order:", error);
