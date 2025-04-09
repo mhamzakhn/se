@@ -1,4 +1,3 @@
-// controllers/signup.js
 import bcrypt from 'bcryptjs';
 import Profile from '../models/Profiles.js';
 import { generateOTP, sendOTPEmail } from '../utils/otp.js';
@@ -8,6 +7,8 @@ const signup = async (req, res) => {
   console.log("Signup endpoint hit");
   try {
     const { firstName, lastName, email, password, phone, role } = req.body;
+
+    // Validate required fields 
     if (!firstName || !lastName || !email || !password) {
       console.log("Validation failed: Missing required fields");
       return res.status(400).json({ message: "First name, last name, email, and password are required." });
@@ -15,50 +16,49 @@ const signup = async (req, res) => {
     
     const name = `${firstName} ${lastName}`;
     
-    // Check if a profile with the email already exists
+    // Check if a profile with the given email already exists
     const existingProfile = await Profile.findOne({ email });
     if (existingProfile) {
       console.log("Validation failed: Email already exists");
       return res.status(400).json({ message: "Email already exists." });
     }
 
-    // Determine student_status based on email domain
+    // Determine student status based on email domain
     let determinedStudentStatus = 'non-student';
     const lowerEmail = email.toLowerCase();
     if (lowerEmail.endsWith('@lums.edu.pk') || lowerEmail.endsWith('@lums.ed.pk')) {
       determinedStudentStatus = 'student';
     }
 
-    // Immediately hash the password for security
+    // Hash the password before storing
     const saltRounds = 10;
     const password_hash = await bcrypt.hash(password, saltRounds);
     console.log("Password hashed successfully");
 
-    // Generate a 6-digit OTP
+    // Generate OTP for email verification
     const otp = generateOTP();
 
-    // Prepare the signup data object to store temporarily.
+    // Prepare the signup data object
     const signupData = {
       name,
       email,
-      password_hash, // already hashed
+      password_hash, // Already hashed
       phone,
       role: role || 'user',
       student_status: determinedStudentStatus,
       otp,
     };
 
-    // Store the signup data in Redis with an expiration of 5 minutes.
-    // We'll use a key that uniquely identifies this signup (for example: "signup:<email>")
+    // Store the signup data in Redis with an expiration time (5 minutes)
     const redisKey = `signup:${email}`;
     await redisClient.set(redisKey, JSON.stringify(signupData), { EX: 5 * 60 });
     console.log("Signup data stored in Redis for", email);
 
-    // Send the OTP via email
+    // Send the OTP email to the user
     await sendOTPEmail(email, otp);
     console.log("OTP sent to email:", email);
 
-    // Inform the frontend that OTP is sent and further verification is required.
+    // Respond that OTP has been sent and further verification is required
     return res.status(200).json({ message: "OTP sent to your email. Please verify to complete signup." });
   } catch (error) {
     console.error("Signup error:", error);

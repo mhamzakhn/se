@@ -4,6 +4,11 @@ import MenuItem from '../models/MenuItem.js';
 
 const router = express.Router();
 
+/**
+ * GET /api/v1/menu
+ * Retrieve all menu items from the database.
+ * Returns a list of menu items.
+ */
 router.get('/', async (req, res) => {
   try {
     const menuItems = await MenuItem.find();

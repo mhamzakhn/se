@@ -5,7 +5,11 @@ import Order from '../models/Orders.js';
 
 const router = express.Router();
 
-// POST /api/v1/orders: Place a new order (protected route)
+/**
+ * POST /api/v1/orders
+ * Place a new order (protected route)
+ * Expects an array of items and calculates the total amount before saving the order.
+ */
 router.post('/', requireAuth, async (req, res) => {
   try {
     const userId = req.user.id;
@@ -15,7 +19,6 @@ router.post('/', requireAuth, async (req, res) => {
       return res.status(400).json({ message: 'Order items are required.' });
     }
 
-    // Calculate total amount
     const totalAmount = items.reduce((total, item) => {
       return total + (item.discounted_price_for_LUMS_student * (item.quantity || 1));
     }, 0);
@@ -36,7 +39,11 @@ router.post('/', requireAuth, async (req, res) => {
   }
 });
 
-// GET /api/v1/orders: Retrieve orders for the authenticated user (protected route)
+/**
+ * GET /api/v1/orders
+ * Retrieve all orders for the authenticated user (protected route)
+ * Returns an array of orders sorted by the most recent.
+ */
 router.get('/', requireAuth, async (req, res) => {
   try {
     const userId = req.user.id;

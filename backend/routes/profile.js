@@ -1,21 +1,24 @@
 // routes/profile.js
 import express from 'express';
 import jwt from 'jsonwebtoken';
-import Profile from '../models/Profiles.js'; // Using your Profiles model
+import Profile from '../models/Profiles.js';
 
 const router = express.Router();
 
+/**
+ * GET /api/v1/profile
+ * Retrieve the authenticated user's profile based on the JWT token
+ * The token is sent in the Authorization header as a Bearer token.
+ */
 router.get('/', async (req, res) => {
-  // Get the token from the Authorization header
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
     return res.status(401).json({ message: 'Unauthorized: Missing token' });
   }
 
-  const token = authHeader.substring(7); // Remove 'Bearer ' part
+  const token = authHeader.substring(7); // Remove 'Bearer ' part to get the token
 
   try {
-    // Verify the token (make sure you have set JWT_SECRET in your environment)
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     
     // Retrieve the user profile using the id stored in the token payload
