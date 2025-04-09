@@ -55,6 +55,34 @@ export const CartProvider = ({ children }) => {
     }
   };
 
+// Function to update the item quantity
+const updateCartItem = async (itemId, newQuantity) => {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    console.error("User must be logged in to update the cart");
+    return;
+  }
+  try {
+    const response = await fetch(`http://localhost:4000/api/v1/cart/item/${itemId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({ quantity: newQuantity })
+    });
+    const data = await response.json();
+    if (response.ok) {
+      setCart(data.cart); // update state with the updated cart from the backend
+    } else {
+      console.error("Error updating cart:", data.message);
+    }
+  } catch (error) {
+    console.error("Error in updateCartItem:", error);
+  }
+};
+
+
   // Calculate total number of items in cart
   const getCartCount = () => {
     if (cart && cart.items) {
@@ -64,7 +92,7 @@ export const CartProvider = ({ children }) => {
   };
 
   return (
-    <CartContext.Provider value={{ cart, addItemToCart, getCartCount, setCart }}>
+    <CartContext.Provider value={{ cart, addItemToCart, updateCartItem, getCartCount, setCart }}>
       {children}
     </CartContext.Provider>
   );

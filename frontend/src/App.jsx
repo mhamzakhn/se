@@ -8,6 +8,7 @@ import Login from './components/Login/Login';
 import Home from './pages/Home/Home';
 import Modal from './components/Modal/Modal';
 import MenuPage from './pages/Menu/Menu';
+import Checkout from './pages/Checkout/Checkout';
 import { CartProvider } from './context/CartContext';
 
 import useModal from './hooks/useModal';
@@ -32,6 +33,7 @@ function App() {
           <Route path="/" element={<Home />} />
           {/* Pass openLoginModal as a prop to MenuPage so it can trigger login modal if needed */}
           <Route path="/menu" element={<MenuPage openLogin={openLoginModal} />} />
+          <Route path="/checkout" element={<Checkout />} />
         </Routes>
 
         {/* Login Modal */}

@@ -61,4 +61,43 @@ router.get('/', requireAuth, async (req, res) => {
   }
 });
 
+// Add the PUT endpoint here to update the quantity of a cart item
+router.put('/item/:itemId', requireAuth, async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { quantity } = req.body;
+    const { itemId } = req.params;
+
+    if (quantity < 1) {
+      // Optionally, remove the item if quantity is less than 1.
+      await Cart.findOneAndUpdate(
+        { user: userId },
+        { $pull: { items: { item_id: itemId } } }
+      );
+      return res.status(200).json({ message: 'Item removed from cart' });
+    }
+
+    let cart = await Cart.findOne({ user: userId });
+    if (!cart) {
+      return res.status(404).json({ message: 'Cart not found' });
+    }
+
+    // Find the item in the cart and update its quantity
+    const itemIndex = cart.items.findIndex(
+      (item) => item.item_id.toString() === itemId
+    );
+    if (itemIndex === -1) {
+      return res.status(404).json({ message: 'Item not found in cart' });
+    }
+
+    cart.items[itemIndex].quantity = quantity;
+    await cart.save();
+
+    return res.status(200).json({ message: 'Cart updated', cart });
+  } catch (error) {
+    console.error('Error updating cart item:', error);
+    return res.status(500).json({ message: 'Error updating cart item' });
+  }
+});
+
 export default router;

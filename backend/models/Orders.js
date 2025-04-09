@@ -11,8 +11,8 @@ const OrderItemSchema = new mongoose.Schema({
 
 const OrderSchema = new mongoose.Schema({
   user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Profile',  // reference to your Profile model
+    type: String,
+    ref: 'Profile', 
     required: true,
   },
   items: [OrderItemSchema],
@@ -23,7 +23,7 @@ const OrderSchema = new mongoose.Schema({
     default: 'pending'
   }
 }, {
-  timestamps: true // createdAt and updatedAt
+  timestamps: true
 });
 
 export default mongoose.model('Order', OrderSchema);

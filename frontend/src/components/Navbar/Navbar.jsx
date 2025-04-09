@@ -93,7 +93,7 @@ const Navbar = ({ openLoginModal, openSignUpModal }) => {
 
       {/* Right side: Cart icon and Login/Signup or User Icon */}
       <div className="nav-right" style={{ position: 'relative' }}>
-        <Link to="/cart" className="cart-icon" style={{ position: 'relative' }}>
+        <Link to="/checkout" className="cart-icon" style={{ position: 'relative' }}>
           <FaShoppingCart size={20} color="#fff" />
           {cartCount > 0 && (
             <span className="cart-count-badge">{cartCount}</span>

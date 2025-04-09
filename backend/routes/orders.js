@@ -2,56 +2,50 @@
 import express from 'express';
 import requireAuth from '../middleware/requireAuth.js';
 import Order from '../models/Orders.js';
+import Cart from '../models/Cart.js';
 
 const router = express.Router();
 
-/**
- * POST /api/v1/orders
- * Place a new order (protected route)
- * Expects an array of items and calculates the total amount before saving the order.
- */
-router.post('/', requireAuth, async (req, res) => {
+// POST /api/v1/orders/place
+// This route takes the user's current cart items, creates a new Order, and empties the cart.
+router.post('/place', requireAuth, async (req, res) => {
   try {
-    const userId = req.user.id;
-    const { items } = req.body; // Expecting an array of items from the frontend
-
-    if (!items || !items.length) {
-      return res.status(400).json({ message: 'Order items are required.' });
+    const userId = req.user.id; // user id from JWT
+    
+    // Find the user's cart
+    const cart = await Cart.findOne({ user: userId });
+    if (!cart || cart.items.length === 0) {
+      return res.status(400).json({ message: 'Cart is empty, cannot place an order.' });
     }
 
-    const totalAmount = items.reduce((total, item) => {
-      return total + (item.discounted_price_for_LUMS_student * (item.quantity || 1));
-    }, 0);
+    // Calculate totalAmount (if not already computed in cart)
+    // If you need to handle student discount logic, apply it here or rely on the final "price" stored in each item.
+    let totalAmount = 0;
+    cart.items.forEach(item => {
+      totalAmount += (item.price * item.quantity);
+      // or item.discounted_price_for_LUMS_student if you store the discounted price in 'price'
+    });
 
-    // Create a new order document
+    // Create a new Order
     const newOrder = new Order({
       user: userId,
-      items,
-      totalAmount,
-      status: 'pending'
+      items: cart.items,    // copy all cart items
+      totalAmount: totalAmount,
+      // status defaults to "pending" per schema
     });
 
     await newOrder.save();
-    res.status(201).json({ message: 'Order placed successfully', order: newOrder });
+
+    cart.items = [];
+    await cart.save();
+
+    return res.status(200).json({
+      message: 'Order placed successfully',
+      order: newOrder
+    });
   } catch (error) {
     console.error('Error placing order:', error);
-    res.status(500).json({ message: 'Error placing order' });
-  }
-});
-
-/**
- * GET /api/v1/orders
- * Retrieve all orders for the authenticated user (protected route)
- * Returns an array of orders sorted by the most recent.
- */
-router.get('/', requireAuth, async (req, res) => {
-  try {
-    const userId = req.user.id;
-    const orders = await Order.find({ user: userId }).sort({ createdAt: -1 });
-    res.status(200).json(orders);
-  } catch (error) {
-    console.error('Error fetching orders:', error);
-    res.status(500).json({ message: 'Error fetching orders' });
+    return res.status(500).json({ message: 'Error placing order' });
   }
 });
 
