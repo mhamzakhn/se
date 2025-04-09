@@ -1,5 +1,5 @@
 // controllers/signup.js
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import Profile from '../models/Profiles.js';
 import { generateOTP, sendOTPEmail } from '../utils/otp.js';
 import redisClient from '../utils/redisClient.js';

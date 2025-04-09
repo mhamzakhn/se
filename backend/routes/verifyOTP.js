@@ -1,6 +1,6 @@
 // routes/verify-otp.js
 import express from 'express';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import Profile from '../models/Profiles.js';
 import redisClient from '../utils/redisClient.js';
 
