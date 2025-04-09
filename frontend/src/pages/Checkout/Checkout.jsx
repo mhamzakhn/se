@@ -54,6 +54,7 @@ const Checkout = () => {
       if (!response.ok) {
         console.error("Error placing order:", data.message);
       } else {
+        alert("Order placed successfully!");
         console.log("Order placed successfully:", data.order);
       }
     } catch (error) {
