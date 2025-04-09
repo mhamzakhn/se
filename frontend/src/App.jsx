@@ -1,27 +1,26 @@
 // src/App.jsx
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import SignUp from './components/SignUp';
-import Login from './components/Login';
-import Home from './Pages/Home';
-import Modal from './components/Modal';
-import MenuPage from './pages/Menu';
+
+import Navbar from './components/Navbar/Navbar';
+import SignUp from './components/SignUp/SignUp';
+import Login from './components/Login/Login';
+import Home from './pages/Home/Home';
+import Modal from './components/Modal/Modal';
+import MenuPage from './pages/Menu/Menu';
 import { CartProvider } from './context/CartContext';
 
-function App() {
-  const [showLogin, setShowLogin] = useState(false);
-  const [showSignUp, setShowSignUp] = useState(false);
+import useModal from './hooks/useModal';
 
-  // Functions to open the modals
-  const openLogin = () => {
-    setShowSignUp(false);
-    setShowLogin(true);
-  };
-  const openSignUp = () => {
-    setShowLogin(false);
-    setShowSignUp(true);
-  };
+function App() {
+  const {
+    showLogin,
+    showSignUp,
+    openLogin,
+    openSignUp,
+    closeLogin,
+    closeSignUp
+  } = useModal();
 
   return (
     <CartProvider>
@@ -36,13 +35,13 @@ function App() {
         </Routes>
 
         {/* Login Modal */}
-        <Modal isOpen={showLogin} onClose={() => setShowLogin(false)}>
-          <Login openSignUp={openSignUp} closeModal={() => setShowLogin(false)} />
+        <Modal isOpen={showLogin} onClose={closeLogin}>
+          <Login openSignUp={openSignUp} closeModal={closeLogin} />
         </Modal>
 
         {/* SignUp Modal */}
-        <Modal isOpen={showSignUp} onClose={() => setShowSignUp(false)}>
-          <SignUp openLogin={openLogin} closeModal={() => setShowSignUp(false)} />
+        <Modal isOpen={showSignUp} onClose={closeSignUp}>
+          <SignUp openLogin={openLogin} closeModal={closeSignUp} />
         </Modal>
       </Router>
     </CartProvider>

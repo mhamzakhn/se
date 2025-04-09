@@ -1,7 +1,7 @@
 // src/components/Modal.jsx
 import React from 'react';
 import ReactDOM from 'react-dom';
-import '../styles/Modal.css';
+import './Modal.css';
 
 const Modal = ({ isOpen, onClose, children }) => {
   if (!isOpen) return null;
@@ -15,7 +15,7 @@ const Modal = ({ isOpen, onClose, children }) => {
         {children}
       </div>
     </div>,
-    document.getElementById('modal-root') // Make sure this exists in your index.html
+    document.getElementById('modal-root')
   );
 };
 

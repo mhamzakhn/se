@@ -2,10 +2,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { FaShoppingCart, FaUserCircle } from 'react-icons/fa';
-import { useCart } from '../context/CartContext'; // import your CartContext hook
-import '../styles/Navbar.css';
+import { useCart } from '../../context/CartContext'; // import your CartContext hook
+import './Navbar.css';
 
-const Navbar = ({ openLogin, openSignup }) => {
+const Navbar = ({ openLogin, openSignUp }) => {
   // Track logged-in state based on whether a token exists
   const [isLoggedIn, setIsLoggedIn] = useState(() => Boolean(localStorage.getItem('token')));
   const [userProfile, setUserProfile] = useState(null);
@@ -118,7 +118,7 @@ const Navbar = ({ openLogin, openSignup }) => {
         ) : (
           <>
             <button className="btn login-btn" onClick={openLogin}>Login</button>
-            <button className="btn signup-btn" onClick={openSignup}>Sign Up</button>
+            <button className="btn signup-btn" onClick={openSignUp}>Sign Up</button>
           </>
         )}
       </div>
