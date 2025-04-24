@@ -1,6 +1,6 @@
 // src/pages/Checkout.jsx
 import React from "react";
-import { useCart } from "../../context/CartContext";
+import { useCart } from "../context/CartContext";
 import { Minus, Plus, Trash2 as Trash, CheckCircle } from "lucide-react";
 
 const Checkout = () => {
