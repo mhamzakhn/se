@@ -22,7 +22,6 @@ export const CartProvider = ({ children }) => {
     }
   }, []);
 
-
   const addItemToCart = async (item) => {
     const token = localStorage.getItem('token');
     if (!token) {
@@ -55,33 +54,53 @@ export const CartProvider = ({ children }) => {
     }
   };
 
-  
-const updateCartItem = async (itemId, newQuantity) => {
-  const token = localStorage.getItem('token');
-  if (!token) {
-    console.error("User must be logged in to update the cart");
-    return;
-  }
-  try {
-    const response = await fetch(`http://localhost:4000/api/v1/cart/item/${itemId}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-      body: JSON.stringify({ quantity: newQuantity })
-    });
-    const data = await response.json();
-    if (response.ok) {
-      setCart(data.cart); // update state with the updated cart from the backend
-    } else {
-      console.error("Error updating cart:", data.message);
+  const updateCartItem = async (itemId, newQuantity) => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error("User must be logged in to update the cart");
+      return;
     }
-  } catch (error) {
-    console.error("Error in updateCartItem:", error);
-  }
-};
+    try {
+      const response = await fetch(`http://localhost:4000/api/v1/cart/item/${itemId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ quantity: newQuantity })
+      });
+      const data = await response.json();
+      if (response.ok) {
+        setCart(data.cart); // update state with the updated cart from the backend
+      } else {
+        console.error("Error updating cart:", data.message);
+      }
+    } catch (error) {
+      console.error("Error in updateCartItem:", error);
+    }
+  };
 
+  const clearCart = async () => {
+    const token = localStorage.getItem('token');
+    if (!token) return;
+  
+    try {
+      const response = await fetch('http://localhost:4000/api/v1/cart', {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      const data = await response.json();
+      if (response.ok) {
+        setCart(data); // update context with empty cart
+      } else {
+        console.error("Failed to clear cart:", data.message);
+      }
+    } catch (err) {
+      console.error("Error clearing cart:", err);
+    }
+  };  
 
   // Calculate total number of items in cart
   const getCartCount = () => {
@@ -92,7 +111,7 @@ const updateCartItem = async (itemId, newQuantity) => {
   };
 
   return (
-    <CartContext.Provider value={{ cart, addItemToCart, updateCartItem, getCartCount, setCart }}>
+    <CartContext.Provider value={{ cart, addItemToCart, updateCartItem, clearCart, getCartCount, setCart }}>
       {children}
     </CartContext.Provider>
   );

@@ -9,7 +9,7 @@ import Home from './pages/Home/Home';
 import Modal from './components/Modal/Modal';
 import MenuPage from './pages/Menu/Menu';
 import AdminMenuPage from './pages/AdminMenu';
-import Checkout from './pages/Cart';
+import Checkout from './pages/Checkout';
 import { CartProvider } from './context/CartContext';
 
 import useModal from './hooks/useModal';

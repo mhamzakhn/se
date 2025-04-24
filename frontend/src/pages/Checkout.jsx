@@ -6,7 +6,7 @@ import { Dialog } from "@headlessui/react";
 import { Minus, Plus, Trash2 as Trash, CheckCircle, ShoppingBag, AlertCircle } from "lucide-react";
 
 const Checkout = () => {
-  const { cart, updateCartItem, setCart } = useCart();
+  const { cart, updateCartItem, setCart, clearCart } = useCart();
   const cartItems = (cart && cart.items) || [];
 
   const [showLoginModal, setShowLoginModal] = useState(false);
@@ -145,7 +145,7 @@ const Checkout = () => {
                   Checkout
                 </button>
                 <button
-                  onClick={() => setCart({ items: [] })}
+                  onClick={clearCart}
                   className="w-full mt-3 bg-transparent border border-gray-600 text-gray-300 hover:bg-gray-800 py-3 rounded-md font-medium"
                 >
                   Clear Cart

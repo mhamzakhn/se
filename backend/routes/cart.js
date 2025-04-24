@@ -124,5 +124,20 @@ router.delete('/item/:id', requireAuth, async (req, res) => {
   }
 });
 
+router.delete('/', requireAuth, async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const cart = await Cart.findOneAndUpdate(
+      { user: userId },
+      { $set: { items: [] } },
+      { new: true }
+    );
+    res.status(200).json(cart);
+  } catch (err) {
+    console.error("Error clearing cart:", err);
+    res.status(500).json({ message: "Failed to clear cart" });
+  }
+});
+
 
 export default router;
