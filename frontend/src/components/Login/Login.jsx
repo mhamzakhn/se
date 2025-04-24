@@ -37,7 +37,6 @@ const LoginPage = ({ openSignupModal, closeModal }) => {
       // Close modal and navigate to the home page after a successful login 
       setTimeout(() => {
         closeModal?.();
-        navigate('/');
       }, 1000);
     } catch (err) {
       setErrorMessage("Something went wrong. Please try again later.");

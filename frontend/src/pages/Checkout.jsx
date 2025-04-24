@@ -185,7 +185,7 @@ const Checkout = () => {
                 <div className="pt-6">
                   <Link
                     to="/menu"
-                    className="inline-block px-6 py-3 bg-restaurant-accent text-white font-medium rounded-md hover:bg-red-700"
+                    className="inline-block px-6 py-3 text-white font-medium rounded-md bg-red-500 hover:bg-red-700"
                   >
                     Browse Menu
                   </Link>
