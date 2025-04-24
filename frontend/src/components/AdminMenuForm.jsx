@@ -1,46 +1,88 @@
-// src/components/AdminMenuForm.jsx
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
+import Modal from "./Modal/Modal";
 
 const AdminMenuForm = ({ isOpen, onClose, onSave, item }) => {
-  const [formState, setFormState] = useState({
-    name: '',
-    category: '',
-    price: '',
-    discounted_price_for_LUMS_student: '',
+  const [formData, setFormData] = useState({
+    item_id: "",
+    name: "",
+    price: "",
+    discounted_price_for_LUMS_student: "",
+    category: "",
+    available: true,
   });
 
   useEffect(() => {
-    if (item) setFormState(item);
-    else setFormState({ name: '', category: '', price: '', discounted_price_for_LUMS_student: '' });
+    if (item) {
+      setFormData(item);
+    } else {
+      setFormData({
+        item_id: "",
+        name: "",
+        price: "",
+        discounted_price_for_LUMS_student: "",
+        category: "",
+        available: true,
+      });
+    }
   }, [item]);
 
-  if (!isOpen) return null;
-
   const handleChange = (e) => {
-    setFormState({ ...formState, [e.target.name]: e.target.value });
+    const { id, value, type, checked } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [id]: type === "checkbox" ? checked : value,
+    }));
   };
 
-  const handleSubmit = () => {
-    onSave(formState);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onSave(formData);
     onClose();
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
-      <div className="bg-gray-900 p-8 rounded-lg w-full max-w-lg text-white">
-        <h2 className="text-2xl font-semibold mb-4">{item ? "Edit" : "Add New"} Menu Item</h2>
-        <div className="space-y-4">
-          <input name="name" value={formState.name} onChange={handleChange} placeholder="Name" className="w-full p-2 rounded bg-gray-700" />
-          <input name="category" value={formState.category} onChange={handleChange} placeholder="Category" className="w-full p-2 rounded bg-gray-700" />
-          <input name="price" value={formState.price} onChange={handleChange} placeholder="Price" className="w-full p-2 rounded bg-gray-700" />
-          <input name="discounted_price_for_LUMS_student" value={formState.discounted_price_for_LUMS_student} onChange={handleChange} placeholder="Discounted Price" className="w-full p-2 rounded bg-gray-700" />
+    <Modal isOpen={isOpen} onClose={onClose} title={item ? "Edit Item" : "Add New Item"}>
+      <form onSubmit={handleSubmit} className="space-y-6 px-6 py-4 bg-gray-800 rounded-lg text-white">
+        <h2 className="text-2xl font-semibold text-center mb-4">{item ? "Edit Menu Item" : "Add New Menu Item"}</h2>
+
+        {[
+          { id: "item_id", label: "Item ID", type: "number" },
+          { id: "name", label: "Name", type: "text" },
+          { id: "price", label: "Price", type: "number" },
+          { id: "discounted_price_for_LUMS_student", label: "Discounted Price (LUMS)", type: "number" },
+          { id: "category", label: "Category", type: "text" },
+        ].map(({ id, label, type }) => (
+          <div key={id}>
+            <label htmlFor={id} className="block text-sm font-medium mb-1">{label}</label>
+            <input
+              id={id}
+              type={type}
+              value={formData[id]}
+              onChange={handleChange}
+              required
+              className="w-full px-4 py-2 rounded-md border border-gray-600 bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-red-500"
+            />
+          </div>
+        ))}
+
+        <div className="flex items-center space-x-2">
+          <input
+            type="checkbox"
+            id="available"
+            checked={formData.available}
+            onChange={handleChange}
+            className="accent-red-500 h-4 w-4"
+          />
+          <label htmlFor="available" className="text-sm">Available</label>
         </div>
-        <div className="mt-6 flex justify-end gap-4">
-          <button onClick={onClose} className="px-4 py-2 bg-gray-600 rounded">Cancel</button>
-          <button onClick={handleSubmit} className="px-4 py-2 bg-green-600 rounded">Save</button>
+
+        <div className="flex justify-end">
+          <button type="submit" className="px-5 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md font-medium">
+            {item ? "Update Item" : "Add Item"}
+          </button>
         </div>
-      </div>
-    </div>
+      </form>
+    </Modal>
   );
 };
 

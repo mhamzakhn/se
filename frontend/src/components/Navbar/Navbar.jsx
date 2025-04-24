@@ -55,6 +55,8 @@ const Navbar = ({ openLoginModal, openSignUpModal }) => {
     setShowDropdown(false);
   };
 
+  const menuPath = userProfile?.role === "admin" ? "/admin/menu" : "/menu";
+
   return (
     <header className="bg-restaurant-primary shadow-md">
       <nav className="mx-auto flex max-w-7xl items-center justify-between p-4 lg:px-8">
@@ -68,11 +70,13 @@ const Navbar = ({ openLoginModal, openSignUpModal }) => {
         {/* Desktop Nav */}
         <div className="hidden lg:flex gap-x-10 items-center">
           <Link to="/" className="text-white hover:text-gray-300 text-sm font-medium">Home</Link>
-          <Link to="/menu" className="text-white hover:text-gray-300 text-sm font-medium">Menu</Link>
-          <Link to="/contact" className="text-white hover:text-gray-300 text-sm font-medium">Contact</Link>
+          <Link to={menuPath} className="text-white hover:text-gray-300 text-sm font-medium">Menu</Link>
           {userProfile?.role === "admin" && (
-            <Link to="/admin/menu" className="text-white hover:text-gray-300 text-sm font-medium">Admin</Link>
+            <>
+              <Link to="/admin/dashboard" className="text-white hover:text-gray-300 text-sm font-medium">Dashboard</Link>
+            </>
           )}
+          <Link to="/contact" className="text-white hover:text-gray-300 text-sm font-medium">Contact</Link>
         </div>
 
         {/* Cart + Auth Buttons */}
@@ -126,11 +130,11 @@ const Navbar = ({ openLoginModal, openSignUpModal }) => {
           </div>
           <div className="space-y-4 text-white">
             <Link to="/" onClick={() => setMobileMenuOpen(false)}>Home</Link>
-            <Link to="/menu" onClick={() => setMobileMenuOpen(false)}>Menu</Link>
-            <Link to="/contact" onClick={() => setMobileMenuOpen(false)}>Contact</Link>
+            <Link to={menuPath} onClick={() => setMobileMenuOpen(false)}>Menu</Link>
             {userProfile?.role === "admin" && (
-              <Link to="/admin/menu" onClick={() => setMobileMenuOpen(false)}>Admin</Link>
+              <Link to="/admin/dashboard" onClick={() => setMobileMenuOpen(false)}>Dashboard</Link>
             )}
+            <Link to="/contact" onClick={() => setMobileMenuOpen(false)}>Contact</Link>
             <Link to="/checkout" onClick={() => setMobileMenuOpen(false)}>Cart</Link>
 
             {isLoggedIn ? (
