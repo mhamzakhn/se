@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { signupUser, verifyOtp } from '../../services/authService';
+import { signupUser, verifyOtp, loginUser } from '../../services/authService';
+import { AuthContext } from '../../context/AuthContext';
 
 const SignUp = ({ openLoginModal, closeModal }) => {
   const navigate = useNavigate();
@@ -16,6 +17,7 @@ const SignUp = ({ openLoginModal, closeModal }) => {
   const [verificationMessage, setVerificationMessage] = useState('');
   const [accountCreated, setAccountCreated] = useState(false);
   const [loading, setLoading] = useState(false); // ⬅️ New loading state
+  const { login } = useContext(AuthContext);
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -54,12 +56,25 @@ const SignUp = ({ openLoginModal, closeModal }) => {
     if (!ok) {
       setVerificationMessage(data.message || "OTP verification failed");
     } else {
+
       setVerificationMessage("Account created successfully!");
       setAccountCreated(true);
-      setTimeout(() => {
-        closeModal?.();
-        navigate('/');
-      }, 3000);
+
+      try {
+        const loginResult = await loginUser(formData.email, formData.password);
+      
+        if (loginResult.ok && loginResult.data.token) {
+          login(loginResult.data.token, loginResult.data.user); // From AuthContext
+          closeModal?.();
+          navigate('/');
+        } else {
+          console.log("Login failed after OTP:", loginResult.data);
+          setVerificationMessage("Account created but auto-login failed. Please login manually.");
+        }
+      } catch (err) {
+        console.error("Login error after OTP:", err);
+        setVerificationMessage("Unexpected error during login.");
+      }
     }
   };
 

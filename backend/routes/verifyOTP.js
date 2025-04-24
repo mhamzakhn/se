@@ -4,6 +4,7 @@ import bcrypt from 'bcryptjs';
 import Profile from '../models/Profiles.js';
 import redisClient from '../utils/redisClient.js';
 
+
 const router = express.Router();
 
 /**

@@ -11,6 +11,7 @@ import MenuPage from './pages/Menu/Menu';
 import AdminMenuPage from './pages/AdminMenu';
 import Checkout from './pages/Checkout';
 import { CartProvider } from './context/CartContext';
+import { AuthProvider } from "./context/AuthContext";
 
 import useModal from './hooks/useModal';
 
@@ -25,30 +26,32 @@ function App() {
   } = useModal();
 
   return (
-    <CartProvider>
-      <Router>
-        {/* Pass the modal trigger functions as props to Navbar for opening modals */}
-        <Navbar openLoginModal={openLoginModal} openSignUpModal={openSignUpModal} />
+    <AuthProvider>
+      <CartProvider>
+        <Router>
+          {/* Pass the modal trigger functions as props to Navbar for opening modals */}
+          <Navbar openLoginModal={openLoginModal} openSignUpModal={openSignUpModal} />
 
-        <Routes>
-          <Route path="/" element={<Home />} />
-          {/* Pass openLoginModal as a prop to MenuPage so it can trigger login modal if needed */}
-          <Route path="/menu" element={<MenuPage openLogin={openLoginModal} />} />
-          <Route path="/admin/menu" element={<AdminMenuPage />} />
-          <Route path="/checkout" element={<Checkout />} />
-        </Routes>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            {/* Pass openLoginModal as a prop to MenuPage so it can trigger login modal if needed */}
+            <Route path="/menu" element={<MenuPage openLogin={openLoginModal} />} />
+            <Route path="/admin/menu" element={<AdminMenuPage />} />
+            <Route path="/checkout" element={<Checkout />} />
+          </Routes>
 
-        {/* Login Modal */}
-        <Modal isOpen={showLoginModal} onClose={closeLoginModal}>
-          <Login openSignupModal={openSignUpModal} closeModal={closeLoginModal} />
-        </Modal>
+          {/* Login Modal */}
+          <Modal isOpen={showLoginModal} onClose={closeLoginModal}>
+            <Login openSignupModal={openSignUpModal} closeModal={closeLoginModal} />
+          </Modal>
 
-        {/* SignUp Modal */}
-        <Modal isOpen={showSignUpModal} onClose={closeSignUpModal}>
-          <SignUp openLoginModal={openLoginModal} closeModal={closeSignUpModal} />
-        </Modal>
-      </Router>
-    </CartProvider>
+          {/* SignUp Modal */}
+          <Modal isOpen={showSignUpModal} onClose={closeSignUpModal}>
+            <SignUp openLoginModal={openLoginModal} closeModal={closeSignUpModal} />
+          </Modal>
+        </Router>
+      </CartProvider>
+    </AuthProvider>
   );
 }
 
