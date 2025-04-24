@@ -77,7 +77,7 @@ const AdminMenuForm = ({ isOpen, onClose, onSave, item }) => {
         </div>
 
         <div className="flex justify-end">
-          <button type="submit" className="px-5 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md font-medium">
+          <button type="submit" className="px-5 py-2 bg-red-500 hover:bg-red-700 text-white rounded-md font-medium">
             {item ? "Update Item" : "Add Item"}
           </button>
         </div>

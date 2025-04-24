@@ -6,6 +6,7 @@ import { Menu as MenuIcon, X } from "lucide-react";
 import { useCart } from "../../context/CartContext";
 
 const Navbar = ({ openLoginModal, openSignUpModal }) => {
+  const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(() => Boolean(localStorage.getItem("token")));
   const [userProfile, setUserProfile] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -53,6 +54,7 @@ const Navbar = ({ openLoginModal, openSignUpModal }) => {
     setIsLoggedIn(false);
     setUserProfile(null);
     setShowDropdown(false);
+    navigate("/");
   };
 
   const menuPath = userProfile?.role === "admin" ? "/admin/menu" : "/menu";
@@ -105,8 +107,8 @@ const Navbar = ({ openLoginModal, openSignUpModal }) => {
             </div>
           ) : (
             <>
-              <button onClick={openLoginModal} className="bg-restaurant-accent text-white px-4 py-2 rounded hover:bg-red-700 text-sm font-medium">Login</button>
-              <button onClick={openSignUpModal} className="bg-restaurant-accent text-white px-4 py-2 rounded hover:bg-red-700 text-sm font-medium">Sign Up</button>
+              <button onClick={openLoginModal} className="bg-restaurant-accent text-white px-4 py-2 rounded bg-red-500 hover:bg-red-700 text-sm font-medium">Login</button>
+              <button onClick={openSignUpModal} className="bg-restaurant-accent text-white px-4 py-2 rounded bg-red-500 hover:bg-red-700 text-sm font-medium">Sign Up</button>
             </>
           )}
         </div>
@@ -121,32 +123,50 @@ const Navbar = ({ openLoginModal, openSignUpModal }) => {
 
       {/* Mobile Menu Drawer */}
       <Dialog as="div" open={mobileMenuOpen} onClose={setMobileMenuOpen} className="lg:hidden">
-        <Dialog.Panel className="fixed inset-y-0 right-0 w-full sm:max-w-sm z-50 bg-restaurant-primary px-6 py-6">
+        <Dialog.Panel className="fixed inset-y-0 right-0 w-full sm:max-w-sm z-50 bg-[#111827] text-white px-6 py-6 shadow-2xl rounded-l-xl transition-all duration-300">
           <div className="flex items-center justify-between mb-6">
             <img src="/zaanlogo.png" className="h-8 w-auto" alt="Logo" />
-            <button onClick={() => setMobileMenuOpen(false)} className="text-white">
+            <button onClick={() => setMobileMenuOpen(false)} className="text-white hover:text-gray-300 transition">
               <X className="h-6 w-6" />
             </button>
           </div>
-          <div className="space-y-4 text-white">
-            <Link to="/" onClick={() => setMobileMenuOpen(false)}>Home</Link>
-            <Link to={menuPath} onClick={() => setMobileMenuOpen(false)}>Menu</Link>
+
+          <div className="space-y-5 text-base font-medium">
+            <Link to="/" onClick={() => setMobileMenuOpen(false)} className="block hover:text-red-500 transition">Home</Link>
+            <Link to={menuPath} onClick={() => setMobileMenuOpen(false)} className="block hover:text-red-500 transition">Menu</Link>
             {userProfile?.role === "admin" && (
-              <Link to="/admin/dashboard" onClick={() => setMobileMenuOpen(false)}>Dashboard</Link>
+              <Link to="/admin/dashboard" onClick={() => setMobileMenuOpen(false)} className="block hover:text-red-500 transition">Dashboard</Link>
             )}
-            <Link to="/contact" onClick={() => setMobileMenuOpen(false)}>Contact</Link>
-            <Link to="/checkout" onClick={() => setMobileMenuOpen(false)}>Cart</Link>
+            <Link to="/contact" onClick={() => setMobileMenuOpen(false)} className="block hover:text-red-500 transition">Contact</Link>
+            <Link to="/checkout" onClick={() => setMobileMenuOpen(false)} className="block hover:text-red-500 transition">Cart</Link>
 
             {isLoggedIn ? (
               <>
-                <p>Hello, {userProfile?.name}</p>
-                <button onClick={handleLogout} className="text-red-400 hover:underline">Logout</button>
+                <div className="pt-4 border-t border-gray-600">
+                  <p className="mb-2 text-gray-300">Hello, <span className="font-semibold">{userProfile?.name}</span></p>
+                  <button
+                    onClick={handleLogout}
+                    className="text-red-400 hover:text-red-300 font-medium transition"
+                  >
+                    Logout
+                  </button>
+                </div>
               </>
             ) : (
-              <>
-                <button onClick={() => { setMobileMenuOpen(false); openLoginModal(); }} className="text-white hover:underline">Login</button>
-                <button onClick={() => { setMobileMenuOpen(false); openSignUpModal(); }} className="text-white hover:underline">Sign Up</button>
-              </>
+              <div className="pt-4 border-t border-gray-600 space-y-2">
+                <button
+                  onClick={() => { setMobileMenuOpen(false); openLoginModal(); }}
+                  className="block w-full text-left hover:text-red-500 transition"
+                >
+                  Login
+                </button>
+                <button
+                  onClick={() => { setMobileMenuOpen(false); openSignUpModal(); }}
+                  className="block w-full text-left hover:text-red-500 transition"
+                >
+                  Sign Up
+                </button>
+              </div>
             )}
           </div>
         </Dialog.Panel>

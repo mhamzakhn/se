@@ -52,7 +52,7 @@ const AdminMenuPage = () => {
           <h1 className="text-3xl font-bold">Manage Menu Items</h1>
           <button
             onClick={handleAddItem}
-            className="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-md flex items-center"
+            className="bg-red-500 hover:bg-red-700 px-4 py-2 rounded-md flex items-center"
           >
             <Plus className="h-5 w-5 mr-2" />
             Add New Item

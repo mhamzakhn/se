@@ -43,7 +43,7 @@ const MenuPage = ({ openLogin }) => {
     const token = localStorage.getItem('token');
     const studentStatus = localStorage.getItem('studentStatus') || 'non-student';
     const priceToDisplay = token && studentStatus === 'student' ? item.discounted_price_for_LUMS_student : item.price;
-
+  
     return (
       <div key={item.item_id || item.id} className="bg-gray-900 rounded-2xl shadow-lg overflow-hidden relative hover:scale-105 transition-all duration-300">
         <img src="/BeefChilliDry.jpeg" alt={item.name} className="w-full h-48 object-contain bg-gray-800" />
@@ -52,14 +52,18 @@ const MenuPage = ({ openLogin }) => {
           <p className="text-sm text-gray-400 mb-2">This is a sample description.</p>
           <p className="text-white font-bold text-sm">PKR {priceToDisplay}</p>
         </div>
-        <div className="absolute bottom-3 right-3">
-          <button onClick={() => handleAddToCart(item)} className="text-white hover:text-gray-400">
-            <FaShoppingCart size={20} />
+        <div className="absolute bottom-4 right-4">
+          <button
+            onClick={() => handleAddToCart(item)}
+            className="bg-white text-black rounded-full w-8 h-8 flex items-center justify-center text-lg font-bold transition-transform duration-200 hover:scale-110"
+            title="Add Item"
+          >
+            +
           </button>
         </div>
       </div>
     );
-  };
+  };  
 
   if (error) return <div className="text-white text-center mt-10">{error}</div>;
 
