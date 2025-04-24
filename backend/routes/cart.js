@@ -102,4 +102,27 @@ router.put('/item/:itemId', requireAuth, async (req, res) => {
   }
 });
 
+router.delete('/item/:id', requireAuth, async (req, res) => {
+  try {
+    const itemId = req.params.id;
+    const userId = req.user.id; // or _id depending on your JWT structure
+
+    const cart = await Cart.findOneAndUpdate(
+      { user: userId },
+      { $pull: { items: { item_id: itemId } } },
+      { new: true }
+    );
+
+    if (!cart) {
+      return res.status(404).json({ message: 'Cart not found' });
+    }
+
+    return res.status(200).json({ cart });
+  } catch (err) {
+    console.error("Delete cart item error:", err);
+    return res.status(500).json({ message: "Error deleting item from cart" });
+  }
+});
+
+
 export default router;
