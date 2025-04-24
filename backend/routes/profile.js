@@ -2,6 +2,7 @@
 import express from 'express';
 import jwt from 'jsonwebtoken';
 import Profile from '../models/Profiles.js';
+import requireAuth from '../middleware/requireAuth.js'; 
 
 const router = express.Router();
 

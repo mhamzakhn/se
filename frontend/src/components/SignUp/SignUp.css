@@ -1,0 +1,170 @@
+/* Use the full modal area with two columns */
+.signup-container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Left side: 33.3% width with gradient, similar to login page */
+.signup-left {
+  flex: 0 0 33.3%;
+  position: relative;
+  background: linear-gradient(180deg, #042C5F 19%, #040304 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  /* padding: 2em; */
+  color: #fff;
+  text-align: left;
+  overflow: visible;
+}
+
+.zaan-logo {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 60px; /* adjust as needed */
+  height: auto;
+  z-index: 3;
+}
+
+.signup-left h1 {
+  font-family: Outfit, Inter,'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding-top: 68px;
+  font-size: 24px;
+  max-width: 80%;
+  margin-bottom: 0.05rem;
+  padding-left: 1em;
+}
+
+/* .signup-left p {
+  font-family: Outfit, Inter,'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 1rem;
+  max-width: 80%;
+  line-height: 1.5;
+  padding-left: 2em;
+} */
+
+.chowmein-image {
+  position: absolute;
+  bottom: 10px;
+  right: -70px; /* Adjust to overlap more or less */
+  width: 325px; /* Adjust size as desired */
+  height: auto;
+  z-index: 2;   /* Ensure it's on top of the right container if needed */
+}
+
+/* Right side: 66.7% width with curved left borders */
+.signup-right {
+  flex: 0 0 66.7%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  background: #f7f7f7;
+  border-top-left-radius: 40px;
+  border-bottom-left-radius: 40px;
+  overflow-y: auto;
+  overflow-x: auto;
+  padding: 0;
+}
+
+/* Signup form: transparent background to reveal panel */
+.signup-form {
+  background-color: transparent;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  border-radius: 0;
+  padding: 1.5rem;
+  width: 100%;
+  max-width: 350px;
+  text-align: center;
+}
+
+.signup-form h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #333;
+  text-align: center;
+}
+
+.error-message {
+  background: #ffe6e6;
+  color: #d8000c;
+  padding: 0.5rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  text-align: center;
+  font-weight: 600;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.form-group label {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #555;
+}
+
+.form-group input {
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  transition: border-color 0.2s ease;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #da291c;
+}
+
+.btn.create-account-btn {
+  width: 100%;
+  background: linear-gradient(to right, #da291c, #b12016);
+  color: #fff;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  margin-top: 0.5rem;
+  transition: background 0.3s ease;
+}
+
+.btn.create-account-btn:hover {
+  background: linear-gradient(to right, #b12016, #930f0d);
+}
+
+.already-member {
+  margin-top: 1rem;
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+.already-member a {
+  color: #da291c;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.already-member a:hover {
+  text-decoration: underline;
+}
+
+.login-link {
+  color: #da291c;
+  text-decoration: none;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.login-link:hover {
+  text-decoration: underline;
+}

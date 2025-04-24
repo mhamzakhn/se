@@ -23,6 +23,8 @@ const LoginPage = ({ openSignupModal, closeModal }) => {
       const { data, error } = await loginUser(email, password);
       if (error) return setErrorMessage(error);
 
+      const { token, user } = data;
+
       localStorage.setItem('token', data.token);
       localStorage.setItem('userRole', data.user.role);
       localStorage.setItem('studentStatus', data.user.student_status);

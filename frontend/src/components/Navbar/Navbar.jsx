@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Dialog } from "@headlessui/react";
 import { FaShoppingCart, FaUserCircle } from "react-icons/fa";
 import { Menu as MenuIcon, X } from "lucide-react";
