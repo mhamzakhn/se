@@ -28,7 +28,7 @@ const LoginPage = ({ openSignupModal, closeModal }) => {
       const { token, user } = data;
 
       login(token, user);
-      
+
       setLoginSuccess(true);
 
       setTimeout(() => {
@@ -42,7 +42,6 @@ const LoginPage = ({ openSignupModal, closeModal }) => {
 
   return (
     <div className="flex flex-col lg:flex-row w-full h-screen font-sans">
-      {/* Left Panel - hidden on small screens */}
       <div className="hidden lg:flex w-1/3 bg-gradient-to-b from-[#042C5F] to-[#040304] text-white p-8 relative flex-col justify-start items-start">
         <img src="/zaanlogo.png" alt="Zaan Logo" className="w-16 absolute top-4 left-4 z-10" />
         <h1 className="pt-20 pl-6 text-2xl font-semibold">Welcome Back!</h1>
@@ -50,7 +49,6 @@ const LoginPage = ({ openSignupModal, closeModal }) => {
         <img src="/chowmeinlogin2.png" alt="Chow Mein" className="absolute bottom-4 right-[-70px] w-[325px] z-0" />
       </div>
 
-      {/* Right Panel / Full Width on Mobile */}
       <div className="w-full lg:w-2/3 flex justify-center items-center bg-gray-100 rounded-none lg:rounded-l-[40px]">
         <form onSubmit={handleLogin} className="bg-transparent p-6 w-full max-w-sm">
           <h2 className="text-xl font-bold text-center text-gray-800 mb-6">Login to your Account</h2>

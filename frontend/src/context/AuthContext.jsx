@@ -1,17 +1,16 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 
-// Create the context
 export const AuthContext = createContext();
 
 // Provider component
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);       // Stores user info
-  const [token, setToken] = useState(null);     // Stores JWT
+  const [user, setUser] = useState(null);
+  const [token, setToken] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
     const savedToken = localStorage.getItem("token");
-    const savedUserRaw = localStorage.getItem("user"); // ✅ Corrected variable name
+    const savedUserRaw = localStorage.getItem("user");
 
     try {
       const savedUser =

@@ -16,7 +16,7 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     console.log("Effect triggered. User:", user, "Is Admin:", isAdmin);
-    
+
     if (user && isAdmin) {
       fetch("http://localhost:4000/api/v1/admin/orders/pending", {
         headers: {
@@ -28,7 +28,7 @@ const AdminDashboard = () => {
         .catch(err => console.error("Failed to fetch pending orders:", err))
         .finally(() => setLoading(false));
     } else if (user && !isAdmin) {
-      setLoading(false); // Not admin, still end loading
+      setLoading(false);
     }
   }, [user, isAdmin]);
 

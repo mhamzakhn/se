@@ -20,7 +20,6 @@ const Modal = ({ isOpen, onClose, children }) => {
           &times;
         </button>
 
-        {/* Modal content goes here */}
         {children}
       </div>
     </div>,

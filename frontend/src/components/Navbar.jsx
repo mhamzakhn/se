@@ -62,7 +62,6 @@ const Navbar = ({ openLoginModal, openSignUpModal }) => {
   return (
     <header className="bg-restaurant-primary shadow-md">
       <nav className="mx-auto flex max-w-7xl items-center justify-between p-4 lg:px-8">
-        {/* Logo */}
         <div className="flex">
           <Link to="/" className="-m-1.5 p-1.5 flex items-center">
             <img src="/zaanlogo.png" className="h-10 w-auto" alt="ZAAN Logo" />
