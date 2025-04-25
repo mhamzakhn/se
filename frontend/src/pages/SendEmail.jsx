@@ -14,7 +14,6 @@ const SendEmail = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // validate
     const newErrors = {
       subject: subject.trim() === "",
       content: content.trim() === "",
@@ -37,19 +36,16 @@ const SendEmail = () => {
       );
       if (!res.ok) throw new Error("Failed to send email");
 
-      // Clear form, reset errors & show toast
       setSubject("");
       setContent("");
       setErrors({ subject: false, content: false });
       setShowSuccess(true);
       setIsLoading(false);
 
-      // auto-hide after 3s
       setTimeout(() => setShowSuccess(false), 3000);
     } catch (err) {
       console.error(err);
       setIsLoading(false);
-      // you could show an error toast here if you like
     }
   };
 
