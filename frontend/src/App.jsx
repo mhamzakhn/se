@@ -12,6 +12,10 @@ import AdminMenuPage from './pages/AdminMenu';
 import AdminDashboard from './pages/AdminDashboard';
 import SendEmail from './pages/SendEmail';
 import Checkout from './pages/Checkout';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
+import Contact from './pages/Contact';
+
 import { CartProvider } from './context/CartContext';
 import { AuthProvider } from './context/AuthContext';
 
@@ -37,7 +41,7 @@ function App() {
           />
 
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<Home openLoginModal={openLoginModal} />} />
             <Route
               path="/menu"
               element={<MenuPage openLogin={openLoginModal} />}
@@ -46,6 +50,9 @@ function App() {
             <Route path="/admin/send-email" element={<SendEmail />} />
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
             <Route path="/checkout" element={<Checkout />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
+            <Route path="/contact" element={<Contact />} />
           </Routes>
 
           {/* Login Modal */}
