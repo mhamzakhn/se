@@ -1,3 +1,4 @@
+// backend/models/MenuItem.js
 import mongoose from 'mongoose';
 
 const MenuItemSchema = new mongoose.Schema(
@@ -12,14 +13,14 @@ const MenuItemSchema = new mongoose.Schema(
       required: true
     },
     description: {
-      type: String 
+      type: String
     },
     price: {
-      type: Number, 
+      type: Number,
       required: true
     },
     discounted_price_for_LUMS_student: {
-      type: Number, 
+      type: Number,
       default: 0
     },
     category: {
@@ -29,6 +30,10 @@ const MenuItemSchema = new mongoose.Schema(
     available: {
       type: Boolean,
       default: true
+    },
+    imageUrl: {
+      type: String,
+      required: true
     }
   },
   {
