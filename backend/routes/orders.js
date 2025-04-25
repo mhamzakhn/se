@@ -3,6 +3,7 @@ import express from 'express';
 import requireAuth from '../middleware/requireAuth.js';
 import Order from '../models/Orders.js';
 import Cart from '../models/Cart.js';
+import Profile from '../models/Profiles.js';
 
 const router = express.Router();
 
@@ -20,14 +21,25 @@ router.post('/place', requireAuth, async (req, res) => {
       return res.status(400).json({ message: 'Cart is empty, cannot place an order.' });
     }
 
-    let totalAmount = 0;
-    cart.items.forEach(item => {
-      totalAmount += (item.price * item.quantity);
+    const userProfile = await Profile.findById(userId);
+    const isStudent = userProfile?.student_status === 'student';
+
+    const orderItems = cart.items.map(item => {
+      const finalPrice = isStudent ? item.discounted_price_for_LUMS_student : item.price;
+      return {
+        item_id: item.item_id,
+        name: item.name,
+        quantity: item.quantity,
+        price: finalPrice, // store the final price used
+        discounted_price_for_LUMS_student: item.discounted_price_for_LUMS_student, // optional
+      };
     });
+
+    const totalAmount = orderItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
     const newOrder = new Order({
       user: userId,
-      items: cart.items,
+      items: orderItems,
       totalAmount: totalAmount,
     });
 

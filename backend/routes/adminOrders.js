@@ -9,7 +9,10 @@ router.use(requireAuth);
 // GET /api/v1/admin/orders/pending
 router.get('/pending', async (req, res) => {
   try {
-    const orders = await Order.find({ status: 'pending' }).sort({ createdAt: -1 });
+    const orders = await Order.find({ status: 'pending' })
+      .sort({ createdAt: -1 })
+      .populate('user', 'name email phone');
+      
     res.json(orders);
   } catch (err) {
     res.status(500).json({ message: 'Failed to fetch pending orders' });

@@ -7,16 +7,11 @@ const AdminDashboard = () => {
   const { user } = useAuth();
   const [pendingOrders, setPendingOrders] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [expanded, setExpanded] = useState({});
 
   const isAdmin = user?.role === 'admin';
 
-  console.log("User from context:", user);
-  console.log("Is admin?", isAdmin);
-
-
   useEffect(() => {
-    console.log("Effect triggered. User:", user, "Is Admin:", isAdmin);
-
     if (user && isAdmin) {
       fetch("http://localhost:4000/api/v1/admin/orders/pending", {
         headers: {
@@ -60,6 +55,13 @@ const AdminDashboard = () => {
     return <Navigate to="/" replace />;
   }
 
+  const toggleExpanded = (orderId) => {
+    setExpanded((prev) => ({
+      ...prev,
+      [orderId]: !prev[orderId]
+    }));
+  };
+
   return (
     <div className="min-h-screen bg-restaurant-primary py-8 px-4">
       <div className="max-w-5xl mx-auto">
@@ -70,14 +72,43 @@ const AdminDashboard = () => {
             {pendingOrders.map(order => (
               <div key={order._id} className="bg-[#101214] rounded-lg p-4 shadow-lg text-white">
                 <div className="flex justify-between items-start">
-                  <div>
-                    <h2 className="text-xl font-semibold">#{order._id.slice(0, 8)}</h2>
+                  <div className="flex-1">
+                    <h2 className="text-xl font-semibold mb-1">
+                      Order #{order._id.slice(0, 8)}
+                    </h2>
+                    <p className="text-sm text-gray-300">
+                      <span className="font-semibold">{order.user?.name}</span> • {order.user?.email}
+                    </p>
+                    {order.user?.phone && (
+                      <p className="text-sm text-gray-400">{order.user.phone}</p>
+                    )}
                     <p className="text-sm text-gray-300 mt-1">
-                      {order.items.length} item(s) • PKR {order.totalAmount}
+                      {order.items.length} item(s) • Total: PKR {
+                        order.user?.student_status === 'student'
+                          ? order.items.reduce((sum, item) => sum + item.discounted_price_for_LUMS_student * item.quantity, 0)
+                          : order.items.reduce((sum, item) => sum + item.price * item.quantity, 0)
+                      }
                     </p>
                     <p className="text-sm text-gray-400 mt-1">
                       {new Date(order.createdAt).toLocaleString()}
                     </p>
+
+                    <button
+                      onClick={() => toggleExpanded(order._id)}
+                      className="text-sm mt-2 text-blue-400 hover:text-blue-300 underline"
+                    >
+                      {expanded[order._id] ? 'Hide items' : 'View items'}
+                    </button>
+
+                    {expanded[order._id] && (
+                      <ul className="mt-3 pl-5 list-disc text-sm text-gray-200 space-y-1">
+                        {order.items.map((item, idx) => (
+                          <li key={idx}>
+                            {item.name} × {item.quantity} — PKR {item.price}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
                   </div>
                   <div className="flex gap-2">
                     <button
