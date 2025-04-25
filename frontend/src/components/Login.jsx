@@ -95,7 +95,7 @@ const LoginPage = ({ openSignupModal, closeModal }) => {
           <button type="submit" className="w-full bg-blue-900 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-800 transition">Sign In</button>
 
           <p className="text-center text-sm text-gray-600 mt-4">
-            <Link to="/forgot-password" className="text-red-600 hover:underline">Forgot Password?</Link>
+            <Link to="/forgot-password" className="text-red-600 hover:underline" onClick={() => closeModal?.()}>Forgot Password?</Link>
           </p>
 
           <p className="text-center text-sm text-gray-600 mt-2">
