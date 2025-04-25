@@ -19,10 +19,7 @@ const ForgotPassword = () => {
       const res = await axios.post('http://localhost:4000/api/v1/forgot-password', { email });
       setMessage(res.data.message);
 
-      // Slight delay before navigating
-      setTimeout(() => {
-        navigate('/reset-password', { state: { email } }); // Pass email to pre-fill
-      }, 1500);
+      navigate('/reset-password', { state: { email } });
     } catch (err) {
       setError(err.response?.data?.message || "Something went wrong");
     } finally {

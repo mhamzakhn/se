@@ -49,7 +49,6 @@ const LoginPage = ({ openSignupModal, closeModal }) => {
     }
   };
   
-
   return (
     <div className="flex flex-col lg:flex-row w-full h-screen font-sans">
       <div className="hidden lg:flex w-1/3 bg-gradient-to-b from-[#042C5F] to-[#040304] text-white p-8 relative flex-col justify-start items-start">

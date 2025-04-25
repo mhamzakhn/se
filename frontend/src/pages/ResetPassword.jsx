@@ -24,9 +24,7 @@ const ResetPassword = () => {
       const res = await axios.post('http://localhost:4000/api/v1/reset-password', form);
       setMessage(res.data.message);
 
-      setTimeout(() => {
-        navigate('/'); // Redirect to homepage after success
-      }, 1500);
+      navigate('/');    
     } catch (err) {
       setError(err.response?.data?.message || 'Something went wrong');
     } finally {
