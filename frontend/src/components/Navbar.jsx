@@ -73,11 +73,13 @@ const Navbar = ({ openLoginModal, openSignUpModal }) => {
           <Link to="/" className="text-white hover:text-gray-300 text-sm font-medium transition transform hover:scale-110">Home</Link>
           <Link to={menuPath} className="text-white hover:text-gray-300 text-sm font-medium transition transform hover:scale-110">Menu</Link>
           {userProfile?.role === "admin" && (
-            <>
-              <Link to="/admin/dashboard" className="text-white hover:text-gray-300 text-sm font-medium transition transform hover:scale-110">Dashboard</Link>
-            </>
+            <Link to="/admin/dashboard" className="text-white hover:text-gray-300 text-sm font-medium transition transform hover:scale-110">Dashboard</Link>
           )}
-          <Link to="/contact" className="text-white hover:text-gray-300 text-sm font-medium transition transform hover:scale-110">Contact</Link>
+          {userProfile?.role === "admin" ? (
+            <Link to="/admin/send-email" className="text-white hover:text-gray-300 text-sm font-medium transition transform hover:scale-110">Send Email</Link>
+          ) : (
+            <Link to="/contact" className="text-white hover:text-gray-300 text-sm font-medium transition transform hover:scale-110">Contact</Link>
+          )}
         </div>
 
         {/* Cart + Auth Buttons */}
@@ -136,7 +138,11 @@ const Navbar = ({ openLoginModal, openSignUpModal }) => {
             {userProfile?.role === "admin" && (
               <Link to="/admin/dashboard" onClick={() => setMobileMenuOpen(false)} className="block hover:text-red-500 transition">Dashboard</Link>
             )}
-            <Link to="/contact" onClick={() => setMobileMenuOpen(false)} className="block hover:text-red-500 transition">Contact</Link>
+            {userProfile?.role === "admin" ? (
+              <Link to="/admin/send-email-email" onClick={() => setMobileMenuOpen(false)} className="block hover:text-red-500 transition">Send Email</Link>
+            ) : (
+              <Link to="/contact" onClick={() => setMobileMenuOpen(false)} className="block hover:text-red-500 transition">Contact</Link>
+            )}
             <Link to="/checkout" onClick={() => setMobileMenuOpen(false)} className="block hover:text-red-500 transition">Cart</Link>
 
             {isLoggedIn ? (

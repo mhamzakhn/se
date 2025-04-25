@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import { dbConnection } from "./database/dbConnection.js"; 
+
 import signupRouter from "./routes/signup.js"; 
 import verifyOtpRouter from "./routes/verifyOTP.js"; 
 import loginRouter from "./routes/login.js"; 
@@ -12,6 +13,7 @@ import cartRoutes from "./routes/cart.js";
 import orderRoutes from "./routes/orders.js";
 import adminMenuRoutes from './routes/adminMenu.js';
 import adminOrdersRouter from './routes/adminOrders.js';
+import adminEmailRoutes from "./routes/adminEmail.js";
 
 dotenv.config({ path: "./config/config.env" });
 
@@ -29,12 +31,16 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/v1/signup', signupRouter);
 app.use('/api/v1/verify-otp', verifyOtpRouter);
 app.use('/api/v1/login', loginRouter);
+
 app.use('/api/v1/menu', menuRoutes);
-app.use('/api/v1/admin/menu', adminMenuRoutes);
 app.use('/api/v1/profile', profileRoutes);
 app.use('/api/v1/cart', cartRoutes);
 app.use('/api/v1/orders', orderRoutes);
 app.use('/api/v1/admin/orders', adminOrdersRouter);
+
+app.use('/api/v1/admin/menu', adminMenuRoutes);
+app.use('/api/v1/admin/orders', adminOrdersRouter);
+app.use("/api/v1/admin", adminEmailRoutes); 
 
 dbConnection();
 
