@@ -9,6 +9,7 @@ import Home from './pages/Home';
 import Modal from './components/Modal';
 import MenuPage from './pages/Menu';
 import AdminMenuPage from './pages/AdminMenu';
+import AdminDashboard from './pages/AdminDashboard';
 import Checkout from './pages/Checkout';
 import { CartProvider } from './context/CartContext';
 import { AuthProvider } from "./context/AuthContext";
@@ -35,6 +36,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/menu" element={<MenuPage openLogin={openLoginModal} />} />
             <Route path="/admin/menu" element={<AdminMenuPage />} />
+            <Route path="/admin/dashboard" element={<AdminDashboard />} />
             <Route path="/checkout" element={<Checkout />} />
           </Routes>
 

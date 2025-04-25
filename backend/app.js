@@ -11,6 +11,7 @@ import profileRoutes from './routes/profile.js';
 import cartRoutes from "./routes/cart.js"; 
 import orderRoutes from "./routes/orders.js";
 import adminMenuRoutes from './routes/adminMenu.js';
+import adminOrdersRouter from './routes/adminOrders.js';
 
 dotenv.config({ path: "./config/config.env" });
 
@@ -33,6 +34,7 @@ app.use('/api/v1/admin/menu', adminMenuRoutes);
 app.use('/api/v1/profile', profileRoutes);
 app.use('/api/v1/cart', cartRoutes);
 app.use('/api/v1/orders', orderRoutes);
+app.use('/api/v1/admin/orders', adminOrdersRouter);
 
 dbConnection();
 

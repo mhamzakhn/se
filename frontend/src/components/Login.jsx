@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { loginUser } from '../services/authService';
+import { useAuth } from '../context/AuthContext';
 
 const LoginPage = ({ openSignupModal, closeModal }) => {
   const [email, setEmail] = useState('');
@@ -8,6 +9,7 @@ const LoginPage = ({ openSignupModal, closeModal }) => {
   const [errorMessage, setErrorMessage] = useState('');
   const [loginSuccess, setLoginSuccess] = useState(false);
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -25,10 +27,8 @@ const LoginPage = ({ openSignupModal, closeModal }) => {
 
       const { token, user } = data;
 
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('userRole', data.user.role);
-      localStorage.setItem('studentStatus', data.user.student_status);
-
+      login(token, user);
+      
       setLoginSuccess(true);
 
       setTimeout(() => {

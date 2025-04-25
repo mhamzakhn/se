@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 
 // Create the context
 export const AuthContext = createContext();
@@ -10,25 +10,42 @@ export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    // On app load, check if user is logged in (from localStorage)
     const savedToken = localStorage.getItem("token");
-    const savedUser = JSON.parse(localStorage.getItem("user"));
+    const savedUserRaw = localStorage.getItem("user"); // ✅ Corrected variable name
 
-    if (savedToken && savedUser) {
-      setToken(savedToken);
-      setUser(savedUser);
-      setIsAuthenticated(true);
+    try {
+      const savedUser =
+        savedUserRaw && savedUserRaw !== "undefined"
+          ? JSON.parse(savedUserRaw)
+          : null;
+
+      if (savedToken && savedUser) {
+        setToken(savedToken);
+        setUser(savedUser);
+        setIsAuthenticated(true);
+      }
+    } catch (err) {
+      console.error("❌ Failed to parse user from localStorage:", err);
+      localStorage.removeItem("user");
     }
   }, []);
 
   // Login method to update state and localStorage
   const login = (token, userData) => {
+    if (!token || !userData || userData === "undefined") {
+      console.warn("Invalid login payload", token, userData);
+      return;
+    }
+
+    console.log("✅ Logging in with:", userData);
     setToken(token);
     setUser(userData);
     setIsAuthenticated(true);
 
     localStorage.setItem("token", token);
     localStorage.setItem("user", JSON.stringify(userData));
+    localStorage.setItem("userRole", userData.role);
+    localStorage.setItem("studentStatus", userData.student_status);
   };
 
   // Logout method
@@ -39,6 +56,8 @@ export const AuthProvider = ({ children }) => {
 
     localStorage.removeItem("token");
     localStorage.removeItem("user");
+    localStorage.removeItem("userRole");
+    localStorage.removeItem("studentStatus");
   };
 
   return (
@@ -47,3 +66,5 @@ export const AuthProvider = ({ children }) => {
     </AuthContext.Provider>
   );
 };
+
+export const useAuth = () => useContext(AuthContext);
