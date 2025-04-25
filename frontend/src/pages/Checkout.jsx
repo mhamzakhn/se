@@ -8,7 +8,6 @@ import { Minus, Plus, Trash2 as Trash, CheckCircle, ShoppingBag, AlertCircle } f
 const Checkout = () => {
   const { cart, updateCartItem, setCart, clearCart } = useCart();
   const cartItems = (cart && cart.items) || [];
-
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [orderPlaced, setOrderPlaced] = useState(false);
 
