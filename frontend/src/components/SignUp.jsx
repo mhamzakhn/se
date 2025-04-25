@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { signupUser, verifyOtp, loginUser } from '../../services/authService';
-import { AuthContext } from '../../context/AuthContext';
+import { signupUser, verifyOtp, loginUser } from '../services/authService';
+import { AuthContext } from '../context/AuthContext';
 
 const SignUp = ({ openLoginModal, closeModal }) => {
   const navigate = useNavigate();
@@ -116,7 +116,7 @@ const SignUp = ({ openLoginModal, closeModal }) => {
                   placeholder={label}
                   required={required}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md text-gray-800 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500"
                 />
               </div>
             ))}

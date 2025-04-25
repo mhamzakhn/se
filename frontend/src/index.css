@@ -1,1 +1,29 @@
 @import "tailwindcss";
+
+:root {
+  --background: #101721;         
+  --foreground: #ffffff;       
+  --card: #000000;             
+  --nav: #0A192F;                
+  --primary: #EF4444;            
+  --primary-hover: #DC2626;      
+  --button-bg: #2563EB;        
+  --button-hover: #1D4ED8;      
+  --muted: #94A3B8;              
+  --font-body: 'Inter', sans-serif;
+  --radius-md: 0.75rem;
+}
+
+/* Global resets */
+html, body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body);
+  min-height: 100vh;
+  scroll-behavior: smooth;
+}
+
+/* Hide scrollbars globally */
+::-webkit-scrollbar {
+  display: none;
+}

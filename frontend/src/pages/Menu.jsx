@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaShoppingCart } from 'react-icons/fa';
-import { useCart } from '../../context/CartContext';
+import { useCart } from '../context/CartContext';
 
 const categories = ['All', 'Starters', 'Soups', 'Chinese', 'Sandwiches', 'Burgers', 'Drinks'];
 

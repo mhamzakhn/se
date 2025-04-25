@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Dialog } from "@headlessui/react";
 import { FaShoppingCart, FaUserCircle } from "react-icons/fa";
 import { Menu as MenuIcon, X } from "lucide-react";
-import { useCart } from "../../context/CartContext";
+import { useCart } from "../context/CartContext";
 
 const Navbar = ({ openLoginModal, openSignUpModal }) => {
   const navigate = useNavigate();
@@ -71,14 +71,14 @@ const Navbar = ({ openLoginModal, openSignUpModal }) => {
 
         {/* Desktop Nav */}
         <div className="hidden lg:flex gap-x-10 items-center">
-          <Link to="/" className="text-white hover:text-gray-300 text-sm font-medium">Home</Link>
-          <Link to={menuPath} className="text-white hover:text-gray-300 text-sm font-medium">Menu</Link>
+          <Link to="/" className="text-white hover:text-gray-300 text-sm font-medium transition transform hover:scale-110">Home</Link>
+          <Link to={menuPath} className="text-white hover:text-gray-300 text-sm font-medium transition transform hover:scale-110">Menu</Link>
           {userProfile?.role === "admin" && (
             <>
-              <Link to="/admin/dashboard" className="text-white hover:text-gray-300 text-sm font-medium">Dashboard</Link>
+              <Link to="/admin/dashboard" className="text-white hover:text-gray-300 text-sm font-medium transition transform hover:scale-110">Dashboard</Link>
             </>
           )}
-          <Link to="/contact" className="text-white hover:text-gray-300 text-sm font-medium">Contact</Link>
+          <Link to="/contact" className="text-white hover:text-gray-300 text-sm font-medium transition transform hover:scale-110">Contact</Link>
         </div>
 
         {/* Cart + Auth Buttons */}
@@ -94,11 +94,11 @@ const Navbar = ({ openLoginModal, openSignUpModal }) => {
             <div className="relative" ref={dropdownRef}>
               <FaUserCircle size={24} className="text-white cursor-pointer" onClick={() => setShowDropdown(!showDropdown)} />
               {showDropdown && (
-                <div className="absolute right-0 mt-2 w-40 bg-white shadow-lg rounded-lg p-3 text-sm z-10">
-                  <p className="mb-2 text-gray-800">Hello, {userProfile?.name || "User"}</p>
+                <div className="absolute right-0 mt-3 w-48 bg-[#101214] text-white rounded-xl shadow-2xl ring-1 ring-white/5 p-4 z-50 animate-fade-in">
+                  <p className="text-sm text-gray-300 mb-3">Hello, {userProfile?.name}</p>
                   <button
                     onClick={handleLogout}
-                    className="text-red-500 hover:underline"
+                    className="text-red-400 hover:text-red-300 text-sm transition"
                   >
                     Logout
                   </button>

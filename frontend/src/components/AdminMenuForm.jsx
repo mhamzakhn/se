@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Modal from "./Modal/Modal";
+import Modal from "./Modal";
 
 const AdminMenuForm = ({ isOpen, onClose, onSave, item }) => {
   const [formData, setFormData] = useState({
