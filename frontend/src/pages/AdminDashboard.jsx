@@ -93,6 +93,12 @@ const AdminDashboard = () => {
                       {new Date(order.createdAt).toLocaleString()}
                     </p>
 
+                    {order.instructions && order.instructions.trim() !== "" && (
+                      <div className="mt-3 text-sm text-white-300">
+                        <strong>Instructions:</strong> {order.instructions}
+                      </div>
+                    )}
+
                     <button
                       onClick={() => toggleExpanded(order._id)}
                       className="text-sm mt-2 text-blue-400 hover:text-blue-300 underline"

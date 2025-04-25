@@ -167,7 +167,7 @@ const SignUp = ({ openLoginModal, closeModal }) => {
           </form>
         ) : (
           <form onSubmit={handleVerifyOtp} className="w-full max-w-sm bg-transparent p-4">
-            <h2 className="text-xl font-bold text-center text-gray-800 mb-6">Verify OTP</h2>
+            <h2 className="text-xl font-bold text-center text-gray-800 placeholder:text-gray-500 mb-6">Verify OTP</h2>
 
             {verificationMessage && (
               <div className={`px-4 py-2 mb-4 rounded text-center font-semibold ${accountCreated ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}`}>
@@ -184,7 +184,7 @@ const SignUp = ({ openLoginModal, closeModal }) => {
                 placeholder="OTP"
                 required
                 onChange={(e) => setOtpInput(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+                className="w-full px-3 py-2 border border-gray-300 text-gray-800 placeholder:text-gray-500 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
               />
             </div>
 

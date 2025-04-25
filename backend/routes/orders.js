@@ -15,6 +15,7 @@ const router = express.Router();
 router.post('/place', requireAuth, async (req, res) => {
   try {
     const userId = req.user.id;
+    const { instructions = "" } = req.body;
     
     const cart = await Cart.findOne({ user: userId });
     if (!cart || cart.items.length === 0) {
@@ -30,8 +31,8 @@ router.post('/place', requireAuth, async (req, res) => {
         item_id: item.item_id,
         name: item.name,
         quantity: item.quantity,
-        price: finalPrice, // store the final price used
-        discounted_price_for_LUMS_student: item.discounted_price_for_LUMS_student, // optional
+        price: finalPrice,
+        discounted_price_for_LUMS_student: item.discounted_price_for_LUMS_student,
       };
     });
 
@@ -41,6 +42,7 @@ router.post('/place', requireAuth, async (req, res) => {
       user: userId,
       items: orderItems,
       totalAmount: totalAmount,
+      instructions: instructions,
     });
 
     await newOrder.save();
