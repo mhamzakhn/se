@@ -5,11 +5,10 @@ const CartContext = createContext();
 
 export const useCart = () => useContext(CartContext);
 
-// CartProvider component to provide cart data and actions  
-export const CartProvider = ({ children }) => {
-  const [cart, setCart] = useState(null); // We'll store the entire cart object (e.g., { items: [...] })
 
-  // On component mount, if a token is present, fetch the current user's cart
+export const CartProvider = ({ children }) => {
+  const [cart, setCart] = useState(null);
+
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
@@ -45,7 +44,7 @@ export const CartProvider = ({ children }) => {
       });
       const data = await response.json();
       if (response.ok) {
-        setCart(data.cart); // Update cart state with data from the backend
+        setCart(data.cart);
       } else {
         console.error("Error adding item to cart:", data.message);
       }
@@ -71,7 +70,7 @@ export const CartProvider = ({ children }) => {
       });
       const data = await response.json();
       if (response.ok) {
-        setCart(data.cart); // update state with the updated cart from the backend
+        setCart(data.cart);
       } else {
         console.error("Error updating cart:", data.message);
       }
@@ -93,7 +92,7 @@ export const CartProvider = ({ children }) => {
       });
       const data = await response.json();
       if (response.ok) {
-        setCart(data); // update context with empty cart
+        setCart(data);
       } else {
         console.error("Failed to clear cart:", data.message);
       }
@@ -102,7 +101,6 @@ export const CartProvider = ({ children }) => {
     }
   };  
 
-  // Calculate total number of items in cart
   const getCartCount = () => {
     if (cart && cart.items) {
       return cart.items.reduce((total, item) => total + (item.quantity || 1), 0);
