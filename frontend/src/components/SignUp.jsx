@@ -16,7 +16,7 @@ const SignUp = ({ openLoginModal, closeModal }) => {
   const [otpInput, setOtpInput] = useState('');
   const [verificationMessage, setVerificationMessage] = useState('');
   const [accountCreated, setAccountCreated] = useState(false);
-  const [loading, setLoading] = useState(false); // ⬅️ New loading state
+  const [loading, setLoading] = useState(false);
   const { login } = useContext(AuthContext);
 
   const handleChange = (e) => {
@@ -32,17 +32,17 @@ const SignUp = ({ openLoginModal, closeModal }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (loading) return; // ⛔ Prevent duplicate submission
+    if (loading) return;
 
     const validationError = validateForm();
     if (validationError) return setErrorMessage(validationError);
 
     setErrorMessage('');
-    setLoading(true); // ⬅️ Start loading
+    setLoading(true);
 
     const { ok, data } = await signupUser(formData);
 
-    setLoading(false); // ⬅️ Stop loading
+    setLoading(false);
 
     if (!ok) return setErrorMessage(data.message || "Signup failed");
 
@@ -64,7 +64,7 @@ const SignUp = ({ openLoginModal, closeModal }) => {
         const loginResult = await loginUser(formData.email, formData.password);
       
         if (loginResult.ok && loginResult.data.token) {
-          login(loginResult.data.token, loginResult.data.user); // From AuthContext
+          login(loginResult.data.token, loginResult.data.user);
           closeModal?.();
           navigate('/');
         } else {

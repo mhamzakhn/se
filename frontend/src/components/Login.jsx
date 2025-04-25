@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { loginUser } from '../services/authService';
+import { useAuth } from '../context/AuthContext';
 
 const LoginPage = ({ openSignupModal, closeModal }) => {
   const [email, setEmail] = useState('');
@@ -8,29 +9,37 @@ const LoginPage = ({ openSignupModal, closeModal }) => {
   const [errorMessage, setErrorMessage] = useState('');
   const [loginSuccess, setLoginSuccess] = useState(false);
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
+  
     if (!email || !password) {
       setErrorMessage("Please fill in all fields");
       return;
     }
-
+  
     setErrorMessage("");
-
+  
     try {
-      const { data, error } = await loginUser(email, password);
-      if (error) return setErrorMessage(error);
-
+      const { ok, data } = await loginUser(email, password);
+  
+      if (!ok) {
+        setErrorMessage(data.message || "Invalid credentials");
+        return;
+      }
+  
       const { token, user } = data;
-
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('userRole', data.user.role);
-      localStorage.setItem('studentStatus', data.user.student_status);
-
+  
+      if (!token || !user) {
+        setErrorMessage("Login failed: invalid response");
+        console.error("Missing token/user:", data);
+        return;
+      }
+  
+      login(token, user);
       setLoginSuccess(true);
-
+  
       setTimeout(() => {
         closeModal?.();
       }, 1000);
@@ -39,10 +48,10 @@ const LoginPage = ({ openSignupModal, closeModal }) => {
       console.error("Login error:", err);
     }
   };
+  
 
   return (
     <div className="flex flex-col lg:flex-row w-full h-screen font-sans">
-      {/* Left Panel - hidden on small screens */}
       <div className="hidden lg:flex w-1/3 bg-gradient-to-b from-[#042C5F] to-[#040304] text-white p-8 relative flex-col justify-start items-start">
         <img src="/zaanlogo.png" alt="Zaan Logo" className="w-16 absolute top-4 left-4 z-10" />
         <h1 className="pt-20 pl-6 text-2xl font-semibold">Welcome Back!</h1>
@@ -50,7 +59,6 @@ const LoginPage = ({ openSignupModal, closeModal }) => {
         <img src="/chowmeinlogin2.png" alt="Chow Mein" className="absolute bottom-4 right-[-70px] w-[325px] z-0" />
       </div>
 
-      {/* Right Panel / Full Width on Mobile */}
       <div className="w-full lg:w-2/3 flex justify-center items-center bg-gray-100 rounded-none lg:rounded-l-[40px]">
         <form onSubmit={handleLogin} className="bg-transparent p-6 w-full max-w-sm">
           <h2 className="text-xl font-bold text-center text-gray-800 mb-6">Login to your Account</h2>

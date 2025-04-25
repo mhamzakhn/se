@@ -11,6 +11,7 @@ import MenuPage from './pages/Menu';
 import AdminMenuPage from './pages/AdminMenu';
 import AdminDashboard from './pages/AdminDashboard';
 import SendEmail from './pages/SendEmail';
+import AdminDashboard from './pages/AdminDashboard';
 import Checkout from './pages/Checkout';
 import { CartProvider } from './context/CartContext';
 import { AuthProvider } from './context/AuthContext';
@@ -44,6 +45,7 @@ function App() {
             />
             <Route path="/admin/menu" element={<AdminMenuPage />} />
             <Route path="/admin/send-email" element={<SendEmail />} />
+            <Route path="/admin/dashboard" element={<AdminDashboard />} />
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
             <Route path="/checkout" element={<Checkout />} />
           </Routes>

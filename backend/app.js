@@ -14,6 +14,7 @@ import orderRoutes from "./routes/orders.js";
 import adminMenuRoutes from './routes/adminMenu.js';
 import adminOrdersRouter from './routes/adminOrders.js';
 import adminEmailRoutes from "./routes/adminEmail.js";
+import adminOrdersRouter from './routes/adminOrders.js';
 
 dotenv.config({ path: "./config/config.env" });
 
@@ -40,6 +41,7 @@ app.use('/api/v1/orders', orderRoutes);
 app.use('/api/v1/admin/menu', adminMenuRoutes);
 app.use('/api/v1/admin/orders', adminOrdersRouter);
 app.use("/api/v1/admin", adminEmailRoutes); 
+app.use('/api/v1/admin/orders', adminOrdersRouter);
 
 dbConnection();
 
