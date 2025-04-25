@@ -55,7 +55,7 @@ const MenuPage = ({ openLogin }) => {
         <div className="absolute bottom-4 right-4">
           <button
             onClick={() => handleAddToCart(item)}
-            className="bg-white text-black rounded-full w-8 h-8 flex items-center justify-center text-lg font-bold transition-transform duration-200 hover:scale-110"
+            className="bg-white text-black rounded-full w-8 h-8 flex items-center justify-center text-lg font-bold transition-transform duration-200 hover:bg-gray-400 hover:scale-110"
             title="Add Item"
           >
             +
