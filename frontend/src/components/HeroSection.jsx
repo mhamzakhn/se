@@ -1,6 +1,18 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
-const HeroSection = () => {
+const HeroSection = ({ openLoginModal }) => {
+  const navigate = useNavigate();
+
+  const handleOrderNow = () => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      navigate("/menu");
+    } else {
+      openLoginModal();
+    }
+  };
+
   return (
     <section
       className="relative w-full h-[90vh] flex items-center justify-start bg-cover bg-center bg-no-repeat"
@@ -15,7 +27,10 @@ const HeroSection = () => {
         <p className="text-lg sm:text-xl mb-8 drop-shadow-sm">
           We Make Delicious Food for You
         </p>
-        <button className="bg-primaryred bg-red-500 hover:bg-red-700 px-6 py-3 text-lg font-semibold rounded-full shadow-md transition-transform duration-200 hover:scale-105">
+        <button
+          onClick={handleOrderNow}
+          className="bg-primaryred bg-red-500 hover:bg-red-700 px-6 py-3 text-lg font-semibold rounded-full shadow-md transition-transform duration-200 hover:scale-105"
+        >
           Order Now
         </button>
       </div>
