@@ -1,4 +1,3 @@
-// backend/models/MenuItem.js
 import mongoose from 'mongoose';
 
 const MenuItemSchema = new mongoose.Schema(

@@ -36,7 +36,7 @@ const signup = async (req, res) => {
     const signupData = {
       name,
       email,
-      password_hash, // Already hashed
+      password_hash, 
       phone,
       role: role || 'user',
       student_status: determinedStudentStatus,

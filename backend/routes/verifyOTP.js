@@ -1,4 +1,3 @@
-// routes/verify-otp.js
 import express from 'express';
 import bcrypt from 'bcryptjs';
 import Profile from '../models/Profiles.js';
@@ -7,10 +6,7 @@ import redisClient from '../utils/redisClient.js';
 
 const router = express.Router();
 
-/**
- * POST /api/v1/verify-otp
- * Verify the OTP sent during signup and create the user profile upon successful verification
- */
+
 router.post('/', async (req, res) => {
   const { email, otp } = req.body;
 
@@ -18,10 +14,8 @@ router.post('/', async (req, res) => {
     return res.status(400).json({ message: "Email and OTP are required." });
   }
 
-  // Generate the Redis key to fetch temporary signup data
   const redisKey = `signup:${email}`;
   const data = await redisClient.get(redisKey);
-  // Check if OTP data exists in Redis (OTP hasn't expired or been used)
   if (!data) {
     return res.status(400).json({ message: "OTP expired or not found. Please try signing up again." });
   }

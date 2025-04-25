@@ -1,15 +1,10 @@
-// routes/cart.js
 import express from 'express';
 import requireAuth from '../middleware/requireAuth.js';
 import Cart from '../models/Cart.js';
 
 const router = express.Router();
 
-/**
- * POST /api/v1/cart/add
- * Add an item to the cart or update its quantity.
- * Requires authentication.
- */
+
 router.post('/add', requireAuth, async (req, res) => {
   try {
     const userId = req.user.id;
@@ -42,17 +37,13 @@ router.post('/add', requireAuth, async (req, res) => {
   }
 });
 
-/**
- * GET /api/v1/cart
- * Retrieve the current cart for the authenticated user.
- * Requires authentication.
- */
+
 router.get('/', requireAuth, async (req, res) => {
   try {
     const userId = req.user.id;
     const cart = await Cart.findOne({ user: userId });
     if (!cart) {
-      return res.status(200).json({ items: [] }); // Return empty if no cart exists
+      return res.status(200).json({ items: [] }); 
     }
     return res.status(200).json(cart);
   } catch (error) {
@@ -61,11 +52,7 @@ router.get('/', requireAuth, async (req, res) => {
   }
 });
 
-/**
- * PUT /api/v1/cart/item/:itemId
- * Update the quantity of an item in the cart.
- * Requires authentication.
- */
+
 router.put('/item/:itemId', requireAuth, async (req, res) => {
   try {
     const userId = req.user.id;
@@ -105,7 +92,7 @@ router.put('/item/:itemId', requireAuth, async (req, res) => {
 router.delete('/item/:id', requireAuth, async (req, res) => {
   try {
     const itemId = req.params.id;
-    const userId = req.user.id; // or _id depending on your JWT structure
+    const userId = req.user.id; 
 
     const cart = await Cart.findOneAndUpdate(
       { user: userId },

@@ -80,14 +80,14 @@ const SignUp = ({ openLoginModal, closeModal }) => {
 
   return (
     <div className="flex flex-col lg:flex-row w-full h-screen font-sans">
-      {/* Left Panel */}
+      {}
       <div className="hidden lg:flex w-1/3 bg-gradient-to-b from-[#042C5F] to-[#040304] text-white p-8 relative flex-col justify-start items-start">
         <img src="/zaanlogo.png" alt="Zaan Logo" className="w-16 absolute top-4 left-4 z-10" />
         <h1 className="pt-20 pl-6 text-2xl font-semibold max-w-[80%]">Sign Up to earn Points and Redeem Discounts!</h1>
         <img src="/chowmeinlogin2.png" alt="Chow Mein" className="absolute bottom-4 right-[-70px] w-[325px] z-0" />
       </div>
 
-      {/* Right Panel */}
+      {}
       <div className="w-full lg:w-2/3 bg-gray-100 flex justify-center items-center rounded-none lg:rounded-l-[40px] p-4 overflow-y-auto">
         {!otpSent ? (
           <form onSubmit={handleSubmit} className="w-full max-w-sm bg-transparent p-4">

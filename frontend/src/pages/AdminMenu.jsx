@@ -1,4 +1,3 @@
-// src/pages/AdminMenuPage.jsx
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import AdminMenuCard from "../components/AdminMenuCard";

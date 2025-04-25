@@ -1,4 +1,3 @@
-// src/pages/Checkout.jsx
 import React, { useState } from "react";
 import { useCart } from "../context/CartContext";
 import { Link } from "react-router-dom";
@@ -75,7 +74,7 @@ const Checkout = () => {
 
         {cartItems.length > 0 ? (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Left Panel */}
+            {}
             <div className="lg:col-span-2">
               <div className="bg-gray-900 rounded-lg shadow-lg">
                 <div className="p-6">
@@ -121,13 +120,13 @@ const Checkout = () => {
               </div>
             </div>
 
-            {/* Right Panel */}
-            {/* Right Panel */}
+            {}
+            {}
             <div>
               <div className="bg-gray-900 rounded-lg shadow-lg p-6 sticky top-4">
                 <h2 className="text-xl font-semibold mb-4">Order Summary</h2>
 
-                {/* Cooking Instructions FIRST */}
+                {}
                 <div className="mb-6">
                   <label htmlFor="instructions" className="block text-sm font-medium text-gray-300 mb-1">
                     Cooking Instructions
@@ -142,7 +141,7 @@ const Checkout = () => {
                   />
                 </div>
 
-                {/* Order Summary */}
+                {}
                 <div className="space-y-3 text-gray-300 mb-6">
                   <div className="flex justify-between">
                     <span>Subtotal</span>
@@ -158,7 +157,7 @@ const Checkout = () => {
                   </div>
                 </div>
 
-                {/* Checkout Button */}
+                {}
                 <button
                   onClick={handlePlaceOrder}
                   className="w-full mb-3 bg-red-500 hover:bg-red-700 py-3 rounded-md font-medium text-white"
@@ -166,7 +165,7 @@ const Checkout = () => {
                   Checkout
                 </button>
 
-                {/* Clear Cart Button */}
+                {}
                 <button
                   onClick={clearCart}
                   className="w-full bg-transparent border border-gray-600 text-gray-300 hover:bg-gray-800 py-3 rounded-md font-medium"
@@ -219,7 +218,7 @@ const Checkout = () => {
         )}
       </div>
 
-      {/* Login Modal */}
+      {}
       <Dialog open={showLoginModal} onClose={() => setShowLoginModal(false)} className="relative z-50">
         <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
         <div className="fixed inset-0 flex items-center justify-center p-4">

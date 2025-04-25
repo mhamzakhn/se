@@ -1,4 +1,4 @@
-// backend/controller/adminController.js
+
 import { sendMail } from "../utils/emailService.js";
 import Profile from "../models/Profiles.js";
 
@@ -12,7 +12,7 @@ export const sendAdminEmail = async (req, res) => {
   }
 
   try {
-    // 1) Pull every user's email
+  
     const profiles = await Profile.find({}, "email").lean();
     const emails = profiles.map((p) => p.email);
 
@@ -22,10 +22,9 @@ export const sendAdminEmail = async (req, res) => {
         .json({ message: "No users found to send email to." });
     }
 
-    // 2) Send one message, BCC'ing everyone
     await sendMail({
-      to: process.env.SMTP_FROM,    // must supply a 'to'; using your own address
-      bcc: emails,                  // hides recipients from each other
+      to: process.env.SMTP_FROM,    
+      bcc: emails,                  
       subject,
       text: content,
       html: `<p>${content.replace(/\n/g, "<br>")}</p>`,

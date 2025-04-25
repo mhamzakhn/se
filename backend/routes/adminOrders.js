@@ -1,4 +1,3 @@
-// ✅ BACKEND: routes/adminOrders.js
 import express from 'express';
 import Order from '../models/Orders.js';
 import requireAuth from '../middleware/requireAuth.js';
@@ -6,7 +5,6 @@ import requireAuth from '../middleware/requireAuth.js';
 const router = express.Router();
 router.use(requireAuth);
 
-// GET /api/v1/admin/orders/pending
 router.get('/pending', async (req, res) => {
   try {
     const orders = await Order.find({ status: 'pending' })
@@ -19,7 +17,6 @@ router.get('/pending', async (req, res) => {
   }
 });
 
-// PATCH /api/v1/admin/orders/:id
 router.patch('/:id', async (req, res) => {
   const { status } = req.body;
   const validStatuses = ['pending', 'confirmed', 'delivered', 'cancelled'];

@@ -1,4 +1,3 @@
-// src/pages/SendEmail.jsx
 import React, { useState } from "react";
 import { FaSpinner, FaCheckCircle } from "react-icons/fa";
 
@@ -79,7 +78,7 @@ const SendEmail = () => {
             />
           </div>
 
-          {/* Content */}
+          {}
           <div>
             <label htmlFor="content" className="block text-sm font-medium text-gray-900">
               Content
@@ -102,7 +101,7 @@ const SendEmail = () => {
             />
           </div>
 
-          {/* Send Button */}
+          {}
           <div className="flex justify-end">
             <button
               type="submit"
@@ -125,7 +124,7 @@ const SendEmail = () => {
         </form>
       </div>
 
-      {/* Success Toast (centered) */}
+      {}
       {showSuccess && (
         <div className="fixed inset-0 flex items-center justify-center pointer-events-none">
           <div className="bg-green-100 border border-green-500 text-green-700 px-6 py-4 rounded-md shadow-lg flex items-center space-x-3 pointer-events-auto">

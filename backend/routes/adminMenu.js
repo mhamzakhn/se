@@ -3,9 +3,6 @@ import MenuItem from '../models/MenuItem.js';
 
 const router = express.Router();
 
-// TODO: Add middleware to restrict these to admin
-
-// POST: Add a new item
 router.post('/', async (req, res) => {
   try {
     const newItem = new MenuItem(req.body);
@@ -17,7 +14,6 @@ router.post('/', async (req, res) => {
   }
 });
 
-// PUT: Update an existing item
 router.put('/:id', async (req, res) => {
   try {
     const updatedItem = await MenuItem.findByIdAndUpdate(req.params.id, req.body, {
@@ -31,7 +27,6 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-// DELETE: Remove an item
 router.delete('/:id', async (req, res) => {
   try {
     const deletedItem = await MenuItem.findByIdAndDelete(req.params.id);

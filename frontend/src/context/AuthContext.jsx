@@ -2,7 +2,6 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 
 export const AuthContext = createContext();
 
-// Provider component
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
@@ -29,7 +28,6 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
-  // Login method to update state and localStorage
   const login = (token, userData) => {
     if (!token || !userData || userData === "undefined") {
       console.warn("Invalid login payload", token, userData);
@@ -47,7 +45,6 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem("studentStatus", userData.student_status);
   };
 
-  // Logout method
   const logout = () => {
     setToken(null);
     setUser(null);

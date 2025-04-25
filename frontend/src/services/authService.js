@@ -1,4 +1,3 @@
-// src/services/authService.js
 export const loginUser = async (email, password) => {
   try {
     const res = await fetch("http://localhost:4000/api/v1/login", {

@@ -1,4 +1,4 @@
-// frontend/src/pages/MenuPage.jsx
+
 import React, { useEffect, useState } from 'react';
 import { FaShoppingCart }         from 'react-icons/fa';
 import { useCart }               from '../context/CartContext';
@@ -24,7 +24,7 @@ export default function MenuPage({ openLogin }) {
       .catch(() => setError('Error fetching menu.'));
   }, []);
 
-  // group items by category
+ 
   const grouped = menuData.reduce((acc, item) => {
     (acc[item.category] = acc[item.category]||[]).push(item);
     return acc;
