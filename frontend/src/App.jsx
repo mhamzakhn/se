@@ -9,6 +9,7 @@ import Home from './pages/Home';
 import Modal from './components/Modal';
 import MenuPage from './pages/Menu';
 import AdminMenuPage from './pages/AdminMenu';
+import AdminDashboard from './pages/AdminDashboard';
 import SendEmail from './pages/SendEmail';
 import Checkout from './pages/Checkout';
 import { CartProvider } from './context/CartContext';
