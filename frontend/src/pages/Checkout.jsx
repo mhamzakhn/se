@@ -122,10 +122,28 @@ const Checkout = () => {
             </div>
 
             {/* Right Panel */}
+            {/* Right Panel */}
             <div>
               <div className="bg-gray-900 rounded-lg shadow-lg p-6 sticky top-4">
                 <h2 className="text-xl font-semibold mb-4">Order Summary</h2>
-                <div className="space-y-3 text-gray-300">
+
+                {/* Cooking Instructions FIRST */}
+                <div className="mb-6">
+                  <label htmlFor="instructions" className="block text-sm font-medium text-gray-300 mb-1">
+                    Cooking Instructions
+                  </label>
+                  <textarea
+                    id="instructions"
+                    rows={3}
+                    value={instructions}
+                    onChange={(e) => setInstructions(e.target.value)}
+                    className="w-full rounded-md bg-gray-800 text-white border border-gray-700 p-2"
+                    placeholder="e.g. Less spicy, no onions..."
+                  />
+                </div>
+
+                {/* Order Summary */}
+                <div className="space-y-3 text-gray-300 mb-6">
                   <div className="flex justify-between">
                     <span>Subtotal</span>
                     <span>PKR {getCartTotal().toFixed(2)}</span>
@@ -140,28 +158,18 @@ const Checkout = () => {
                   </div>
                 </div>
 
+                {/* Checkout Button */}
                 <button
                   onClick={handlePlaceOrder}
-                  className="w-full mt-6 bg-red-500 hover:bg-red-700 py-3 rounded-md font-medium text-white"
+                  className="w-full mb-3 bg-red-500 hover:bg-red-700 py-3 rounded-md font-medium text-white"
                 >
                   Checkout
                 </button>
-                <div className="mt-6">
-                  <label htmlFor="instructions" className="block text-sm font-medium text-gray-300 mb-1">
-                    Cooking Instructions
-                  </label>
-                  <textarea
-                    id="instructions"
-                    rows={3}
-                    value={instructions}
-                    onChange={(e) => setInstructions(e.target.value)}
-                    className="w-full rounded-md bg-gray-800 text-white border border-gray-700 p-2"
-                    placeholder="e.g. Less spicy, no onions..."
-                  />
-                </div>
+
+                {/* Clear Cart Button */}
                 <button
                   onClick={clearCart}
-                  className="w-full mt-3 bg-transparent border border-gray-600 text-gray-300 hover:bg-gray-800 py-3 rounded-md font-medium"
+                  className="w-full bg-transparent border border-gray-600 text-gray-300 hover:bg-gray-800 py-3 rounded-md font-medium"
                 >
                   Clear Cart
                 </button>
