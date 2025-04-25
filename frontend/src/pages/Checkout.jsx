@@ -11,6 +11,7 @@ const Checkout = () => {
 
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [orderPlaced, setOrderPlaced] = useState(false);
+  const [instructions, setInstructions] = useState("");
 
   const token = localStorage.getItem("token");
   const studentStatus = localStorage.getItem("studentStatus") || "non-student";
@@ -54,6 +55,7 @@ const Checkout = () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
+        body: JSON.stringify({ instructions })
       });
       const data = await res.json();
       if (res.ok) {
@@ -144,6 +146,19 @@ const Checkout = () => {
                 >
                   Checkout
                 </button>
+                <div className="mt-6">
+                  <label htmlFor="instructions" className="block text-sm font-medium text-gray-300 mb-1">
+                    Cooking Instructions
+                  </label>
+                  <textarea
+                    id="instructions"
+                    rows={3}
+                    value={instructions}
+                    onChange={(e) => setInstructions(e.target.value)}
+                    className="w-full rounded-md bg-gray-800 text-white border border-gray-700 p-2"
+                    placeholder="e.g. Less spicy, no onions..."
+                  />
+                </div>
                 <button
                   onClick={clearCart}
                   className="w-full mt-3 bg-transparent border border-gray-600 text-gray-300 hover:bg-gray-800 py-3 rounded-md font-medium"

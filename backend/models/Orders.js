@@ -21,6 +21,12 @@ const OrderSchema = new mongoose.Schema({
     type: String,
     enum: ['pending', 'confirmed', 'delivered', 'cancelled'],
     default: 'pending'
+  },
+  instructions: { 
+    type: String, 
+    default: "",
+    trim: true,
+    maxlength: 500
   }
 }, {
   timestamps: true
