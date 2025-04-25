@@ -19,7 +19,7 @@ import useModal from './hooks/useModal';
 function App() {
   const {
     showLoginModal,
-    showSignUpModal,
+    showSignUpModal,  
     openLoginModal,
     openSignUpModal,
     closeLoginModal,
@@ -42,10 +42,8 @@ function App() {
               element={<MenuPage openLogin={openLoginModal} />}
             />
             <Route path="/admin/menu" element={<AdminMenuPage />} />
-            <Route
-              path="/admin/send-email"
-              element={<SendEmail />}
-            />
+            <Route path="/admin/send-email" element={<SendEmail />} />
+            <Route path="/admin/dashboard" element={<AdminDashboard />} />
             <Route path="/checkout" element={<Checkout />} />
           </Routes>
 
