@@ -14,6 +14,7 @@ import SendEmail from './pages/SendEmail';
 import Checkout from './pages/Checkout';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
+import Contact from './pages/Contact';
 
 import { CartProvider } from './context/CartContext';
 import { AuthProvider } from './context/AuthContext';
@@ -51,6 +52,7 @@ function App() {
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
+            <Route path="/contact" element={<Contact />} />
           </Routes>
 
           {/* Login Modal */}
