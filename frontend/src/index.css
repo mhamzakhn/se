@@ -14,7 +14,6 @@
   --radius-md: 0.75rem;
 }
 
-/* Global resets */
 html, body {
   background-color: var(--background);
   color: var(--foreground);
@@ -23,7 +22,6 @@ html, body {
   scroll-behavior: smooth;
 }
 
-/* Hide scrollbars globally */
 ::-webkit-scrollbar {
   display: none;
 }

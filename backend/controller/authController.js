@@ -4,7 +4,6 @@ import Profile from '../models/Profiles.js';
 import { generateOTP, sendOTPEmail } from '../utils/otp.js';
 import redisClient from '../utils/redisClient.js';
 
-// Add these new methods to your existing authController
 
 export const forgotPassword = async (req, res) => {
   try {
@@ -22,7 +21,6 @@ export const forgotPassword = async (req, res) => {
     const otp = generateOTP();
     const redisKey = `reset:${email}`;
     
-    // Store OTP and timestamp in Redis with 10-minute expiration
     await redisClient.set(redisKey, JSON.stringify({
       otp,
       createdAt: Date.now()
@@ -61,7 +59,6 @@ export const verifyResetOTP = async (req, res) => {
       return res.status(400).json({ message: "Invalid OTP" });
     }
 
-    // Mark OTP as verified in Redis
     await redisClient.set(redisKey, JSON.stringify({
       ...JSON.parse(storedData),
       verified: true
@@ -84,7 +81,6 @@ export const resetPassword = async (req, res) => {
       return res.status(400).json({ message: "All fields are required" });
     }
 
-    // Check if password meets requirements
     if (newPassword.length < 8) {
       return res.status(400).json({ message: "Password must be at least 8 characters" });
     }
@@ -102,7 +98,6 @@ export const resetPassword = async (req, res) => {
       return res.status(400).json({ message: "Invalid OTP or OTP not verified" });
     }
 
-    // Update password in database
     const saltRounds = 10;
     const password_hash = await bcrypt.hash(newPassword, saltRounds);
     
@@ -112,7 +107,6 @@ export const resetPassword = async (req, res) => {
       { new: true }
     );
 
-    // Delete the reset key from Redis
     await redisClient.del(redisKey);
     
     return res.status(200).json({ 

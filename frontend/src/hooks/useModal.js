@@ -4,7 +4,6 @@ const useModal = () => {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showSignUpModal, setShowSignUpModal] = useState(false);
 
-  // Functions to open the modals
   const openLoginModal = () => {
     setShowSignUpModal(false);
     setShowLoginModal(true);

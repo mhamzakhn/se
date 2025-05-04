@@ -10,7 +10,7 @@ export const handleForgotPassword = async (req, res) => {
   if (!user) return res.status(404).json({ message: 'No account found with that email' });
 
   const otp = generateOTP();
-  await redisClient.set(`reset:${email}`, otp, { EX: 5 * 60 }); // 5 minutes expiry
+  await redisClient.set(`reset:${email}`, otp, { EX: 5 * 60 }); 
   await sendOTPEmail(email, otp);
 
   return res.status(200).json({ message: 'OTP sent to your email' });

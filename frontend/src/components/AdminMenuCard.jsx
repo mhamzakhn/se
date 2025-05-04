@@ -1,4 +1,3 @@
-// src/components/AdminMenuCard.jsx
 import React from "react";
 
 const AdminMenuCard = ({ item, onEdit, onDelete }) => {

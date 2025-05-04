@@ -68,7 +68,7 @@ const Navbar = ({ openLoginModal, openSignUpModal }) => {
           </Link>
         </div>
 
-        {/* Desktop Nav */}
+        {}
         <div className="hidden lg:flex gap-x-10 items-center">
           <Link to="/" className="text-white hover:text-gray-300 text-sm font-medium transition transform hover:scale-110">Home</Link>
           <Link to={menuPath} className="text-white hover:text-gray-300 text-sm font-medium transition transform hover:scale-110">Menu</Link>
@@ -82,7 +82,7 @@ const Navbar = ({ openLoginModal, openSignUpModal }) => {
           )}
         </div>
 
-        {/* Cart + Auth Buttons */}
+        {}
         <div className="hidden lg:flex items-center gap-4">
           <Link to="/checkout" className="relative text-white">
             <FaShoppingCart size={20} />
@@ -114,7 +114,7 @@ const Navbar = ({ openLoginModal, openSignUpModal }) => {
           )}
         </div>
 
-        {/* Mobile Menu Icon */}
+        {}
         <div className="lg:hidden">
           <button onClick={() => setMobileMenuOpen(true)} className="text-white">
             <MenuIcon className="w-6 h-6" />
@@ -122,7 +122,7 @@ const Navbar = ({ openLoginModal, openSignUpModal }) => {
         </div>
       </nav>
 
-      {/* Mobile Menu Drawer */}
+      {}
       <Dialog as="div" open={mobileMenuOpen} onClose={setMobileMenuOpen} className="lg:hidden">
         <Dialog.Panel className="fixed inset-y-0 right-0 w-full sm:max-w-sm z-50 bg-[#111827] text-white px-6 py-6 shadow-2xl rounded-l-xl transition-all duration-300">
           <div className="flex items-center justify-between mb-6">

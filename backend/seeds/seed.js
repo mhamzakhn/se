@@ -5,7 +5,6 @@ import MenuItem from '../models/MenuItem.js';
 
 dotenv.config({ path: './config/config.env' });
 
-// Debug output to verify your connection string
 console.log("MONGO URI:", process.env.MANGO_URI);
 
 const menuData = [

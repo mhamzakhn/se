@@ -1,4 +1,3 @@
-// routes/order.js
 import express from 'express';
 import requireAuth from '../middleware/requireAuth.js';
 import Order from '../models/Orders.js';
@@ -7,11 +6,7 @@ import Profile from '../models/Profiles.js';
 
 const router = express.Router();
 
-/**
- * POST /api/v1/orders/place
- * This route takes the user's current cart items, creates a new Order, and empties the cart.
- * Requires authentication.
- */
+
 router.post('/place', requireAuth, async (req, res) => {
   try {
     const userId = req.user.id;
