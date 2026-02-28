@@ -53,8 +53,6 @@ app.use('/api/v1/profile', profileRoutes);
 app.use('/api/v1/cart', cartRoutes);
 app.use('/api/v1/orders', orderRoutes);
 app.use('/api/v1/admin/orders', adminOrdersRouter);
-
-app.use("/api/v1/admin/orders", adminOrdersRouter);
 app.use("/api/v1/admin/menu", adminMenuRoutes);
 app.use("/api/v1/admin", adminEmailRoutes);
 

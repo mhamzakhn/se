@@ -139,7 +139,7 @@ const Navbar = ({ openLoginModal, openSignUpModal }) => {
               <Link to="/admin/dashboard" onClick={() => setMobileMenuOpen(false)} className="block hover:text-red-500 transition">Dashboard</Link>
             )}
             {userProfile?.role === "admin" ? (
-              <Link to="/admin/send-email-email" onClick={() => setMobileMenuOpen(false)} className="block hover:text-red-500 transition">Send Email</Link>
+              <Link to="/admin/send-email" onClick={() => setMobileMenuOpen(false)} className="block hover:text-red-500 transition">Send Email</Link>
             ) : (
               <Link to="/contact" onClick={() => setMobileMenuOpen(false)} className="block hover:text-red-500 transition">Contact</Link>
             )}

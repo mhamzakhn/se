@@ -23,7 +23,7 @@ const signup = async (req, res) => {
 
     let determinedStudentStatus = 'non-student';
     const lowerEmail = email.toLowerCase();
-    if (lowerEmail.endsWith('@lums.edu.pk') || lowerEmail.endsWith('@lums.ed.pk')) {
+    if (lowerEmail.endsWith('@lums.edu.pk')) {
       determinedStudentStatus = 'student';
     }
 

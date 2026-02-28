@@ -5,7 +5,7 @@ import MenuItem from '../models/MenuItem.js';
 
 dotenv.config({ path: './config/config.env' });
 
-console.log("MONGO URI:", process.env.MANGO_URI);
+console.log("MONGO URI:", process.env.MONGO_URI);
 
 const menuData = [
   { item_id: 1,  name: 'Honey Wings (4 PCS.)',                    price: 900,  category: 'Starters',    discounted_price_for_LUMS_student: 800, imageUrl: 'http://localhost:4000/images/honey-wings-4-pcs.jpg' },
@@ -44,7 +44,7 @@ const menuData = [
 ];
 
 const seedDB = async () => {
-  await mongoose.connect(process.env.MANGO_URI, { dbName: "ZAAN" });
+  await mongoose.connect(process.env.MONGO_URI, { dbName: "ZAAN" });
   console.log("Connected to database for seeding!");
   await MenuItem.deleteMany({});
   await MenuItem.insertMany(menuData);
