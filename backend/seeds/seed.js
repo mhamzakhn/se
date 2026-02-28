@@ -44,6 +44,7 @@ const menuData = [
 ];
 
 const seedDB = async () => {
+  await mongoose.connect(process.env.MANGO_URI, { dbName: "ZAAN" });
   console.log("Connected to database for seeding!");
   await MenuItem.deleteMany({});
   await MenuItem.insertMany(menuData);
