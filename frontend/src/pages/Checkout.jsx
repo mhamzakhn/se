@@ -3,6 +3,7 @@ import { useCart } from "../context/CartContext";
 import { Link } from "react-router-dom";
 import { Dialog } from "@headlessui/react";
 import { FiMinus as Minus, FiPlus as Plus, FiTrash2 as Trash, FiCheckCircle as CheckCircle, FiShoppingBag as ShoppingBag, FiAlertCircle as AlertCircle } from "react-icons/fi";
+import api from "../services/api";
 
 const Checkout = () => {
   const { cart, updateCartItem, setCart, clearCart } = useCart();
@@ -30,16 +31,8 @@ const Checkout = () => {
 
   const handleDeleteItem = async (itemId) => {
     try {
-      const res = await fetch(`http://localhost:4000/api/v1/cart/item/${itemId}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      const data = await res.json();
-      if (res.ok) setCart(data.cart);
-      else console.error("Delete error:", data.message);
+      const res = await api.delete(`/api/v1/cart/item/${itemId}`);
+      setCart(res.data.cart);
     } catch (err) {
       console.error("Delete failed:", err);
     }
@@ -48,20 +41,12 @@ const Checkout = () => {
   const handlePlaceOrder = async () => {
     if (!token) return setShowLoginModal(true);
     try {
-      const res = await fetch("http://localhost:4000/api/v1/orders/place", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ instructions })
-      });
-      const data = await res.json();
-      if (res.ok) {
+      const res = await api.post("/api/v1/orders/place", { instructions });
+      if (res.status === 200 || res.status === 201) {
         setOrderPlaced(true);
         setCart({ items: [] });
         setTimeout(() => setOrderPlaced(false), 3000);
-      } else console.error(data.message);
+      }
     } catch (err) {
       console.error("Order error:", err);
     }

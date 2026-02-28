@@ -1,64 +1,41 @@
+import api from './api';
+
 export const loginUser = async (email, password) => {
   try {
-    const res = await fetch("http://localhost:4000/api/v1/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    });
-
-    const data = await res.json();
-
-    return { ok: res.ok, data };
+    const res = await api.post('/api/v1/login', { email, password });
+    return { ok: true, data: res.data };
   } catch (error) {
-    console.error("API login error:", error);
-    return { ok: false, data: { message: "Network error" } };
+    const data = error.response?.data || { message: 'Network error' };
+    return { ok: false, data };
   }
 };
 
-  export const signupUser = async (payload) => {
-    try {
-      const response = await fetch("http://localhost:4000/api/v1/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-      const data = await response.json();
-      return { ok: response.ok, data };
-    } catch (error) {
-      console.error("Signup error:", error);
-      return { ok: false, data: { message: "Something went wrong. Please try again later." } };
-    }
-  };
-  
-  export const verifyOtp = async (email, otp) => {
-    try {
-      const response = await fetch("http://localhost:4000/api/v1/verify-otp", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, otp }),
-      });
-      const data = await response.json();
-      return { ok: response.ok, data };
-    } catch (error) {
-      console.error("OTP verification error:", error);
-      return { ok: false, data: { message: "Error during OTP verification." } };
-    }
-  };
+export const signupUser = async (payload) => {
+  try {
+    const res = await api.post('/api/v1/signup', payload);
+    return { ok: true, data: res.data };
+  } catch (error) {
+    const data = error.response?.data || { message: 'Something went wrong. Please try again later.' };
+    return { ok: false, data };
+  }
+};
 
-  export const resetPassword = async (email, newPassword, otp) => {
-    try {
-      const response = await fetch('/api/auth/reset-password', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, newPassword, otp }),
-      });
-  
-      const data = await response.json();
-      return { ok: response.ok, data };
-    } catch (error) {
-      console.error('Reset password error:', error);
-      return { ok: false, data: { message: 'Network error' } };
-    }
-  };
+export const verifyOtp = async (email, otp) => {
+  try {
+    const res = await api.post('/api/v1/verify-otp', { email, otp });
+    return { ok: true, data: res.data };
+  } catch (error) {
+    const data = error.response?.data || { message: 'Error during OTP verification.' };
+    return { ok: false, data };
+  }
+};
+
+export const resetPassword = async (email, newPassword, otp) => {
+  try {
+    const res = await api.post('/api/v1/reset-password', { email, newPassword, otp });
+    return { ok: true, data: res.data };
+  } catch (error) {
+    const data = error.response?.data || { message: 'Network error' };
+    return { ok: false, data };
+  }
+};

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { FaSpinner, FaCheckCircle } from "react-icons/fa";
+import api from "../services/api";
 
 const SendEmail = () => {
   const [subject, setSubject] = useState("");
@@ -22,18 +23,7 @@ const SendEmail = () => {
 
     setIsLoading(true);
     try {
-      const res = await fetch(
-        "http://localhost:4000/api/v1/admin/send-email",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-          body: JSON.stringify({ subject, content }),
-        }
-      );
-      if (!res.ok) throw new Error("Failed to send email");
+      await api.post("/api/v1/admin/send-email", { subject, content });
 
       setSubject("");
       setContent("");

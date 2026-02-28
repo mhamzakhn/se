@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import AdminMenuCard from "../components/AdminMenuCard";
 import AdminMenuForm from "../components/AdminMenuForm";
 import { FiPlus as Plus } from "react-icons/fi";
+import api from "../services/api";
 
 const AdminMenuPage = () => {
   const [menuData, setMenuData] = useState([]);
@@ -14,7 +14,7 @@ const AdminMenuPage = () => {
   }, []);
 
   const fetchMenu = async () => {
-    const res = await axios.get("http://localhost:4000/api/v1/menu");
+    const res = await api.get("/api/v1/menu");
     setMenuData(res.data);
   };
 
@@ -30,16 +30,16 @@ const AdminMenuPage = () => {
 
   const handleDeleteItem = async (id) => {
     if (window.confirm("Are you sure you want to delete this item?")) {
-      await axios.delete(`http://localhost:4000/api/v1/admin/menu/${id}`);
+      await api.delete(`/api/v1/admin/menu/${id}`);
       fetchMenu();
     }
   };
 
   const handleSaveItem = async (itemData) => {
     if (currentItem) {
-      await axios.put(`http://localhost:4000/api/v1/admin/menu/${currentItem._id}`, itemData);
+      await api.put(`/api/v1/admin/menu/${currentItem._id}`, itemData);
     } else {
-      await axios.post("http://localhost:4000/api/v1/admin/menu", itemData);
+      await api.post("/api/v1/admin/menu", itemData);
     }
     fetchMenu();
   };

@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
+import api from '../services/api';
 
 const CartContext = createContext();
 
@@ -11,11 +12,8 @@ export const CartProvider = ({ children }) => {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
-      fetch('http://localhost:4000/api/v1/cart', {
-        headers: { 'Authorization': `Bearer ${token}` }
-      })
-        .then(res => res.json())
-        .then(data => setCart(data))
+      api.get('/api/v1/cart')
+        .then(res => setCart(res.data))
         .catch(err => console.error("Error fetching cart:", err));
     }
   }, []);
@@ -27,28 +25,16 @@ export const CartProvider = ({ children }) => {
       return;
     }
     try {
-      const response = await fetch('http://localhost:4000/api/v1/cart/add', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          item_id: item.item_id || item.id,
-          name: item.name,
-          price: item.price,
-          discounted_price_for_LUMS_student: item.discounted_price_for_LUMS_student,
-          quantity: 1
-        })
+      const res = await api.post('/api/v1/cart/add', {
+        item_id: item.item_id || item.id,
+        name: item.name,
+        price: item.price,
+        discounted_price_for_LUMS_student: item.discounted_price_for_LUMS_student,
+        quantity: 1
       });
-      const data = await response.json();
-      if (response.ok) {
-        setCart(data.cart);
-      } else {
-        console.error("Error adding item to cart:", data.message);
-      }
+      setCart(res.data.cart);
     } catch (error) {
-      console.error("Error in addItemToCart:", error);
+      console.error("Error in addItemToCart:", error.response?.data?.message || error);
     }
   };
 
@@ -59,46 +45,24 @@ export const CartProvider = ({ children }) => {
       return;
     }
     try {
-      const response = await fetch(`http://localhost:4000/api/v1/cart/item/${itemId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({ quantity: newQuantity })
-      });
-      const data = await response.json();
-      if (response.ok) {
-        setCart(data.cart);
-      } else {
-        console.error("Error updating cart:", data.message);
-      }
+      const res = await api.put(`/api/v1/cart/item/${itemId}`, { quantity: newQuantity });
+      setCart(res.data.cart);
     } catch (error) {
-      console.error("Error in updateCartItem:", error);
+      console.error("Error in updateCartItem:", error.response?.data?.message || error);
     }
   };
 
   const clearCart = async () => {
     const token = localStorage.getItem('token');
     if (!token) return;
-  
+
     try {
-      const response = await fetch('http://localhost:4000/api/v1/cart', {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
-      const data = await response.json();
-      if (response.ok) {
-        setCart(data);
-      } else {
-        console.error("Failed to clear cart:", data.message);
-      }
+      const res = await api.delete('/api/v1/cart');
+      setCart(res.data);
     } catch (err) {
       console.error("Error clearing cart:", err);
     }
-  };  
+  };
 
   const getCartCount = () => {
     if (cart && cart.items) {
