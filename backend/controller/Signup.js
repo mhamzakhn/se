@@ -1,4 +1,4 @@
-import bcrypt from 'bcryptjs';
+import bcrypt from 'bcrypt';
 import Profile from '../models/Profiles.js';
 import { generateOTP, sendOTPEmail } from '../utils/otp.js';
 import redisClient from '../utils/redisClient.js';

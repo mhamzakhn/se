@@ -1,5 +1,5 @@
 import express from 'express';
-import bcrypt from 'bcryptjs';
+import bcrypt from 'bcrypt';
 import Profile from '../models/Profiles.js';
 import redisClient from '../utils/redisClient.js';
 

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import AdminMenuCard from "../components/AdminMenuCard";
 import AdminMenuForm from "../components/AdminMenuForm";
-import { Plus } from "lucide-react";
+import { FiPlus as Plus } from "react-icons/fi";
 
 const AdminMenuPage = () => {
   const [menuData, setMenuData] = useState([]);
