@@ -2,15 +2,15 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-import Navbar from './components/Navbar';
-import SignUp from './components/SignUp';
-import Login from './components/Login';
+import Navbar from './components/common/Navbar';
+import SignUp from './components/auth/SignUp';
+import Login from './components/auth/Login';
 import Home from './pages/Home';
-import Modal from './components/Modal';
+import Modal from './components/common/Modal';
 import MenuPage from './pages/Menu';
-import AdminMenuPage from './pages/AdminMenu';
-import AdminDashboard from './pages/AdminDashboard';
-import SendEmail from './pages/SendEmail';
+import AdminMenuPage from './pages/admin/AdminMenu';
+import AdminDashboard from './pages/admin/AdminDashboard';
+import SendEmail from './pages/admin/SendEmail';
 import Checkout from './pages/Checkout';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';

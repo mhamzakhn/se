@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import AdminMenuCard from "../components/AdminMenuCard";
-import AdminMenuForm from "../components/AdminMenuForm";
+import AdminMenuCard from "../../components/admin/AdminMenuCard";
+import AdminMenuForm from "../../components/admin/AdminMenuForm";
 import { FiPlus as Plus } from "react-icons/fi";
-import api from "../services/api";
+import { getMenuItems, deleteMenuItem, updateMenuItem, addMenuItem } from "../../services/menuService";
 
 const AdminMenuPage = () => {
   const [menuData, setMenuData] = useState([]);
@@ -14,7 +14,7 @@ const AdminMenuPage = () => {
   }, []);
 
   const fetchMenu = async () => {
-    const res = await api.get("/api/v1/menu");
+    const res = await getMenuItems();
     setMenuData(res.data);
   };
 
@@ -30,16 +30,16 @@ const AdminMenuPage = () => {
 
   const handleDeleteItem = async (id) => {
     if (window.confirm("Are you sure you want to delete this item?")) {
-      await api.delete(`/api/v1/admin/menu/${id}`);
+      await deleteMenuItem(id);
       fetchMenu();
     }
   };
 
   const handleSaveItem = async (itemData) => {
     if (currentItem) {
-      await api.put(`/api/v1/admin/menu/${currentItem._id}`, itemData);
+      await updateMenuItem(currentItem._id, itemData);
     } else {
-      await api.post("/api/v1/admin/menu", itemData);
+      await addMenuItem(itemData);
     }
     fetchMenu();
   };

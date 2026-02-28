@@ -3,7 +3,8 @@ import { useCart } from "../context/CartContext";
 import { Link } from "react-router-dom";
 import { Dialog } from "@headlessui/react";
 import { FiMinus as Minus, FiPlus as Plus, FiTrash2 as Trash, FiCheckCircle as CheckCircle, FiShoppingBag as ShoppingBag, FiAlertCircle as AlertCircle } from "react-icons/fi";
-import api from "../services/api";
+import { removeCartItem } from "../services/cartService";
+import { placeOrder } from "../services/orderService";
 
 const Checkout = () => {
   const { cart, updateCartItem, setCart, clearCart } = useCart();
@@ -31,7 +32,7 @@ const Checkout = () => {
 
   const handleDeleteItem = async (itemId) => {
     try {
-      const res = await api.delete(`/api/v1/cart/item/${itemId}`);
+      const res = await removeCartItem(itemId);
       setCart(res.data.cart);
     } catch (err) {
       console.error("Delete failed:", err);
@@ -41,7 +42,7 @@ const Checkout = () => {
   const handlePlaceOrder = async () => {
     if (!token) return setShowLoginModal(true);
     try {
-      const res = await api.post("/api/v1/orders/place", { instructions });
+      const res = await placeOrder(instructions);
       if (res.status === 200 || res.status === 201) {
         setOrderPlaced(true);
         setCart({ items: [] });

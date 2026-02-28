@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { signupUser, verifyOtp, loginUser } from '../services/authService';
-import { AuthContext } from '../context/AuthContext';
+import { signupUser, verifyOtp, loginUser } from '../../services/authService';
+import { AuthContext } from '../../context/AuthContext';
 
 const SignUp = ({ openLoginModal, closeModal }) => {
   const navigate = useNavigate();
@@ -62,7 +62,7 @@ const SignUp = ({ openLoginModal, closeModal }) => {
 
       try {
         const loginResult = await loginUser(formData.email, formData.password);
-      
+
         if (loginResult.ok && loginResult.data.token) {
           login(loginResult.data.token, loginResult.data.user);
           closeModal?.();

@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import api from '../services/api';
+import { fetchCart, addToCart as addToCartApi, updateCartItem as updateCartItemApi, clearCart as clearCartApi } from '../services/cartService';
 
 const CartContext = createContext();
 
@@ -12,7 +12,7 @@ export const CartProvider = ({ children }) => {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
-      api.get('/api/v1/cart')
+      fetchCart()
         .then(res => setCart(res.data))
         .catch(err => console.error("Error fetching cart:", err));
     }
@@ -25,7 +25,7 @@ export const CartProvider = ({ children }) => {
       return;
     }
     try {
-      const res = await api.post('/api/v1/cart/add', {
+      const res = await addToCartApi({
         item_id: item.item_id || item.id,
         name: item.name,
         price: item.price,
@@ -45,7 +45,7 @@ export const CartProvider = ({ children }) => {
       return;
     }
     try {
-      const res = await api.put(`/api/v1/cart/item/${itemId}`, { quantity: newQuantity });
+      const res = await updateCartItemApi(itemId, newQuantity);
       setCart(res.data.cart);
     } catch (error) {
       console.error("Error in updateCartItem:", error.response?.data?.message || error);
@@ -57,7 +57,7 @@ export const CartProvider = ({ children }) => {
     if (!token) return;
 
     try {
-      const res = await api.delete('/api/v1/cart');
+      const res = await clearCartApi();
       setCart(res.data);
     } catch (err) {
       console.error("Error clearing cart:", err);

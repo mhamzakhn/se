@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import HeroSection from '../components/HeroSection';
+import HeroSection from '../components/common/HeroSection';
 
 const Home = ({ openLoginModal }) => {
   const [searchParams, setSearchParams] = useSearchParams();

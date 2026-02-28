@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../../context/AuthContext';
 import { Navigate } from 'react-router-dom';
 import { FiCheck as Check } from 'react-icons/fi';
 import { FaBan as Ban } from 'react-icons/fa';
-import api from '../services/api';
+import { getPendingOrders, updateOrderStatus } from '../../services/orderService';
 
 const AdminDashboard = () => {
   const { user } = useAuth();
@@ -15,7 +15,7 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     if (user && isAdmin) {
-      api.get("/api/v1/admin/orders/pending")
+      getPendingOrders()
         .then(res => setPendingOrders(res.data))
         .catch(err => console.error("Failed to fetch pending orders:", err))
         .finally(() => setLoading(false));
@@ -26,7 +26,7 @@ const AdminDashboard = () => {
 
   const handleAction = async (orderId, status) => {
     try {
-      const res = await api.patch(`/api/v1/admin/orders/${orderId}`, { status });
+      const res = await updateOrderStatus(orderId, status);
       const updated = res.data;
       setPendingOrders(prev => prev.filter(order => order._id !== updated._id));
       alert(`Order #${updated._id.slice(0, 8)} marked as ${status}`);

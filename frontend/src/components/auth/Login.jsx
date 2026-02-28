@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { loginUser } from '../services/authService';
-import { useAuth } from '../context/AuthContext';
+import { loginUser } from '../../services/authService';
+import { useAuth } from '../../context/AuthContext';
 
 const LoginPage = ({ openSignupModal, closeModal }) => {
   const [email, setEmail] = useState('');
@@ -13,33 +13,33 @@ const LoginPage = ({ openSignupModal, closeModal }) => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-  
+
     if (!email || !password) {
       setErrorMessage("Please fill in all fields");
       return;
     }
-  
+
     setErrorMessage("");
-  
+
     try {
       const { ok, data } = await loginUser(email, password);
-  
+
       if (!ok) {
         setErrorMessage(data.message || "Invalid credentials");
         return;
       }
-  
+
       const { token, user } = data;
-  
+
       if (!token || !user) {
         setErrorMessage("Login failed: invalid response");
         console.error("Missing token/user:", data);
         return;
       }
-  
+
       login(token, user);
       setLoginSuccess(true);
-  
+
       setTimeout(() => {
         closeModal?.();
       }, 1000);
@@ -48,7 +48,7 @@ const LoginPage = ({ openSignupModal, closeModal }) => {
       console.error("Login error:", err);
     }
   };
-  
+
   return (
     <div className="flex flex-col lg:flex-row w-full h-screen font-sans">
       <div className="hidden lg:flex w-1/3 bg-gradient-to-b from-[#042C5F] to-[#040304] text-white p-8 relative flex-col justify-start items-start">
@@ -98,7 +98,7 @@ const LoginPage = ({ openSignupModal, closeModal }) => {
           </p>
 
           <p className="text-center text-sm text-gray-600 mt-2">
-            Don’t have an account? {openSignupModal ? (
+            Don't have an account? {openSignupModal ? (
               <span className="text-red-600 font-semibold hover:underline cursor-pointer" onClick={openSignupModal}>Sign Up</span>
             ) : (
               <Link to="/signup" className="text-red-600 font-semibold hover:underline">Sign Up</Link>
