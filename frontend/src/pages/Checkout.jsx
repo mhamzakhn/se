@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useCart } from "../context/CartContext";
 import { Link } from "react-router-dom";
 import { Dialog } from "@headlessui/react";
-import { Minus, Plus, Trash2 as Trash, CheckCircle, ShoppingBag, AlertCircle } from "lucide-react";
+import { FiMinus as Minus, FiPlus as Plus, FiTrash2 as Trash, FiCheckCircle as CheckCircle, FiShoppingBag as ShoppingBag, FiAlertCircle as AlertCircle } from "react-icons/fi";
 
 const Checkout = () => {
   const { cart, updateCartItem, setCart, clearCart } = useCart();

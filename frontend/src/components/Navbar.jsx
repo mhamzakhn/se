@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Dialog } from "@headlessui/react";
 import { FaShoppingCart, FaUserCircle } from "react-icons/fa";
-import { Menu as MenuIcon, X } from "lucide-react";
+import { FiMenu as MenuIcon, FiX as X } from "react-icons/fi";
 import { useCart } from "../context/CartContext";
 
 const Navbar = ({ openLoginModal, openSignUpModal }) => {

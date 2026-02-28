@@ -1,4 +1,4 @@
-import bcrypt from 'bcryptjs';
+import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import Profile from '../models/Profiles.js';
 import { generateOTP, sendOTPEmail } from '../utils/otp.js';

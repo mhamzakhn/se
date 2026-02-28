@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Navigate } from 'react-router-dom';
-import { Check, Ban } from 'lucide-react';
+import { FiCheck as Check } from 'react-icons/fi';
+import { FaBan as Ban } from 'react-icons/fa';
 
 const AdminDashboard = () => {
   const { user } = useAuth();
