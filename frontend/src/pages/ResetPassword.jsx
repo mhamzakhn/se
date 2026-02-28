@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import axios from 'axios';
+import api from '../services/api';
 
 const ResetPassword = () => {
   const navigate = useNavigate();
@@ -21,10 +21,10 @@ const ResetPassword = () => {
     setLoading(true);
 
     try {
-      const res = await axios.post('http://localhost:4000/api/v1/reset-password', form);
+      const res = await api.post('/api/v1/reset-password', form);
       setMessage(res.data.message);
 
-      navigate('/');    
+      navigate('/');
     } catch (err) {
       setError(err.response?.data?.message || 'Something went wrong');
     } finally {

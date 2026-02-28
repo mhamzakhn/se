@@ -2,9 +2,10 @@
 import React, { useEffect, useState } from 'react';
 import { useCart }               from '../context/CartContext';
 import slugify                   from 'slugify';
+import { API_BASE_URL }          from '../config/api';
+import api                       from '../services/api';
 
-const API_BASE    = 'http://localhost:4000';
-const DEFAULT_IMG = '/BeefChilliDry.jpeg';  
+const DEFAULT_IMG = '/BeefChilliDry.jpeg';
 const categories  = ['All','Starters','Soups','Chinese','Sandwiches','Burgers','Drinks'];
 
 export default function MenuPage({ openLogin }) {
@@ -14,16 +15,12 @@ export default function MenuPage({ openLogin }) {
   const { addItemToCart }               = useCart();
 
   useEffect(() => {
-    fetch(`${API_BASE}/api/v1/menu`)
-      .then(res => {
-        if (!res.ok) throw new Error('Error fetching menu');
-        return res.json();
-      })
-      .then(setMenuData)
+    api.get('/api/v1/menu')
+      .then(res => setMenuData(res.data))
       .catch(() => setError('Error fetching menu.'));
   }, []);
 
- 
+
   const grouped = menuData.reduce((acc, item) => {
     (acc[item.category] = acc[item.category]||[]).push(item);
     return acc;
@@ -37,7 +34,7 @@ export default function MenuPage({ openLogin }) {
                 : item.price;
 
     const slugFilename = slugify(item.name, { lower: true, strict: true }) + '.jpg';
-    const slugFallback = `${API_BASE}/images/${slugFilename}`;
+    const slugFallback = `${API_BASE_URL}/images/${slugFilename}`;
 
     const initialSeeded = item.imageUrl;
     const initialSrc    = initialSeeded || slugFallback;

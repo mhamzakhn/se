@@ -3,6 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import { Navigate } from 'react-router-dom';
 import { FiCheck as Check } from 'react-icons/fi';
 import { FaBan as Ban } from 'react-icons/fa';
+import api from '../services/api';
 
 const AdminDashboard = () => {
   const { user } = useAuth();
@@ -14,13 +15,8 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     if (user && isAdmin) {
-      fetch("http://localhost:4000/api/v1/admin/orders/pending", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`
-        }
-      })
-        .then(res => res.json())
-        .then(data => setPendingOrders(data))
+      api.get("/api/v1/admin/orders/pending")
+        .then(res => setPendingOrders(res.data))
         .catch(err => console.error("Failed to fetch pending orders:", err))
         .finally(() => setLoading(false));
     } else if (user && !isAdmin) {
@@ -30,21 +26,12 @@ const AdminDashboard = () => {
 
   const handleAction = async (orderId, status) => {
     try {
-      const res = await fetch(`http://localhost:4000/api/v1/admin/orders/${orderId}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('token')}`
-        },
-        body: JSON.stringify({ status })
-      });
-
-      if (!res.ok) throw new Error("Failed to update order status");
-      const updated = await res.json();
+      const res = await api.patch(`/api/v1/admin/orders/${orderId}`, { status });
+      const updated = res.data;
       setPendingOrders(prev => prev.filter(order => order._id !== updated._id));
       alert(`Order #${updated._id.slice(0, 8)} marked as ${status}`);
     } catch (err) {
-      alert("Error updating order: " + err.message);
+      alert("Error updating order: " + (err.response?.data?.message || err.message));
     }
   };
 

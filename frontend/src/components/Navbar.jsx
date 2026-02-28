@@ -4,6 +4,7 @@ import { Dialog } from "@headlessui/react";
 import { FaShoppingCart, FaUserCircle } from "react-icons/fa";
 import { FiMenu as MenuIcon, FiX as X } from "react-icons/fi";
 import { useCart } from "../context/CartContext";
+import api from "../services/api";
 
 const Navbar = ({ openLoginModal, openSignUpModal }) => {
   const navigate = useNavigate();
@@ -24,15 +25,8 @@ const Navbar = ({ openLoginModal, openSignUpModal }) => {
 
   useEffect(() => {
     if (isLoggedIn) {
-      const token = localStorage.getItem("token");
-      fetch("http://localhost:4000/api/v1/profile", {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      })
-        .then((res) => res.json())
-        .then((data) => setUserProfile(data))
+      api.get("/api/v1/profile")
+        .then((res) => setUserProfile(res.data))
         .catch((err) => console.error("Error fetching profile:", err));
     } else {
       setUserProfile(null);
