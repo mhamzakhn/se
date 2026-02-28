@@ -1,5 +1,7 @@
 import api from './api';
 
+export const getProfile = () => api.get('/api/v1/profile');
+
 export const loginUser = async (email, password) => {
   try {
     const res = await api.post('/api/v1/login', { email, password });

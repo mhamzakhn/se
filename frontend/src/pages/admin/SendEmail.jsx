@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FaSpinner, FaCheckCircle } from "react-icons/fa";
-import api from "../services/api";
+import api from "../../services/api";
 
 const SendEmail = () => {
   const [subject, setSubject] = useState("");

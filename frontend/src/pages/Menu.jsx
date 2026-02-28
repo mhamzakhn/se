@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useCart }               from '../context/CartContext';
 import slugify                   from 'slugify';
 import { API_BASE_URL }          from '../config/api';
-import api                       from '../services/api';
+import { getMenuItems }          from '../services/menuService';
 
 const DEFAULT_IMG = '/BeefChilliDry.jpeg';
 const categories  = ['All','Starters','Soups','Chinese','Sandwiches','Burgers','Drinks'];
@@ -15,7 +15,7 @@ export default function MenuPage({ openLogin }) {
   const { addItemToCart }               = useCart();
 
   useEffect(() => {
-    api.get('/api/v1/menu')
+    getMenuItems()
       .then(res => setMenuData(res.data))
       .catch(() => setError('Error fetching menu.'));
   }, []);
