@@ -1,7 +1,7 @@
 // seeds/seed.js
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import MenuItem from '../models/MenuItem.js';
+import MenuItem from '../src/models/MenuItem.js';
 
 dotenv.config({ path: './config/config.env' });
 
