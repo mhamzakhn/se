@@ -21,6 +21,7 @@ import adminEmailRoutes from "./routes/adminEmail.js";
 
 import forgotPasswordRouter from './routes/forgotPassword.js';
 import resetPasswordRouter from './routes/resetPassword.js';
+import { errorMiddleware } from './error/error.js';
 
 dotenv.config({ path: "./config/config.env" });
 
@@ -56,7 +57,8 @@ app.use('/api/v1/admin/orders', adminOrdersRouter);
 app.use("/api/v1/admin/menu", adminMenuRoutes);
 app.use("/api/v1/admin", adminEmailRoutes);
 
-dbConnection();
+app.use(errorMiddleware);
 
+dbConnection();
 
 export default app;

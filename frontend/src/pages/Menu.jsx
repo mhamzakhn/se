@@ -1,6 +1,5 @@
 
 import React, { useEffect, useState } from 'react';
-import { FaShoppingCart }         from 'react-icons/fa';
 import { useCart }               from '../context/CartContext';
 import slugify                   from 'slugify';
 
