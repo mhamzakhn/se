@@ -1,7 +1,11 @@
 import express from 'express';
 import MenuItem from '../models/MenuItem.js';
+import requireAuth from '../middleware/requireAuth.js';
+import requireAdmin from '../middleware/requireAdmin.js';
 
 const router = express.Router();
+router.use(requireAuth);
+router.use(requireAdmin);
 
 router.post('/', async (req, res) => {
   try {
