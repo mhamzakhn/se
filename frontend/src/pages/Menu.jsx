@@ -12,12 +12,14 @@ export default function MenuPage({ openLogin }) {
   const [menuData, setMenuData]         = useState([]);
   const [selectedCategory, setCategory] = useState('All');
   const [error, setError]               = useState(null);
+  const [loading, setLoading]           = useState(true);
   const { addItemToCart }               = useCart();
 
   useEffect(() => {
     getMenuItems()
       .then(res => setMenuData(res.data.data))
-      .catch(() => setError('Error fetching menu.'));
+      .catch(() => setError('Error fetching menu.'))
+      .finally(() => setLoading(false));
   }, []);
 
 
@@ -77,6 +79,10 @@ export default function MenuPage({ openLogin }) {
       </div>
     );
   };
+
+  if (loading) {
+    return <div className="text-white text-center mt-10">Loading menu...</div>;
+  }
 
   if (error) {
     return <div className="text-white text-center mt-10">{error}</div>;

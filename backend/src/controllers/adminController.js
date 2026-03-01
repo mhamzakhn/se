@@ -4,7 +4,7 @@ import MenuItem from '../models/MenuItem.js';
 import Order from '../models/Order.js';
 import catchAsync from '../utils/catchAsync.js';
 import AppError from '../utils/AppError.js';
-import { sendResponse } from '../utils/response.js';
+import { sendResponse, sendPaginatedResponse } from '../utils/response.js';
 
 export const sendAdminEmail = catchAsync(async (req, res) => {
   const { subject, content } = req.body;
@@ -53,11 +53,19 @@ export const deleteMenuItem = catchAsync(async (req, res) => {
 });
 
 export const getPendingOrders = catchAsync(async (req, res) => {
-  const orders = await Order.find({ status: 'pending' })
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 20;
+  const skip = (page - 1) * limit;
+  const filter = { status: 'pending' };
+
+  const total = await Order.countDocuments(filter);
+  const orders = await Order.find(filter)
     .sort({ createdAt: -1 })
+    .skip(skip)
+    .limit(limit)
     .populate('user', 'name email phone');
 
-  sendResponse(res, 200, orders);
+  sendPaginatedResponse(res, 200, orders, total, page, limit);
 });
 
 export const updateOrderStatus = catchAsync(async (req, res) => {
