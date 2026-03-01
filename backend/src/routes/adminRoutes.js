@@ -28,6 +28,6 @@ router.delete('/menu/:id', deleteMenuItem);
 router.get('/orders/pending', getPendingOrders);
 router.patch('/orders/:id', validateUpdateOrderStatus, validate, updateOrderStatus);
 
-router.post('/send-email', validateSendEmail, validate, sendAdminEmail);
+router.post('/email', validateSendEmail, validate, sendAdminEmail);
 
 export default router;

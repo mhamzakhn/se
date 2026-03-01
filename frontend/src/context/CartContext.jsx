@@ -13,7 +13,7 @@ export const CartProvider = ({ children }) => {
     const token = localStorage.getItem('token');
     if (token) {
       fetchCart()
-        .then(res => setCart(res.data))
+        .then(res => setCart(res.data.data))
         .catch(err => console.error("Error fetching cart:", err));
     }
   }, []);
@@ -32,7 +32,7 @@ export const CartProvider = ({ children }) => {
         discounted_price_for_LUMS_student: item.discounted_price_for_LUMS_student,
         quantity: 1
       });
-      setCart(res.data.cart);
+      setCart(res.data.data.cart);
     } catch (error) {
       console.error("Error in addItemToCart:", error.response?.data?.message || error);
     }
@@ -46,7 +46,7 @@ export const CartProvider = ({ children }) => {
     }
     try {
       const res = await updateCartItemApi(itemId, newQuantity);
-      setCart(res.data.cart);
+      setCart(res.data.data.cart);
     } catch (error) {
       console.error("Error in updateCartItem:", error.response?.data?.message || error);
     }
@@ -58,7 +58,7 @@ export const CartProvider = ({ children }) => {
 
     try {
       const res = await clearCartApi();
-      setCart(res.data);
+      setCart(res.data.data);
     } catch (err) {
       console.error("Error clearing cart:", err);
     }

@@ -23,7 +23,7 @@ const SendEmail = () => {
 
     setIsLoading(true);
     try {
-      await api.post("/api/v1/admin/send-email", { subject, content });
+      await api.post("/api/v1/admin/email", { subject, content });
 
       setSubject("");
       setContent("");

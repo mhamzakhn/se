@@ -4,6 +4,7 @@ import MenuItem from '../models/MenuItem.js';
 import Order from '../models/Order.js';
 import catchAsync from '../utils/catchAsync.js';
 import AppError from '../utils/AppError.js';
+import { sendResponse } from '../utils/response.js';
 
 export const sendAdminEmail = catchAsync(async (req, res) => {
   const { subject, content } = req.body;
@@ -23,13 +24,13 @@ export const sendAdminEmail = catchAsync(async (req, res) => {
     html: `<p>${content.replace(/\n/g, '<br>')}</p>`,
   });
 
-  res.status(200).json({ message: 'Emails sent successfully.' });
+  sendResponse(res, 200, null, 'Emails sent successfully.');
 });
 
 export const addMenuItem = catchAsync(async (req, res) => {
   const newItem = new MenuItem(req.body);
   await newItem.save();
-  res.status(201).json(newItem);
+  sendResponse(res, 201, newItem);
 });
 
 export const updateMenuItem = catchAsync(async (req, res) => {
@@ -40,7 +41,7 @@ export const updateMenuItem = catchAsync(async (req, res) => {
   if (!updatedItem) {
     throw new AppError('Item not found', 404);
   }
-  res.status(200).json(updatedItem);
+  sendResponse(res, 200, updatedItem);
 });
 
 export const deleteMenuItem = catchAsync(async (req, res) => {
@@ -48,7 +49,7 @@ export const deleteMenuItem = catchAsync(async (req, res) => {
   if (!deletedItem) {
     throw new AppError('Item not found', 404);
   }
-  res.status(200).json({ message: 'Item deleted successfully' });
+  sendResponse(res, 200, null, 'Item deleted successfully');
 });
 
 export const getPendingOrders = catchAsync(async (req, res) => {
@@ -56,7 +57,7 @@ export const getPendingOrders = catchAsync(async (req, res) => {
     .sort({ createdAt: -1 })
     .populate('user', 'name email phone');
 
-  res.json(orders);
+  sendResponse(res, 200, orders);
 });
 
 export const updateOrderStatus = catchAsync(async (req, res) => {
@@ -71,5 +72,5 @@ export const updateOrderStatus = catchAsync(async (req, res) => {
   if (!order) {
     throw new AppError('Order not found', 404);
   }
-  res.json(order);
+  sendResponse(res, 200, order);
 });

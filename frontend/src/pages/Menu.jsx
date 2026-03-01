@@ -16,7 +16,7 @@ export default function MenuPage({ openLogin }) {
 
   useEffect(() => {
     getMenuItems()
-      .then(res => setMenuData(res.data))
+      .then(res => setMenuData(res.data.data))
       .catch(() => setError('Error fetching menu.'));
   }, []);
 

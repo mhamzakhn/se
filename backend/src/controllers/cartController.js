@@ -1,6 +1,7 @@
 import Cart from '../models/Cart.js';
 import catchAsync from '../utils/catchAsync.js';
 import AppError from '../utils/AppError.js';
+import { sendResponse } from '../utils/response.js';
 
 export const addToCart = catchAsync(async (req, res) => {
   const userId = req.user.id;
@@ -22,16 +23,16 @@ export const addToCart = catchAsync(async (req, res) => {
   }
 
   await cart.save();
-  return res.status(200).json({ message: 'Item added to cart', cart });
+  sendResponse(res, 200, { cart }, 'Item added to cart');
 });
 
 export const getCart = catchAsync(async (req, res) => {
   const userId = req.user.id;
   const cart = await Cart.findOne({ user: userId });
   if (!cart) {
-    return res.status(200).json({ items: [] });
+    return sendResponse(res, 200, { items: [] });
   }
-  return res.status(200).json(cart);
+  sendResponse(res, 200, cart);
 });
 
 export const updateCartItem = catchAsync(async (req, res) => {
@@ -44,7 +45,7 @@ export const updateCartItem = catchAsync(async (req, res) => {
       { user: userId },
       { $pull: { items: { item_id: itemId } } }
     );
-    return res.status(200).json({ message: 'Item removed from cart' });
+    return sendResponse(res, 200, null, 'Item removed from cart');
   }
 
   let cart = await Cart.findOne({ user: userId });
@@ -62,7 +63,7 @@ export const updateCartItem = catchAsync(async (req, res) => {
   cart.items[itemIndex].quantity = quantity;
   await cart.save();
 
-  return res.status(200).json({ message: 'Cart updated', cart });
+  sendResponse(res, 200, { cart }, 'Cart updated');
 });
 
 export const deleteCartItem = catchAsync(async (req, res) => {
@@ -79,7 +80,7 @@ export const deleteCartItem = catchAsync(async (req, res) => {
     throw new AppError('Cart not found', 404);
   }
 
-  return res.status(200).json({ cart });
+  sendResponse(res, 200, { cart });
 });
 
 export const clearCart = catchAsync(async (req, res) => {
@@ -89,5 +90,5 @@ export const clearCart = catchAsync(async (req, res) => {
     { $set: { items: [] } },
     { new: true }
   );
-  res.status(200).json(cart);
+  sendResponse(res, 200, cart);
 });

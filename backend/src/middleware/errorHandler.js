@@ -24,9 +24,12 @@ export const errorMiddleware = (err, req, res, next) => {
     err = new AppError('Token expired', 401);
   }
 
+  const errorMessage = err.isOperational ? err.message : 'Internal server error';
+
   const response = {
     success: false,
-    message: err.isOperational ? err.message : 'Internal server error',
+    message: errorMessage,
+    error: errorMessage,
   };
 
   if (process.env.NODE_ENV !== 'production') {
