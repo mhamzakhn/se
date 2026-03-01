@@ -1,37 +1,20 @@
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Dialog } from "@headlessui/react";
 import { FaShoppingCart, FaUserCircle } from "react-icons/fa";
 import { FiMenu as MenuIcon, FiX as X } from "react-icons/fi";
 import { useCart } from "../../context/CartContext";
-import { getProfile } from "../../services/authService";
+import { useAuth } from "../../context/AuthContext";
 
 const Navbar = ({ openLoginModal, openSignUpModal }) => {
   const navigate = useNavigate();
-  const [isLoggedIn, setIsLoggedIn] = useState(() => Boolean(localStorage.getItem("token")));
-  const [userProfile, setUserProfile] = useState(null);
+  const { user, isAuthenticated, logout } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef(null);
 
   const { getCartCount } = useCart();
   const cartCount = getCartCount();
-
-  useEffect(() => {
-    const checkToken = () => setIsLoggedIn(Boolean(localStorage.getItem("token")));
-    const interval = setInterval(checkToken, 1000);
-    return () => clearInterval(interval);
-  }, []);
-
-  useEffect(() => {
-    if (isLoggedIn) {
-      getProfile()
-        .then((res) => setUserProfile(res.data.data))
-        .catch((err) => console.error("Error fetching profile:", err));
-    } else {
-      setUserProfile(null);
-    }
-  }, [isLoggedIn]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -44,14 +27,12 @@ const Navbar = ({ openLoginModal, openSignUpModal }) => {
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    setIsLoggedIn(false);
-    setUserProfile(null);
+    logout();
     setShowDropdown(false);
     navigate("/");
   };
 
-  const menuPath = userProfile?.role === "admin" ? "/admin/menu" : "/menu";
+  const menuPath = user?.role === "admin" ? "/admin/menu" : "/menu";
 
   return (
     <header className="bg-restaurant-primary shadow-md">
@@ -66,10 +47,10 @@ const Navbar = ({ openLoginModal, openSignUpModal }) => {
         <div className="hidden lg:flex gap-x-10 items-center">
           <Link to="/" className="text-white hover:text-gray-300 text-sm font-medium transition transform hover:scale-110">Home</Link>
           <Link to={menuPath} className="text-white hover:text-gray-300 text-sm font-medium transition transform hover:scale-110">Menu</Link>
-          {userProfile?.role === "admin" && (
+          {user?.role === "admin" && (
             <Link to="/admin/dashboard" className="text-white hover:text-gray-300 text-sm font-medium transition transform hover:scale-110">Dashboard</Link>
           )}
-          {userProfile?.role === "admin" ? (
+          {user?.role === "admin" ? (
             <Link to="/admin/send-email" className="text-white hover:text-gray-300 text-sm font-medium transition transform hover:scale-110">Send Email</Link>
           ) : (
             <Link to="/contact" className="text-white hover:text-gray-300 text-sm font-medium transition transform hover:scale-110">Contact</Link>
@@ -85,12 +66,12 @@ const Navbar = ({ openLoginModal, openSignUpModal }) => {
             )}
           </Link>
 
-          {isLoggedIn ? (
+          {isAuthenticated ? (
             <div className="relative" ref={dropdownRef}>
               <FaUserCircle size={24} className="text-white cursor-pointer" onClick={() => setShowDropdown(!showDropdown)} />
               {showDropdown && (
                 <div className="absolute right-0 mt-3 w-48 bg-[#101214] text-white rounded-xl shadow-2xl ring-1 ring-white/5 p-4 z-50 animate-fade-in">
-                  <p className="text-sm text-gray-300 mb-3">Hello, {userProfile?.name}</p>
+                  <p className="text-sm text-gray-300 mb-3">Hello, {user?.name}</p>
                   <button
                     onClick={handleLogout}
                     className="text-red-400 hover:text-red-300 text-sm transition"
@@ -129,20 +110,20 @@ const Navbar = ({ openLoginModal, openSignUpModal }) => {
           <div className="space-y-5 text-base font-medium">
             <Link to="/" onClick={() => setMobileMenuOpen(false)} className="block hover:text-red-500 transition">Home</Link>
             <Link to={menuPath} onClick={() => setMobileMenuOpen(false)} className="block hover:text-red-500 transition">Menu</Link>
-            {userProfile?.role === "admin" && (
+            {user?.role === "admin" && (
               <Link to="/admin/dashboard" onClick={() => setMobileMenuOpen(false)} className="block hover:text-red-500 transition">Dashboard</Link>
             )}
-            {userProfile?.role === "admin" ? (
+            {user?.role === "admin" ? (
               <Link to="/admin/send-email" onClick={() => setMobileMenuOpen(false)} className="block hover:text-red-500 transition">Send Email</Link>
             ) : (
               <Link to="/contact" onClick={() => setMobileMenuOpen(false)} className="block hover:text-red-500 transition">Contact</Link>
             )}
             <Link to="/checkout" onClick={() => setMobileMenuOpen(false)} className="block hover:text-red-500 transition">Cart</Link>
 
-            {isLoggedIn ? (
+            {isAuthenticated ? (
               <>
                 <div className="pt-4 border-t border-gray-600">
-                  <p className="mb-2 text-gray-300">Hello, <span className="font-semibold">{userProfile?.name}</span></p>
+                  <p className="mb-2 text-gray-300">Hello, <span className="font-semibold">{user?.name}</span></p>
                   <button
                     onClick={handleLogout}
                     className="text-red-400 hover:text-red-300 font-medium transition"
