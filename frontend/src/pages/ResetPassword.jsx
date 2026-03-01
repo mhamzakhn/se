@@ -21,7 +21,7 @@ const ResetPassword = () => {
     setLoading(true);
 
     try {
-      const res = await api.post('/api/v1/reset-password', form);
+      const res = await api.post('/api/v1/auth/reset-password', form);
       setMessage(res.data.message);
 
       navigate('/');

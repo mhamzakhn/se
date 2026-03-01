@@ -5,6 +5,7 @@ import { generateOTP, sendOTPEmail } from '../services/otpService.js';
 import redisClient from '../services/redisClient.js';
 import catchAsync from '../utils/catchAsync.js';
 import AppError from '../utils/AppError.js';
+import { sendResponse } from '../utils/response.js';
 
 export const login = catchAsync(async (req, res) => {
   const { email, password } = req.body;
@@ -25,8 +26,7 @@ export const login = catchAsync(async (req, res) => {
     { expiresIn: '1d' }
   );
 
-  res.status(200).json({
-    message: 'Login successful',
+  sendResponse(res, 200, {
     token,
     user: {
       id: user._id,
@@ -35,7 +35,7 @@ export const login = catchAsync(async (req, res) => {
       role: user.role,
       student_status: user.student_status,
     },
-  });
+  }, 'Login successful');
 });
 
 export const signup = catchAsync(async (req, res) => {
@@ -74,7 +74,7 @@ export const signup = catchAsync(async (req, res) => {
 
   await sendOTPEmail(email, otp);
 
-  return res.status(200).json({ message: 'OTP sent to your email. Please verify to complete signup.' });
+  sendResponse(res, 200, null, 'OTP sent to your email. Please verify to complete signup.');
 });
 
 export const verifyOtp = catchAsync(async (req, res) => {
@@ -103,7 +103,7 @@ export const verifyOtp = catchAsync(async (req, res) => {
   });
   await profile.save();
   await redisClient.del(redisKey);
-  return res.status(201).json({ message: 'User created successfully.', profile });
+  sendResponse(res, 201, { profile }, 'User created successfully.');
 });
 
 export const getProfile = catchAsync(async (req, res) => {
@@ -111,7 +111,7 @@ export const getProfile = catchAsync(async (req, res) => {
   if (!profile) {
     throw new AppError('Profile not found', 404);
   }
-  res.status(200).json(profile);
+  sendResponse(res, 200, profile);
 });
 
 export const forgotPassword = catchAsync(async (req, res) => {
@@ -132,10 +132,7 @@ export const forgotPassword = catchAsync(async (req, res) => {
 
   await sendOTPEmail(email, otp);
 
-  return res.status(200).json({
-    message: 'OTP sent to your email',
-    email,
-  });
+  sendResponse(res, 200, { email }, 'OTP sent to your email');
 });
 
 export const verifyResetOTP = catchAsync(async (req, res) => {
@@ -159,9 +156,7 @@ export const verifyResetOTP = catchAsync(async (req, res) => {
     verified: true,
   }));
 
-  return res.status(200).json({
-    message: 'OTP verified successfully',
-  });
+  sendResponse(res, 200, null, 'OTP verified successfully');
 });
 
 export const resetPassword = catchAsync(async (req, res) => {
@@ -191,7 +186,5 @@ export const resetPassword = catchAsync(async (req, res) => {
 
   await redisClient.del(redisKey);
 
-  return res.status(200).json({
-    message: 'Password reset successfully',
-  });
+  sendResponse(res, 200, null, 'Password reset successfully');
 });

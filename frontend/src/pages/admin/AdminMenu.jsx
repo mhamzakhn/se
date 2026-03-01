@@ -15,7 +15,7 @@ const AdminMenuPage = () => {
 
   const fetchMenu = async () => {
     const res = await getMenuItems();
-    setMenuData(res.data);
+    setMenuData(res.data.data);
   };
 
   const handleAddItem = () => {

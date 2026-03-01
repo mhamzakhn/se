@@ -3,6 +3,7 @@ import Cart from '../models/Cart.js';
 import User from '../models/User.js';
 import catchAsync from '../utils/catchAsync.js';
 import AppError from '../utils/AppError.js';
+import { sendResponse } from '../utils/response.js';
 
 export const placeOrder = catchAsync(async (req, res) => {
   const userId = req.user.id;
@@ -41,8 +42,5 @@ export const placeOrder = catchAsync(async (req, res) => {
   cart.items = [];
   await cart.save();
 
-  return res.status(200).json({
-    message: 'Order placed successfully',
-    order: newOrder,
-  });
+  sendResponse(res, 200, { order: newOrder }, 'Order placed successfully');
 });

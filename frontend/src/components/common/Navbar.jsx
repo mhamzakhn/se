@@ -26,7 +26,7 @@ const Navbar = ({ openLoginModal, openSignUpModal }) => {
   useEffect(() => {
     if (isLoggedIn) {
       getProfile()
-        .then((res) => setUserProfile(res.data))
+        .then((res) => setUserProfile(res.data.data))
         .catch((err) => console.error("Error fetching profile:", err));
     } else {
       setUserProfile(null);

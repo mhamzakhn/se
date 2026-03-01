@@ -33,7 +33,7 @@ const Checkout = () => {
   const handleDeleteItem = async (itemId) => {
     try {
       const res = await removeCartItem(itemId);
-      setCart(res.data.cart);
+      setCart(res.data.data.cart);
     } catch (err) {
       console.error("Delete failed:", err);
     }

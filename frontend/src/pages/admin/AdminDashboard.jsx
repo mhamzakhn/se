@@ -16,7 +16,7 @@ const AdminDashboard = () => {
   useEffect(() => {
     if (user && isAdmin) {
       getPendingOrders()
-        .then(res => setPendingOrders(res.data))
+        .then(res => setPendingOrders(res.data.data))
         .catch(err => console.error("Failed to fetch pending orders:", err))
         .finally(() => setLoading(false));
     } else if (user && !isAdmin) {
@@ -27,7 +27,7 @@ const AdminDashboard = () => {
   const handleAction = async (orderId, status) => {
     try {
       const res = await updateOrderStatus(orderId, status);
-      const updated = res.data;
+      const updated = res.data.data;
       setPendingOrders(prev => prev.filter(order => order._id !== updated._id));
       alert(`Order #${updated._id.slice(0, 8)} marked as ${status}`);
     } catch (err) {
