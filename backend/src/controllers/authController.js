@@ -3,256 +3,195 @@ import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
 import { generateOTP, sendOTPEmail } from '../services/otpService.js';
 import redisClient from '../services/redisClient.js';
+import catchAsync from '../utils/catchAsync.js';
+import AppError from '../utils/AppError.js';
 
-export const login = async (req, res) => {
-  try {
-    const { email, password } = req.body;
+export const login = catchAsync(async (req, res) => {
+  const { email, password } = req.body;
 
-    if (!email || !password) {
-      return res.status(400).json({ message: "Email and password are required." });
-    }
-
-    const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(401).json({ message: "Email not found." });
-    }
-
-    const isMatch = await bcrypt.compare(password, user.password_hash);
-    if (!isMatch) {
-      return res.status(401).json({ message: "Incorrect password." });
-    }
-
-    const token = jwt.sign(
-      { id: user._id, name: user.name, email: user.email, role: user.role, student_status: user.student_status },
-      process.env.JWT_SECRET,
-      { expiresIn: '1d' }
-    );
-
-    res.status(200).json({
-      message: "Login successful",
-      token,
-      user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-        student_status: user.student_status
-      }
-    });
-  } catch (error) {
-    console.error("Login error:", error);
-    res.status(500).json({ message: "Server error during login." });
+  const user = await User.findOne({ email });
+  if (!user) {
+    throw new AppError('Email not found.', 401);
   }
-};
 
-export const signup = async (req, res) => {
-  try {
-    const { firstName, lastName, email, password, phone, role } = req.body;
-
-    if (!firstName || !lastName || !email || !password) {
-      return res.status(400).json({ message: "First name, last name, email, and password are required." });
-    }
-
-    const name = `${firstName} ${lastName}`;
-
-    const existingProfile = await User.findOne({ email });
-    if (existingProfile) {
-      return res.status(400).json({ message: "Email already exists." });
-    }
-
-    let determinedStudentStatus = 'non-student';
-    const lowerEmail = email.toLowerCase();
-    if (lowerEmail.endsWith('@lums.edu.pk')) {
-      determinedStudentStatus = 'student';
-    }
-
-    const saltRounds = 10;
-    const password_hash = await bcrypt.hash(password, saltRounds);
-
-    const otp = generateOTP();
-
-    const signupData = {
-      name,
-      email,
-      password_hash,
-      phone,
-      role: role || 'user',
-      student_status: determinedStudentStatus,
-      otp,
-    };
-
-    const redisKey = `signup:${email}`;
-    await redisClient.set(redisKey, JSON.stringify(signupData), { EX: 5 * 60 });
-
-    await sendOTPEmail(email, otp);
-
-    return res.status(200).json({ message: "OTP sent to your email. Please verify to complete signup." });
-  } catch (error) {
-    console.error("Signup error:", error);
-    res.status(500).json({ message: "Server error during signup." });
+  const isMatch = await bcrypt.compare(password, user.password_hash);
+  if (!isMatch) {
+    throw new AppError('Incorrect password.', 401);
   }
-};
 
-export const verifyOtp = async (req, res) => {
+  const token = jwt.sign(
+    { id: user._id, name: user.name, email: user.email, role: user.role, student_status: user.student_status },
+    process.env.JWT_SECRET,
+    { expiresIn: '1d' }
+  );
+
+  res.status(200).json({
+    message: 'Login successful',
+    token,
+    user: {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      student_status: user.student_status,
+    },
+  });
+});
+
+export const signup = catchAsync(async (req, res) => {
+  const { firstName, lastName, email, password, phone, role } = req.body;
+
+  const name = `${firstName} ${lastName}`;
+
+  const existingProfile = await User.findOne({ email });
+  if (existingProfile) {
+    throw new AppError('Email already exists.', 400);
+  }
+
+  let determinedStudentStatus = 'non-student';
+  const lowerEmail = email.toLowerCase();
+  if (lowerEmail.endsWith('@lums.edu.pk')) {
+    determinedStudentStatus = 'student';
+  }
+
+  const saltRounds = 10;
+  const password_hash = await bcrypt.hash(password, saltRounds);
+
+  const otp = generateOTP();
+
+  const signupData = {
+    name,
+    email,
+    password_hash,
+    phone,
+    role: role || 'user',
+    student_status: determinedStudentStatus,
+    otp,
+  };
+
+  const redisKey = `signup:${email}`;
+  await redisClient.set(redisKey, JSON.stringify(signupData), { EX: 5 * 60 });
+
+  await sendOTPEmail(email, otp);
+
+  return res.status(200).json({ message: 'OTP sent to your email. Please verify to complete signup.' });
+});
+
+export const verifyOtp = catchAsync(async (req, res) => {
   const { email, otp } = req.body;
-
-  if (!email || !otp) {
-    return res.status(400).json({ message: "Email and OTP are required." });
-  }
 
   const redisKey = `signup:${email}`;
   const data = await redisClient.get(redisKey);
   if (!data) {
-    return res.status(400).json({ message: "OTP expired or not found. Please try signing up again." });
+    throw new AppError('OTP expired or not found. Please try signing up again.', 400);
   }
 
   const signupData = JSON.parse(data);
 
   if (signupData.otp !== otp) {
-    return res.status(400).json({ message: "Invalid OTP. Please try again." });
+    throw new AppError('Invalid OTP. Please try again.', 400);
   }
 
-  try {
-    const profile = new User({
-      _id: email,
-      email,
-      name: signupData.name,
-      password_hash: signupData.password_hash,
-      phone: signupData.phone,
-      student_status: signupData.student_status,
-      role: signupData.role,
-    });
-    await profile.save();
-    await redisClient.del(redisKey);
-    return res.status(201).json({ message: "User created successfully.", profile });
-  } catch (error) {
-    console.error("Error creating user after OTP verification:", error);
-    return res.status(500).json({ message: "Server error while creating user." });
+  const profile = new User({
+    _id: email,
+    email,
+    name: signupData.name,
+    password_hash: signupData.password_hash,
+    phone: signupData.phone,
+    student_status: signupData.student_status,
+    role: signupData.role,
+  });
+  await profile.save();
+  await redisClient.del(redisKey);
+  return res.status(201).json({ message: 'User created successfully.', profile });
+});
+
+export const getProfile = catchAsync(async (req, res) => {
+  const profile = await User.findById(req.user.id);
+  if (!profile) {
+    throw new AppError('Profile not found', 404);
   }
-};
+  res.status(200).json(profile);
+});
 
-export const getProfile = async (req, res) => {
-  try {
-    const profile = await User.findById(req.user.id);
-    if (!profile) {
-      return res.status(404).json({ message: 'Profile not found' });
-    }
-    res.status(200).json(profile);
-  } catch (error) {
-    console.error("Error retrieving profile:", error);
-    res.status(500).json({ message: 'Server error' });
+export const forgotPassword = catchAsync(async (req, res) => {
+  const { email } = req.body;
+
+  const user = await User.findOne({ email });
+  if (!user) {
+    throw new AppError('Email not found', 404);
   }
-};
 
-export const forgotPassword = async (req, res) => {
-  try {
-    const { email } = req.body;
+  const otp = generateOTP();
+  const redisKey = `reset:${email}`;
 
-    if (!email) {
-      return res.status(400).json({ message: "Email is required" });
-    }
+  await redisClient.set(redisKey, JSON.stringify({
+    otp,
+    createdAt: Date.now(),
+  }), { EX: 600 });
 
-    const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(404).json({ message: "Email not found" });
-    }
+  await sendOTPEmail(email, otp);
 
-    const otp = generateOTP();
-    const redisKey = `reset:${email}`;
+  return res.status(200).json({
+    message: 'OTP sent to your email',
+    email,
+  });
+});
 
-    await redisClient.set(redisKey, JSON.stringify({
-      otp,
-      createdAt: Date.now()
-    }), { EX: 600 });
+export const verifyResetOTP = catchAsync(async (req, res) => {
+  const { email, otp } = req.body;
 
-    await sendOTPEmail(email, otp);
+  const redisKey = `reset:${email}`;
+  const storedData = await redisClient.get(redisKey);
 
-    return res.status(200).json({
-      message: "OTP sent to your email",
-      email
-    });
-  } catch (error) {
-    console.error("Forgot password error:", error);
-    return res.status(500).json({ message: "Server error" });
+  if (!storedData) {
+    throw new AppError('OTP expired or invalid', 400);
   }
-};
 
-export const verifyResetOTP = async (req, res) => {
-  try {
-    const { email, otp } = req.body;
+  const { otp: storedOTP } = JSON.parse(storedData);
 
-    if (!email || !otp) {
-      return res.status(400).json({ message: "Email and OTP are required" });
-    }
-
-    const redisKey = `reset:${email}`;
-    const storedData = await redisClient.get(redisKey);
-
-    if (!storedData) {
-      return res.status(400).json({ message: "OTP expired or invalid" });
-    }
-
-    const { otp: storedOTP } = JSON.parse(storedData);
-
-    if (otp !== storedOTP) {
-      return res.status(400).json({ message: "Invalid OTP" });
-    }
-
-    await redisClient.set(redisKey, JSON.stringify({
-      ...JSON.parse(storedData),
-      verified: true
-    }));
-
-    return res.status(200).json({
-      message: "OTP verified successfully"
-    });
-  } catch (error) {
-    console.error("Verify OTP error:", error);
-    return res.status(500).json({ message: "Server error" });
+  if (otp !== storedOTP) {
+    throw new AppError('Invalid OTP', 400);
   }
-};
 
-export const resetPassword = async (req, res) => {
-  try {
-    const { email, newPassword, otp } = req.body;
+  await redisClient.set(redisKey, JSON.stringify({
+    ...JSON.parse(storedData),
+    verified: true,
+  }));
 
-    if (!email || !newPassword || !otp) {
-      return res.status(400).json({ message: "All fields are required" });
-    }
+  return res.status(200).json({
+    message: 'OTP verified successfully',
+  });
+});
 
-    if (newPassword.length < 8) {
-      return res.status(400).json({ message: "Password must be at least 8 characters" });
-    }
+export const resetPassword = catchAsync(async (req, res) => {
+  const { email, newPassword, otp } = req.body;
 
-    const redisKey = `reset:${email}`;
-    const storedData = await redisClient.get(redisKey);
+  const redisKey = `reset:${email}`;
+  const storedData = await redisClient.get(redisKey);
 
-    if (!storedData) {
-      return res.status(400).json({ message: "Session expired. Please request a new OTP." });
-    }
-
-    const { otp: storedOTP, verified } = JSON.parse(storedData);
-
-    if (otp !== storedOTP || !verified) {
-      return res.status(400).json({ message: "Invalid OTP or OTP not verified" });
-    }
-
-    const saltRounds = 10;
-    const password_hash = await bcrypt.hash(newPassword, saltRounds);
-
-    await User.findOneAndUpdate(
-      { email },
-      { password_hash },
-      { new: true }
-    );
-
-    await redisClient.del(redisKey);
-
-    return res.status(200).json({
-      message: "Password reset successfully"
-    });
-  } catch (error) {
-    console.error("Reset password error:", error);
-    return res.status(500).json({ message: "Server error" });
+  if (!storedData) {
+    throw new AppError('Session expired. Please request a new OTP.', 400);
   }
-};
+
+  const { otp: storedOTP, verified } = JSON.parse(storedData);
+
+  if (otp !== storedOTP || !verified) {
+    throw new AppError('Invalid OTP or OTP not verified', 400);
+  }
+
+  const saltRounds = 10;
+  const password_hash = await bcrypt.hash(newPassword, saltRounds);
+
+  await User.findOneAndUpdate(
+    { email },
+    { password_hash },
+    { new: true }
+  );
+
+  await redisClient.del(redisKey);
+
+  return res.status(200).json({
+    message: 'Password reset successfully',
+  });
+});

@@ -1,120 +1,93 @@
 import Cart from '../models/Cart.js';
+import catchAsync from '../utils/catchAsync.js';
+import AppError from '../utils/AppError.js';
 
-export const addToCart = async (req, res) => {
-  try {
-    const userId = req.user.id;
-    const { item_id, name, price, discounted_price_for_LUMS_student, quantity } = req.body;
+export const addToCart = catchAsync(async (req, res) => {
+  const userId = req.user.id;
+  const { item_id, name, price, discounted_price_for_LUMS_student, quantity } = req.body;
 
-    if (!item_id || !name || !price) {
-      return res.status(400).json({ message: 'Item details are required.' });
-    }
-
-    let cart = await Cart.findOne({ user: userId });
-    if (!cart) {
-      cart = new Cart({ user: userId, items: [] });
-    }
-
-    const itemIndex = cart.items.findIndex(
-      item => item.item_id === item_id
-    );
-
-    if (itemIndex > -1) {
-      cart.items[itemIndex].quantity += quantity || 1;
-    } else {
-      cart.items.push({ item_id, name, price, discounted_price_for_LUMS_student, quantity: quantity || 1 });
-    }
-
-    await cart.save();
-    return res.status(200).json({ message: 'Item added to cart', cart });
-  } catch (error) {
-    console.error('Error adding item to cart:', error);
-    return res.status(500).json({ message: 'Error adding item to cart' });
+  let cart = await Cart.findOne({ user: userId });
+  if (!cart) {
+    cart = new Cart({ user: userId, items: [] });
   }
-};
 
-export const getCart = async (req, res) => {
-  try {
-    const userId = req.user.id;
-    const cart = await Cart.findOne({ user: userId });
-    if (!cart) {
-      return res.status(200).json({ items: [] });
-    }
-    return res.status(200).json(cart);
-  } catch (error) {
-    console.error('Error fetching cart:', error);
-    return res.status(500).json({ message: 'Error fetching cart' });
+  const itemIndex = cart.items.findIndex(
+    item => item.item_id === item_id
+  );
+
+  if (itemIndex > -1) {
+    cart.items[itemIndex].quantity += quantity || 1;
+  } else {
+    cart.items.push({ item_id, name, price, discounted_price_for_LUMS_student, quantity: quantity || 1 });
   }
-};
 
-export const updateCartItem = async (req, res) => {
-  try {
-    const userId = req.user.id;
-    const { quantity } = req.body;
-    const { itemId } = req.params;
+  await cart.save();
+  return res.status(200).json({ message: 'Item added to cart', cart });
+});
 
-    if (quantity < 1) {
-      await Cart.findOneAndUpdate(
-        { user: userId },
-        { $pull: { items: { item_id: itemId } } }
-      );
-      return res.status(200).json({ message: 'Item removed from cart' });
-    }
-
-    let cart = await Cart.findOne({ user: userId });
-    if (!cart) {
-      return res.status(404).json({ message: 'Cart not found' });
-    }
-
-    const itemIndex = cart.items.findIndex(
-      (item) => item.item_id.toString() === itemId
-    );
-    if (itemIndex === -1) {
-      return res.status(404).json({ message: 'Item not found in cart' });
-    }
-
-    cart.items[itemIndex].quantity = quantity;
-    await cart.save();
-
-    return res.status(200).json({ message: 'Cart updated', cart });
-  } catch (error) {
-    console.error('Error updating cart item:', error);
-    return res.status(500).json({ message: 'Error updating cart item' });
+export const getCart = catchAsync(async (req, res) => {
+  const userId = req.user.id;
+  const cart = await Cart.findOne({ user: userId });
+  if (!cart) {
+    return res.status(200).json({ items: [] });
   }
-};
+  return res.status(200).json(cart);
+});
 
-export const deleteCartItem = async (req, res) => {
-  try {
-    const { itemId } = req.params;
-    const userId = req.user.id;
+export const updateCartItem = catchAsync(async (req, res) => {
+  const userId = req.user.id;
+  const { quantity } = req.body;
+  const { itemId } = req.params;
 
-    const cart = await Cart.findOneAndUpdate(
+  if (quantity < 1) {
+    await Cart.findOneAndUpdate(
       { user: userId },
-      { $pull: { items: { item_id: itemId } } },
-      { new: true }
+      { $pull: { items: { item_id: itemId } } }
     );
-
-    if (!cart) {
-      return res.status(404).json({ message: 'Cart not found' });
-    }
-
-    return res.status(200).json({ cart });
-  } catch (err) {
-    console.error("Delete cart item error:", err);
-    return res.status(500).json({ message: "Error deleting item from cart" });
+    return res.status(200).json({ message: 'Item removed from cart' });
   }
-};
 
-export const clearCart = async (req, res) => {
-  try {
-    const userId = req.user.id;
-    const cart = await Cart.findOneAndUpdate(
-      { user: userId },
-      { $set: { items: [] } },
-      { new: true }
-    );
-    res.status(200).json(cart);
-  } catch (err) {
-    console.error("Error clearing cart:", err);
-    res.status(500).json({ message: "Failed to clear cart" });
+  let cart = await Cart.findOne({ user: userId });
+  if (!cart) {
+    throw new AppError('Cart not found', 404);
   }
-};
+
+  const itemIndex = cart.items.findIndex(
+    (item) => item.item_id.toString() === itemId
+  );
+  if (itemIndex === -1) {
+    throw new AppError('Item not found in cart', 404);
+  }
+
+  cart.items[itemIndex].quantity = quantity;
+  await cart.save();
+
+  return res.status(200).json({ message: 'Cart updated', cart });
+});
+
+export const deleteCartItem = catchAsync(async (req, res) => {
+  const { itemId } = req.params;
+  const userId = req.user.id;
+
+  const cart = await Cart.findOneAndUpdate(
+    { user: userId },
+    { $pull: { items: { item_id: itemId } } },
+    { new: true }
+  );
+
+  if (!cart) {
+    throw new AppError('Cart not found', 404);
+  }
+
+  return res.status(200).json({ cart });
+});
+
+export const clearCart = catchAsync(async (req, res) => {
+  const userId = req.user.id;
+  const cart = await Cart.findOneAndUpdate(
+    { user: userId },
+    { $set: { items: [] } },
+    { new: true }
+  );
+  res.status(200).json(cart);
+});
