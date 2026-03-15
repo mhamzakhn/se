@@ -70,7 +70,7 @@ export const signup = catchAsync(async (req, res) => {
   };
 
   const redisKey = `signup:${email}`;
-  await redisClient.set(redisKey, JSON.stringify(signupData), { EX: 5 * 60 });
+  await redisClient.set(redisKey, signupData, { ex: 5 * 60 });
 
   await sendOTPEmail(email, otp);
 
@@ -81,12 +81,10 @@ export const verifyOtp = catchAsync(async (req, res) => {
   const { email, otp } = req.body;
 
   const redisKey = `signup:${email}`;
-  const data = await redisClient.get(redisKey);
-  if (!data) {
+  const signupData = await redisClient.get(redisKey);
+  if (!signupData) {
     throw new AppError('OTP expired or not found. Please try signing up again.', 400);
   }
-
-  const signupData = JSON.parse(data);
 
   if (signupData.otp !== otp) {
     throw new AppError('Invalid OTP. Please try again.', 400);
@@ -125,10 +123,7 @@ export const forgotPassword = catchAsync(async (req, res) => {
   const otp = generateOTP();
   const redisKey = `reset:${email}`;
 
-  await redisClient.set(redisKey, JSON.stringify({
-    otp,
-    createdAt: Date.now(),
-  }), { EX: 600 });
+  await redisClient.set(redisKey, { otp, createdAt: Date.now() }, { ex: 600 });
 
   await sendOTPEmail(email, otp);
 
@@ -145,16 +140,11 @@ export const verifyResetOTP = catchAsync(async (req, res) => {
     throw new AppError('OTP expired or invalid', 400);
   }
 
-  const { otp: storedOTP } = JSON.parse(storedData);
-
-  if (otp !== storedOTP) {
+  if (otp !== storedData.otp) {
     throw new AppError('Invalid OTP', 400);
   }
 
-  await redisClient.set(redisKey, JSON.stringify({
-    ...JSON.parse(storedData),
-    verified: true,
-  }));
+  await redisClient.set(redisKey, { ...storedData, verified: true });
 
   sendResponse(res, 200, null, 'OTP verified successfully');
 });
@@ -169,9 +159,7 @@ export const resetPassword = catchAsync(async (req, res) => {
     throw new AppError('Session expired. Please request a new OTP.', 400);
   }
 
-  const { otp: storedOTP, verified } = JSON.parse(storedData);
-
-  if (otp !== storedOTP || !verified) {
+  if (otp !== storedData.otp || !storedData.verified) {
     throw new AppError('Invalid OTP or OTP not verified', 400);
   }
 

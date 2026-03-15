@@ -1,7 +1,5 @@
 import express from "express";
 import cors from "cors";
-import path from "path";
-import { fileURLToPath } from "url";
 
 import config, { dbConnection } from "./config/index.js";
 import authRoutes from "./routes/authRoutes.js";
@@ -11,15 +9,7 @@ import orderRoutes from "./routes/orderRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import { errorMiddleware } from "./middleware/errorHandler.js";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
 const app = express();
-
-app.use(
-  "/images",
-  express.static(path.join(__dirname, "..", "public", "images"))
-);
 
 app.use(
   cors({
@@ -31,6 +21,12 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Ensure DB is connected before handling requests
+app.use(async (req, res, next) => {
+  await dbConnection();
+  next();
+});
+
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/menu", menuRoutes);
 app.use("/api/v1/cart", cartRoutes);
@@ -38,7 +34,5 @@ app.use("/api/v1/orders", orderRoutes);
 app.use("/api/v1/admin", adminRoutes);
 
 app.use(errorMiddleware);
-
-dbConnection();
 
 export default app;
