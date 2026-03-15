@@ -4,7 +4,7 @@ const AdminMenuCard = ({ item, onEdit, onDelete }) => {
   return (
     <div className="bg-gray-800 p-4 rounded-lg relative">
       <img
-        src={item.imageUrl || "/BeefChilliDry.jpeg"}
+        src={item.imageUrl || "/images/honey-wings-4-pcs.jpg"}
         alt={item.name}
         className="w-full h-40 object-contain mb-4 rounded bg-gray-900"
       />
