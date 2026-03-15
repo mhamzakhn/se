@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from 'react';
 import { useCart }               from '../context/CartContext';
 import slugify                   from 'slugify';
-import { API_BASE_URL }          from '../config/api';
 import { getMenuItems }          from '../services/menuService';
 
 const DEFAULT_IMG = '/BeefChilliDry.jpeg';
@@ -36,14 +35,13 @@ export default function MenuPage({ openLogin }) {
                 : item.price;
 
     const slugFilename = slugify(item.name, { lower: true, strict: true }) + '.jpg';
-    const slugFallback = `${API_BASE_URL}/images/${slugFilename}`;
+    const slugFallback = `/images/${slugFilename}`;
 
-    const initialSeeded = item.imageUrl;
-    const initialSrc    = initialSeeded || slugFallback;
+    const initialSrc = item.imageUrl || slugFallback;
 
     const handleImgError = e => {
-      const curr = e.currentTarget.src;
-      if (curr === initialSrc && curr !== slugFallback) {
+      const curr = e.currentTarget.getAttribute('src');
+      if (curr !== slugFallback && curr !== DEFAULT_IMG) {
         e.currentTarget.src = slugFallback;
       } else if (curr === slugFallback) {
         e.currentTarget.src = DEFAULT_IMG;
