@@ -44,3 +44,8 @@ export const placeOrder = catchAsync(async (req, res) => {
 
   sendResponse(res, 200, { order: newOrder }, 'Order placed successfully');
 });
+
+export const getMyOrders = catchAsync(async (req, res) => {
+  const orders = await Order.find({ user: req.user.id }).sort({ createdAt: -1 });
+  sendResponse(res, 200, orders);
+});
