@@ -86,7 +86,7 @@ export const verifyOtp = catchAsync(async (req, res) => {
     throw new AppError('OTP expired or not found. Please try signing up again.', 400);
   }
 
-  if (signupData.otp !== otp) {
+  if (String(signupData.otp) !== String(otp)) {
     throw new AppError('Invalid OTP. Please try again.', 400);
   }
 
@@ -140,7 +140,7 @@ export const verifyResetOTP = catchAsync(async (req, res) => {
     throw new AppError('OTP expired or invalid', 400);
   }
 
-  if (otp !== storedData.otp) {
+  if (String(otp) !== String(storedData.otp)) {
     throw new AppError('Invalid OTP', 400);
   }
 
@@ -159,8 +159,8 @@ export const resetPassword = catchAsync(async (req, res) => {
     throw new AppError('Session expired. Please request a new OTP.', 400);
   }
 
-  if (otp !== storedData.otp || !storedData.verified) {
-    throw new AppError('Invalid OTP or OTP not verified', 400);
+  if (String(otp) !== String(storedData.otp)) {
+    throw new AppError('Invalid OTP', 400);
   }
 
   const saltRounds = 10;
